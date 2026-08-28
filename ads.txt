@@ -1,0 +1,4 @@
+# Festival Studio — ads.txt
+# Replace the line below with the one your ad network gives you.
+# Google AdSense example (swap in your own publisher ID):
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
