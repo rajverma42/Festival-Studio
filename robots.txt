@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /tools/
 
-Sitemap: https://example.github.io/festival-studio/sitemap.xml
+Sitemap: https://rajverma42.github.io/Festival-Studio/sitemap.xml
