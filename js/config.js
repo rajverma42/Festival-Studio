@@ -10,7 +10,7 @@ window.FS_CONFIG = {
   /* Your published site URL. Used for share links and JSON-LD.
      Also set the same value when regenerating pages:
        SITE_URL="https://..." node tools/build.js                            */
-  siteUrl: '',
+  siteUrl: 'https://rajverma42.github.io/Festival-Studio',
 
   /* Contact address shown on the Contact page and used by the mailto form.  */
   contactEmail: 'hello@festivalstudio.example',
