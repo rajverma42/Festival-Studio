@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Festival Studio asset renderer (dev only)</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
+<script src="../js/storage.js"></script>
+<script src="../js/festivals.js"></script>
+<script src="../js/wishes.js"></script>
+<script src="../js/stickers.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/templates.js"></script>
+</head>
+<body>
+<p>This page exists only so <code>tools/render-assets.js</code> can rasterise template
+previews and social cards with the real rendering engine. It is not part of the site.</p>
+<script>
+/* Render one template to a JPEG data URL. */
+window.renderTemplate = function (id, width, quality) {
+  var t = FS.getTemplate(id);
+  var scene = FS.buildScene(t, {});
+  var c = FS.renderToCanvas(scene, width);
+  return c.toDataURL('image/jpeg', quality || 0.72);
+};
+
+/* Render a 1200x630 social card for one festival. */
+window.renderOG = function (slug, quality) {
+  var f = FS.getFestival(slug);
+  var scene = FS.buildScene(slug + '--fbpost', { name: 'Free \u2022 No signup \u2022 No watermark', website: ' ' });
+  scene.width = 1200; scene.height = 630;
+  var c = document.createElement('canvas');
+  c.width = 1200; c.height = 630;
+  var ctx = c.getContext('2d');
+  FS.renderScene(ctx, scene, {});
+  /* branding strip */
+  ctx.fillStyle = 'rgba(0,0,0,.55)';
+  ctx.fillRect(0, 630 - 74, 1200, 74);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '700 30px ' + FS.fontStack('Poppins');
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Festival Studio', 34, 630 - 37);
+  ctx.fillStyle = f.palette.accent;
+  ctx.font = '600 24px ' + FS.fontStack('Poppins');
+  ctx.textAlign = 'right';
+  ctx.fillText('Free ' + f.name + ' post, GIF & status maker', 1166, 630 - 37);
+  return c.toDataURL('image/jpeg', quality || 0.82);
+};
+
+window.allTemplateIds = function () { return FS.TEMPLATES.map(function (t) { return t.id; }); };
+window.allFestivalSlugs = function () { return FS.FESTIVALS.map(function (f) { return f.slug; }); };
+window.rendererReady = true;
+</script>
+</body>
+</html>

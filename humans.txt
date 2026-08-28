@@ -1,0 +1,10 @@
+/* TEAM */
+Festival Studio — free Indian festival post, GIF and status maker.
+Contact: hello@festivalstudio.example
+Location: India
+
+/* SITE */
+Standards: HTML5, CSS3, ES5-compatible JavaScript, Canvas 2D, Service Worker
+Components: none — no runtime framework, no third-party JS library
+Software: written by hand
+Last update: 2026-08-28

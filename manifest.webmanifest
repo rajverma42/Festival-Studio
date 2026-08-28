@@ -1,0 +1,45 @@
+{
+  "name": "Festival Studio",
+  "short_name": "Festival Studio",
+  "description": "Free Indian festival post, GIF and status maker.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "lang": "en-IN",
+  "background_color": "#FBF7F4",
+  "theme_color": "#E1306C",
+  "categories": [
+    "graphics",
+    "photo",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Post Maker",
+      "url": "./post-maker.html"
+    },
+    {
+      "name": "GIF Maker",
+      "url": "./gif-maker.html"
+    },
+    {
+      "name": "Status Maker",
+      "url": "./status-maker.html"
+    }
+  ]
+}
