@@ -13,7 +13,7 @@ window.FS_CONFIG = {
   siteUrl: 'https://rajverma42.github.io/Festival-Studio',
 
   /* Contact address shown on the Contact page and used by the mailto form.  */
-  contactEmail: 'officelfestivalstudio@gmail.com',
+  contactEmail: 'officefestivalstudio@gmail.com',
 
   /* ---- Google AdSense ---------------------------------------------------
      1. Get approved at https://adsense.google.com
