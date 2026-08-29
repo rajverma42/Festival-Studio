@@ -4,7 +4,7 @@
    cache-first for CSS/JS/icons (so the editor opens instantly).      */
 'use strict';
 
-var VERSION = 'fs-v2';
+var VERSION = 'fs-v3';
 var SHELL = [
   './',
   './index.html',
