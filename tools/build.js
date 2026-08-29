@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const STR = require('./strings');
@@ -1227,4 +1228,55 @@ write('manifest.webmanifest', JSON.stringify({
   ]
 }, null, 2));
 
-console.log(`Built ${pages.length} indexable pages (+404), sitemap, robots, ads.txt, humans.txt, security.txt and manifest.`);
+/* ---- service worker cache version --------------------------------------
+   sw.js serves CSS and JS cache-first, keyed on VERSION, and its activate
+   handler only drops caches whose key differs. A forgotten bump therefore
+   pins returning visitors to the scripts they first downloaded.
+
+   Deriving the key from the contents of css/ and js/ removes that failure
+   mode: edit a script and the key changes on the next build, leave the code
+   alone and returning visitors keep their cache instead of re-downloading
+   the shell. Images live outside the hash deliberately — new artwork arrives
+   under a new filename, which was never in the cache to begin with.        */
+function hashCode() {
+  const files = [];
+  (function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const name of fs.readdirSync(dir).sort()) {
+      const abs = path.join(dir, name);
+      if (fs.statSync(abs).isDirectory()) walk(abs);
+      else files.push(abs);
+    }
+  })(path.join(ROOT, 'css'));
+  (function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const name of fs.readdirSync(dir).sort()) {
+      const abs = path.join(dir, name);
+      if (fs.statSync(abs).isDirectory()) walk(abs);
+      else files.push(abs);
+    }
+  })(path.join(ROOT, 'js'));
+
+  const sum = crypto.createHash('sha1');
+  for (const abs of files.sort()) {
+    sum.update(path.relative(ROOT, abs).split(path.sep).join('/'));
+    sum.update(fs.readFileSync(abs));
+  }
+  return 'fs-' + sum.digest('hex').slice(0, 10);
+}
+
+const swPath = path.join(ROOT, 'sw.js');
+let swNote = 'sw.js not found — cache version unchanged';
+if (fs.existsSync(swPath)) {
+  const version = hashCode();
+  const before = fs.readFileSync(swPath, 'utf8');
+  const after = before.replace(/var VERSION = '[^']*';/, `var VERSION = '${version}';`);
+  if (!/var VERSION = '[^']*';/.test(before)) {
+    swNote = 'sw.js has no VERSION line — left untouched';
+  } else {
+    if (after !== before) fs.writeFileSync(swPath, after);
+    swNote = `service worker cache version ${version}`;
+  }
+}
+
+console.log(`Built ${pages.length} indexable pages (+404), sitemap, robots, ads.txt, humans.txt, security.txt and manifest.\nStamped ${swNote}.`);
