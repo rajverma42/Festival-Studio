@@ -303,6 +303,11 @@
   /* ------------------------------------------------------------------ */
   /* Grids                                                               */
   /* ------------------------------------------------------------------ */
+  /* On a Hindi page the Devanagari name leads and the English name sits
+     underneath; on an English page it is the other way round. */
+  FS.festName = function (f) { return FS.LANG === 'hi' ? f.hi : f.name; };
+  FS.festSubName = function (f) { return FS.LANG === 'hi' ? f.name : f.hi; };
+
   function festivalThumbStyle(f) {
     var g = f.gradients[0];
     return 'background:linear-gradient(140deg,' + g.join(',') + ')';
@@ -327,7 +332,7 @@
         '<span class="emoji" aria-hidden="true">' + f.icon + '</span>' +
         (when ? '<span class="when">' + when + '</span>' : '') +
         '</div>' +
-        '<div class="meta"><strong>' + FS.esc(f.name) + '</strong><span>' + FS.esc(f.hi) + '</span></div>');
+        '<div class="meta"><strong>' + FS.esc(FS.festName(f)) + '</strong><span>' + FS.esc(FS.festSubName(f)) + '</span></div>');
       frag.appendChild(a);
     });
     container.appendChild(frag);
@@ -365,7 +370,7 @@
       holder._render = function () {
         var img = FS.el('img', {
           src: FS.BASE + 'assets/templates/' + t.id + '.jpg',
-          alt: t.festivalName + ' ' + t.category.toLowerCase() + ' template',
+          alt: FS.festName(FS.getFestival(t.festival)) + ' ' + t.category.toLowerCase() + ' template',
           loading: 'lazy', decoding: 'async', width: 320,
           height: Math.round(320 * (t.previewH || 1))
         });
@@ -412,12 +417,13 @@
         container.appendChild(FS.el('div', { class: 'month-head' }, MONTHS[lastMonth] + ' ' + year));
       }
       var days = FS.daysUntil(r.date, today);
-      var label = days < 0 ? 'Passed' : days === 0 ? 'Today 🎉' : days === 1 ? 'Tomorrow' : 'in ' + days + ' days';
+      var label = days < 0 ? FS.t('Passed') : days === 0 ? FS.t('Today') + ' 🎉'
+        : days === 1 ? FS.t('Tomorrow') : FS.t('in') + ' ' + days + ' ' + FS.t('days');
       var row = FS.el('div', { class: 'cal-row' + (days < 0 ? ' past' : '') },
         '<div class="cal-date"><b>' + r.date.getDate() + '</b><span>' + MONTHS[r.date.getMonth()].slice(0, 3) + '</span></div>' +
-        '<div><div class="nm">' + r.festival.icon + ' ' + FS.esc(r.festival.name) +
+        '<div><div class="nm">' + r.festival.icon + ' ' + FS.esc(FS.festName(r.festival)) +
         (r.approx ? ' <span class="tag">approx</span>' : '') + '</div>' +
-        '<div class="hi">' + FS.esc(r.festival.hi) + ' · ' + r.date.toLocaleDateString(undefined, { weekday: 'long' }) + '</div></div>' +
+        '<div class="hi">' + FS.esc(FS.festSubName(r.festival)) + ' · ' + r.date.toLocaleDateString(undefined, { weekday: 'long' }) + '</div></div>' +
         '<a class="countdown' + (days >= 0 && days <= 14 ? ' soon' : '') + '" href="' + r.festival.slug + '-post-maker/">' + label + '</a>');
       container.appendChild(row);
     });
@@ -637,8 +643,8 @@
       soon.forEach(function (s) {
         up.appendChild(FS.el('a', { class: 'card card-pad', href: s.f.slug + '-post-maker/', style: 'display:flex;gap:12px;align-items:center' },
           '<span style="font-size:1.8rem" aria-hidden="true">' + s.f.icon + '</span>' +
-          '<span><strong style="display:block">' + FS.esc(s.f.name) + '</strong>' +
-          '<small class="muted">' + (s.d === 0 ? 'Today' : s.d === 1 ? 'Tomorrow' : 'in ' + s.d + ' days') + '</small></span>'));
+          '<span><strong style="display:block">' + FS.esc(FS.festName(s.f)) + '</strong>' +
+          '<small class="muted">' + (s.d === 0 ? FS.t('Today') : s.d === 1 ? FS.t('Tomorrow') : FS.t('in') + ' ' + s.d + ' ' + FS.t('days')) + '</small></span>'));
       });
     }
 
