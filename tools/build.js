@@ -390,7 +390,7 @@ bilingual('', 'hi/', (c) => {
     <div class="section-head"><div><p class="eyebrow">${esc(S.home.wishesEyebrow)}</p><h2>${esc(S.home.wishesHead)}</h2><p>${esc(S.home.wishesSub)}</p></div>
       <a class="btn btn-ghost btn-sm" href="${c.navBase}wishes.html">${esc(S.home.wishesCta)}</a></div>
     <div class="link-cols">
-      ${FESTIVALS.map((f) => `<a href="${c.base}${f.slug}-wishes/">${esc(f.name)} ${c.lang === 'hi' ? 'शुभकामनाएँ' : 'wishes'}</a>`).join('\n      ')}
+      ${FESTIVALS.map((f) => `<a href="${c.base}${f.slug}-wishes/">${esc(c.lang === 'hi' ? f.hi : f.name)} ${c.lang === 'hi' ? 'शुभकामनाएँ' : 'wishes'}</a>`).join('\n      ')}
     </div>
   </div>
 </section>
@@ -651,7 +651,7 @@ bilingual('wishes.html', 'hi/wishes.html', (c) => {
           <span class="emoji" aria-hidden="true">${f.icon}</span>
           <span class="when">${n}</span>
         </div>
-        <div class="meta"><strong>${esc(f.name)}</strong><span>${esc(f.hi)}</span></div>
+        <div class="meta"><strong>${esc(c.lang === 'hi' ? f.hi : f.name)}</strong><span>${esc(c.lang === 'hi' ? f.name : f.hi)}</span></div>
       </a>`;
     }).join('\n      ')}
     </div>
@@ -695,7 +695,11 @@ FESTIVALS.forEach((f) => {
     const p = lang === 'en' ? enPath : hiPath;
     const c = ctx(p, lang);
     const S = c.S;
-    const v = { name: f.name, hi: f.hi, desc: f.desc };
+    /* On a Hindi page the festival's own Hindi name is the primary name
+       (people search "दीपावली पोस्ट मेकर", not "Diwali पोस्ट मेकर"). */
+    const v = lang === 'hi'
+      ? { name: f.hi, en: f.name, hi: f.name, desc: f.hiDesc || f.desc }
+      : { name: f.name, en: f.name, hi: f.hi, desc: f.desc };
     const faqs = S.festival.faqs.map(([q, a]) => [fmt(q, v), fmt(a, v)]);
 
     write(p + 'index.html', page({
@@ -754,7 +758,7 @@ FESTIVALS.forEach((f) => {
 
       <h2>${esc(S.festival.moreHead)}</h2>
       <div class="link-cols">${FESTIVALS.filter((x) => x.slug !== f.slug)
-          .map((x) => `<a href="${c.base}${lang === 'hi' ? 'hi/' : ''}${x.slug}-post-maker/">${esc(x.name)}</a>`).join('')}</div>
+          .map((x) => `<a href="${c.base}${lang === 'hi' ? 'hi/' : ''}${x.slug}-post-maker/">${esc(lang === 'hi' ? x.hi : x.name)}</a>`).join('')}</div>
     </div>
 
     ${AD('festival-bottom', 'leaderboard', S)}

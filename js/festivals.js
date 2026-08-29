@@ -83,6 +83,7 @@
       keywords: ['deepavali', 'lights', 'दिवाली', 'deepawali'],
       desc:
         'The festival of lights. Diyas, rangoli, fireworks and sweets — the biggest greeting-card moment of the Indian year.',
+      hiDesc: 'रोशनी का त्योहार — दीये, रंगोली, आतिशबाज़ी और मिठाइयाँ। साल का सबसे बड़ा शुभकामना पर्व।',
       palette: { deep: '#2A0A3D', mid: '#7B1FA2', accent: '#FFB300', accent2: '#FF6F00', ink: '#FFF8E1' },
       gradients: [
         ['#2A0A3D', '#7B1FA2'],
@@ -119,6 +120,7 @@
       month: 'March',
       keywords: ['colors', 'colours', 'होली', 'rangwali'],
       desc: 'The festival of colours — gulal, water balloons, gujiya and the loudest music of the year.',
+      hiDesc: 'रंगों का त्योहार — गुलाल, पिचकारी, गुजिया और सबसे ऊँची आवाज़ वाला संगीत।',
       palette: { deep: '#1B1035', mid: '#E91E63', accent: '#FFEB3B', accent2: '#00BCD4', ink: '#FFFFFF' },
       gradients: [
         ['#FF4081', '#FFC107'],
@@ -149,6 +151,7 @@
       month: 'Varies',
       keywords: ['eid mubarak', 'ramadan', 'ramzan', 'ईद', 'eid-ul-fitr'],
       desc: 'Eid Mubarak — crescent moons, sewaiyan, new clothes and warm greetings for family and customers.',
+      hiDesc: 'ईद मुबारक — चाँद, सेवइयाँ, नए कपड़े और अपनों के लिए गर्मजोशी भरी दुआएँ।',
       palette: { deep: '#052E28', mid: '#0F766E', accent: '#E8C572', accent2: '#F5EAD0', ink: '#FFFDF5' },
       gradients: [
         ['#052E28', '#0F766E'],
@@ -171,6 +174,7 @@
       month: 'August',
       keywords: ['rakhi', 'रक्षा बंधन', 'brother sister'],
       desc: 'The thread of protection — rakhi, sweets and the sibling bond.',
+      hiDesc: 'रक्षा का धागा — राखी, मिठाई और भाई-बहन का अटूट रिश्ता।',
       palette: { deep: '#4A0E2E', mid: '#C2185B', accent: '#FFC107', accent2: '#FF7043', ink: '#FFF6E9' },
       gradients: [
         ['#4A0E2E', '#C2185B'],
@@ -193,6 +197,7 @@
       month: 'August / September',
       keywords: ['krishna', 'gokulashtami', 'dahi handi', 'जन्माष्टमी'],
       desc: 'Krishna Janmashtami — flute, peacock feather, makhan and midnight celebrations.',
+      hiDesc: 'कृष्ण जन्माष्टमी — बांसुरी, मोरपंख, माखन और आधी रात का उत्सव।',
       palette: { deep: '#06283D', mid: '#1363DF', accent: '#FFD54F', accent2: '#47B5FF', ink: '#F7FBFF' },
       gradients: [
         ['#06283D', '#1363DF'],
@@ -215,6 +220,7 @@
       month: 'August / September',
       keywords: ['ganpati', 'vinayaka', 'bappa', 'गणपति'],
       desc: 'Ganpati Bappa Morya — ten days of modak, dhol and devotion.',
+      hiDesc: 'गणपति बप्पा मोरया — दस दिन मोदक, ढोल और भक्ति के।',
       palette: { deep: '#4A1400', mid: '#E65100', accent: '#FFCA28', accent2: '#D84315', ink: '#FFF8E7' },
       gradients: [
         ['#4A1400', '#E65100'],
@@ -237,6 +243,7 @@
       month: 'September / October',
       keywords: ['garba', 'dandiya', 'durga', 'नवरात्री'],
       desc: 'Nine nights of Shakti — garba, dandiya, fasting and colour-of-the-day posts.',
+      hiDesc: 'शक्ति की नौ रातें — गरबा, डांडिया, व्रत और हर दिन का अलग रंग।',
       palette: { deep: '#3B0A45', mid: '#C2185B', accent: '#FFD600', accent2: '#FF6D00', ink: '#FFF7FB' },
       gradients: [
         ['#3B0A45', '#C2185B'],
@@ -259,6 +266,7 @@
       month: 'October',
       keywords: ['vijayadashami', 'ravan dahan', 'दशहरा'],
       desc: 'Vijayadashami — the victory of good over evil.',
+      hiDesc: 'विजयादशमी — बुराई पर अच्छाई की जीत का पर्व।',
       palette: { deep: '#3E1000', mid: '#C62828', accent: '#FFB300', accent2: '#FF7043', ink: '#FFF6E6' },
       gradients: [
         ['#3E1000', '#C62828'],
@@ -281,6 +289,7 @@
       month: 'October',
       keywords: ['pujo', 'bengal', 'दुर्गापूजा', 'shubho'],
       desc: 'Pujo days — pandal hopping, dhunuchi and Shubho Bijoya greetings.',
+      hiDesc: 'पूजो के दिन — पंडाल, ढाक, धुनुची और शुभो बिजोया की शुभकामनाएँ।',
       palette: { deep: '#4E0A1E', mid: '#B71C1C', accent: '#FFCA28', accent2: '#F44336', ink: '#FFF7EA' },
       gradients: [
         ['#4E0A1E', '#B71C1C'],
@@ -303,6 +312,7 @@
       month: 'October / November',
       keywords: ['chhathi maiya', 'surya', 'छठ', 'bihar'],
       desc: 'Chhath — arghya to the rising and setting sun, thekua and river ghats.',
+      hiDesc: 'छठ — उगते और डूबते सूर्य को अर्घ्य, ठेकुआ और नदी के घाट।',
       palette: { deep: '#3A1B00', mid: '#EF6C00', accent: '#FFD54F', accent2: '#FF8A65', ink: '#FFF6E5' },
       gradients: [
         ['#3A1B00', '#EF6C00'],
@@ -325,6 +335,7 @@
       month: 'January',
       keywords: ['kite', 'uttarayan', 'til gud', 'संक्रांति'],
       desc: 'Kites, til-gud and the sun moving north.',
+      hiDesc: 'पतंग, तिल-गुड़ और सूर्य का उत्तरायण होना।',
       palette: { deep: '#0B3C5D', mid: '#1E88E5', accent: '#FFC107', accent2: '#26C6DA', ink: '#FFFFFF' },
       gradients: [
         ['#0B3C5D', '#1E88E5'],
@@ -347,6 +358,7 @@
       month: 'January',
       keywords: ['thai pongal', 'tamil', 'harvest'],
       desc: 'The Tamil harvest festival — pongal pot, sugarcane and kolam.',
+      hiDesc: 'तमिल फ़सल पर्व — पोंगल का बर्तन, गन्ना और कोलम।',
       palette: { deep: '#1B3A0E', mid: '#558B2F', accent: '#FFC107', accent2: '#F4511E', ink: '#FFFDF3' },
       gradients: [
         ['#1B3A0E', '#558B2F'],
@@ -369,6 +381,7 @@
       month: 'August / September',
       keywords: ['pookalam', 'kerala', 'sadya', 'thiruvonam'],
       desc: 'Kerala’s harvest festival — pookalam, sadya and vallam kali.',
+      hiDesc: 'केरल का फ़सल पर्व — पूकलम, सद्या और वल्लम कली।',
       palette: { deep: '#0E3B2E', mid: '#2E7D32', accent: '#FFC107', accent2: '#FF7043', ink: '#FFFDF3' },
       gradients: [
         ['#0E3B2E', '#2E7D32'],
@@ -391,6 +404,7 @@
       month: 'February / March',
       keywords: ['shiv', 'bholenath', 'har har mahadev', 'शिवरात्रि'],
       desc: 'The great night of Shiva — jal abhishek, bel patra and Har Har Mahadev.',
+      hiDesc: 'शिव की महान रात — जल अभिषेक, बेलपत्र और हर हर महादेव।',
       palette: { deep: '#0A1A2F', mid: '#1E3A5F', accent: '#F4D35E', accent2: '#5AC8FA', ink: '#F4F9FF' },
       gradients: [
         ['#0A1A2F', '#1E3A5F'],
@@ -413,6 +427,7 @@
       month: 'December',
       keywords: ['xmas', 'santa', 'merry christmas'],
       desc: 'Merry Christmas — trees, lights, gifts and warm wishes.',
+      hiDesc: 'मेरी क्रिसमस — पेड़, रोशनी, तोहफ़े और गर्मजोशी भरी शुभकामनाएँ।',
       palette: { deep: '#0B3D2E', mid: '#1B5E20', accent: '#FFC107', accent2: '#E53935', ink: '#FFFFFF' },
       gradients: [
         ['#0B3D2E', '#1B5E20'],
@@ -435,6 +450,7 @@
       month: 'January',
       keywords: ['happy new year', 'नया साल', '2027'],
       desc: 'New year, new plans — the most shared greeting of the year.',
+      hiDesc: 'नया साल, नई योजनाएँ — साल की सबसे ज़्यादा शेयर होने वाली शुभकामना।',
       palette: { deep: '#0B0F2B', mid: '#3F51B5', accent: '#FFD54F', accent2: '#FF4081', ink: '#FFFFFF' },
       gradients: [
         ['#0B0F2B', '#3F51B5'],
@@ -457,6 +473,7 @@
       month: 'August',
       keywords: ['15 august', 'tiranga', 'azadi', 'स्वतंत्रता'],
       desc: '15 August — tiranga, pride and patriotic posts.',
+      hiDesc: '15 अगस्त — तिरंगा, गर्व और देशभक्ति से भरी पोस्ट।',
       palette: { deep: '#0B2545', mid: '#FF9933', accent: '#138808', accent2: '#FFFFFF', ink: '#FFFFFF' },
       gradients: [
         ['#FF9933', '#FFFFFF', '#138808'],
@@ -479,6 +496,7 @@
       month: 'January',
       keywords: ['26 january', 'constitution', 'गणतंत्र'],
       desc: '26 January — the Constitution, the parade and the tricolour.',
+      hiDesc: '26 जनवरी — संविधान, परेड और तिरंगे की शान।',
       palette: { deep: '#0B2545', mid: '#FF9933', accent: '#138808', accent2: '#1565C0', ink: '#FFFFFF' },
       gradients: [
         ['#FF9933', '#FFFFFF', '#138808'],

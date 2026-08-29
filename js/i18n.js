@@ -104,7 +104,9 @@
     'Nothing to redo': 'दोबारा करने के लिए कुछ नहीं है',
     'Custom canvas size': 'कस्टम कैनवास साइज़', 'Width (px)': 'चौड़ाई (px)',
     'Height (px)': 'ऊँचाई (px)', 'Apply size': 'साइज़ लागू करें',
-    'Install app': 'ऐप इंस्टॉल करें'
+    'Install app': 'ऐप इंस्टॉल करें',
+    'Today': 'आज', 'Tomorrow': 'कल', 'in': 'में', 'days': 'दिन',
+    'Passed': 'बीत गया', 'Copied': 'कॉपी हो गया', 'Decline': 'नहीं', 'Accept': 'स्वीकार करें'
   };
 
   var DICTS = { hi: HI };

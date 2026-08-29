@@ -401,6 +401,8 @@ function watch(page, bucket) {
     ok('hindi nav is translated', (await page.locator('.nav a').first().textContent()).trim() === 'होम');
     ok('hindi hreflang present', (await page.locator('link[rel=alternate][hreflang=en]').count()) === 1);
     ok('hindi festival cards', (await page.locator('#festival-grid .fest-card').count()) === 18);
+    const firstCard = (await page.locator('#festival-grid .fest-card .meta strong').first().textContent()).trim();
+    ok('festival names shown in Hindi', /[\u0900-\u097F]/.test(firstCard), firstCard);
     const enHref = await page.locator('[data-lang-switch]').getAttribute('href');
     ok('language switcher is relative', /^\.\.\/?$/.test(enHref || ''), enHref);
     await page.locator('[data-lang-switch]').click();
@@ -428,6 +430,15 @@ function watch(page, bucket) {
     await page.locator('.wish-list .copy').first().click();
     await page.waitForTimeout(400);
     ok('copy button responds', (await page.locator('.toast').count()) >= 1);
+
+    /* Hindi festival landing page must use the Devanagari festival name */
+    await page.goto(BASE + '/hi/diwali-post-maker/', { waitUntil: 'load' });
+    await page.waitForTimeout(900);
+    const hiTitle = await page.title();
+    const hiH1 = (await page.locator('h1').first().textContent()).trim();
+    ok('hindi festival title uses Devanagari name', hiTitle.indexOf('दीपावली') === 0, hiTitle);
+    ok('hindi festival H1 uses Devanagari name', hiH1.indexOf('दीपावली') === 0, hiH1);
+    ok('hindi festival page has no English intro', !/The festival of lights/.test(await page.content()));
 
     ok('hindi/wishes no console errors', errs.length === 0, errs.slice(0, 3).join(' | '));
     await page.close();
