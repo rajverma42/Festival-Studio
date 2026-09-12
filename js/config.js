@@ -10,10 +10,10 @@ window.FS_CONFIG = {
   /* Your published site URL. Used for share links and JSON-LD.
      Also set the same value when regenerating pages:
        SITE_URL="https://..." node tools/build.js                            */
-  siteUrl: 'https://rajverma42.github.io/Festival-Studio',
+  siteUrl: 'https://festival-studio.work.gd',
 
   /* Contact address shown on the Contact page and used by the mailto form.  */
-  contactEmail: 'officefestivalstudio@gmail.com',
+  contactEmail: 'officelfestivalstudio@gmail.com',
 
   /* ---- Google AdSense ---------------------------------------------------
      1. Get approved at https://adsense.google.com
