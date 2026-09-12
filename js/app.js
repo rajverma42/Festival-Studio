@@ -538,7 +538,7 @@
     if (CFG.installPrompt === false) return;
     FS.$$('[data-install]').forEach(function (b) {
       b.addEventListener('click', function () {
-        if (!deferredPrompt) { FS.toast('Use your browser menu → “Add to Home screen”.'); return; }
+        if (!deferredPrompt) { FS.toast(FS.t('Use your browser menu → “Add to Home screen”.')); return; }
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function () {
           deferredPrompt = null;

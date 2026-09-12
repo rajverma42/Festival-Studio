@@ -101,7 +101,7 @@ const HEADER = (c, altHref) => `
   </div>
 </header>
 <nav class="drawer" id="drawer" data-open="false" aria-label="Mobile">
-  ${navItems(c).concat([['calendar.html', c.S.nav.calendar], ['about.html', c.S.nav.about], ['contact.html', c.S.nav.contact]])
+  ${navItems(c).concat([['calendar.html', c.S.nav.calendar], ['app.html', c.S.nav.app], ['about.html', c.S.nav.about], ['contact.html', c.S.nav.contact]])
     .map(([h, l]) => `<a href="${c.navBase}${h}">${esc(l)}</a>`).join('\n  ')}
   ${c.lang === 'en' ? `<a href="${c.base}faq.html">${esc(c.S.nav.faq)}</a>` : ''}
 </nav>`;
@@ -118,6 +118,7 @@ const FOOTER = (c) => `
       <div>
         <h4>${esc(c.S.footer.studio)}</h4>
         <ul>
+          <li><a href="${c.navBase}app.html">${esc(c.S.nav.app)}</a></li>
           <li><a href="${c.navBase}about.html">${esc(c.S.nav.about)}</a></li>
           <li><a href="${c.navBase}contact.html">${esc(c.S.nav.contact)}</a></li>
           <li><a href="${c.navBase}how-it-works.html">${esc(c.S.nav.howItWorks)}</a></li>
@@ -892,6 +893,57 @@ function simplePage(pathName, title, description, bodyHtml, extra) {
 const E = STR.en;
 
 /* FAQ */
+/* ---- app / install page ------------------------------------------------- */
+bilingual('app.html', 'hi/app.html', (c) => {
+  const S = c.S;
+  const steps = (list) => list
+    .map(([h, p]) => `<div class="step"><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`)
+    .join('\n      ');
+  return {
+    title: S.app.title, description: S.app.desc,
+    body: `
+<section class="section">
+  <div class="wrap prose">
+    <p class="breadcrumb"><a href="${c.navBase}index.html">${esc(S.common.home)}</a> / ${esc(S.nav.app)}</p>
+    <h1>${esc(S.app.h1)}</h1>
+    <p>${esc(S.app.lead)}</p>
+    <p style="margin-top:18px">
+      <button class="btn btn-primary btn-lg" type="button" data-install>${esc(S.app.cta)}</button>
+    </p>
+    <p class="note">${esc(S.app.ctaNote)}</p>
+    ${AD('app-top', 'leaderboard', S)}
+
+    <h2>${esc(S.app.h2why)}</h2>
+    <div class="steps">
+      ${steps(S.app.why)}
+    </div>
+
+    <h2>${esc(S.app.h2android)}</h2>
+    <div class="steps">
+      ${steps(S.app.android)}
+    </div>
+
+    <h2>${esc(S.app.h2ios)}</h2>
+    <div class="steps">
+      ${steps(S.app.ios)}
+    </div>
+
+    <h2>${esc(S.app.h2desktop)}</h2>
+    <div class="steps">
+      ${steps(S.app.desktop)}
+    </div>
+
+    <h2>${esc(S.app.h2store)}</h2>
+    <p>${esc(S.app.storeText)}</p>
+
+    <h2>${esc(S.app.h2offline)}</h2>
+    <p>${esc(S.app.offlineText)}</p>
+    ${AD('app-bottom', 'leaderboard', S)}
+  </div>
+</section>`
+  };
+});
+
 simplePage('faq.html', E.faqPage.title, E.faqPage.desc, `
 <section class="section">
   <div class="wrap prose">
@@ -1113,7 +1165,7 @@ simplePage('sitemap.html', E.sitemapPage.title, E.sitemapPage.desc, `
     <h2>${esc(E.sitemapPage.h2main)}</h2>
     ${linkList([['index.html', 'Home'], ['templates.html', 'Festival Templates'], ['post-maker.html', 'Post Maker'],
       ['gif-maker.html', 'GIF Maker'], ['status-maker.html', 'Status Maker'], ['wishes.html', 'Festival Wishes'],
-      ['calendar.html', 'Festival Calendar'], ['how-it-works.html', 'How It Works'], ['about.html', 'About'],
+      ['calendar.html', 'Festival Calendar'], ['how-it-works.html', 'How It Works'], ['app.html', 'App'], ['about.html', 'About'],
       ['contact.html', 'Contact'], ['faq.html', 'FAQ']])}
     <h2>${esc(E.sitemapPage.h2post)}</h2>
     ${linkList(FESTIVALS.map((f) => [`${f.slug}-post-maker/`, `${f.name} post maker`]))}
@@ -1124,7 +1176,7 @@ simplePage('sitemap.html', E.sitemapPage.title, E.sitemapPage.desc, `
     <h2>${esc(E.sitemapPage.h2hi)}</h2>
     ${linkList([['hi/index.html', 'होम'], ['hi/templates.html', 'टेम्पलेट'], ['hi/post-maker.html', 'पोस्ट मेकर'],
       ['hi/gif-maker.html', 'GIF मेकर'], ['hi/status-maker.html', 'स्टेटस मेकर'], ['hi/wishes.html', 'शुभकामनाएँ'],
-      ['hi/calendar.html', 'त्योहार कैलेंडर'], ['hi/how-it-works.html', 'कैसे काम करता है'],
+      ['hi/calendar.html', 'त्योहार कैलेंडर'], ['hi/how-it-works.html', 'कैसे काम करता है'], ['hi/app.html', 'ऐप'],
       ['hi/about.html', 'हमारे बारे में'], ['hi/contact.html', 'संपर्क']]
       .concat(FESTIVALS.map((f) => [`hi/${f.slug}-post-maker/`, `${f.hi} पोस्ट मेकर`])))}
     <h2>${esc(E.sitemapPage.h2legal)}</h2>

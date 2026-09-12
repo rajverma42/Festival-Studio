@@ -14,7 +14,7 @@ const en = {
     home: 'Home', templates: 'Festival Templates', postMaker: 'Post Maker',
     gifMaker: 'GIF Maker', statusMaker: 'Status Maker', wishes: 'Wishes',
     howItWorks: 'How It Works', about: 'About', calendar: 'Festival Calendar',
-    contact: 'Contact', faq: 'FAQ'
+    contact: 'Contact', faq: 'FAQ', app: 'App'
   },
 
   footer: {
@@ -131,6 +131,44 @@ const en = {
     photoText: 'In a hurry? Press <strong>⚡ Quick</strong> at the top of the editor: upload a photo, choose the festival, pick a layout, type your name and press Generate. Four taps, no signup.',
     h2save: 'Saving your work',
     saveText: 'Drafts are stored in your browser’s local storage on the device you are using. They are never uploaded. Clearing your browser data, or using private browsing, removes them.'
+  },
+
+  app: {
+    title: 'Festival Studio App — Install the Free Festival Post Maker',
+    desc: 'Install Festival Studio on your phone or computer. Works offline, opens full screen, no Play Store, no signup. Free Indian festival post, GIF and WhatsApp status maker.',
+    h1: 'Get the Festival Studio app',
+    lead: 'Festival Studio installs straight from this page. There is no app store, no download queue and no account — the same site you are reading becomes an app with an icon on your home screen, a full-screen window, and everything still working when you are offline.',
+    cta: 'Install app',
+    ctaNote: 'Tap the button above. If your browser does not offer it, follow the steps for your device below.',
+    h2why: 'Why install it',
+    why: [
+      ['Works offline', 'After your first visit the editor, templates, stickers and wishes are stored on your device, so you can finish a post with no signal at all.'],
+      ['Opens like an app', 'A home screen icon and a full-screen window, with no address bar eating space on a small phone.'],
+      ['Nothing to sign up for', 'No account, no email, no permissions to accept. Your photos never leave your device.'],
+      ['Barely any space', 'The whole app is a few megabytes, a fraction of a typical store download.']
+    ],
+    h2android: 'Android — Chrome, Edge or Brave',
+    android: [
+      ['Tap Install above', 'Your browser shows an “Install app” or “Add to Home screen” sheet. Confirm it.'],
+      ['Or use the browser menu', 'Tap the three dots in the top-right corner, then “Add to Home screen” or “Install app”.'],
+      ['Open it from your home screen', 'The Festival Studio icon now sits with your other apps and opens full screen.']
+    ],
+    h2ios: 'iPhone and iPad — Safari',
+    ios: [
+      ['Open this page in Safari', 'Installing only works from Safari on iOS. Chrome and other browsers cannot add it.'],
+      ['Tap the Share button', 'The square with an arrow pointing up, at the bottom of the screen.'],
+      ['Choose “Add to Home Screen”', 'Scroll the share sheet until you see it, then tap Add. The icon appears on your home screen.']
+    ],
+    h2desktop: 'Windows, Mac and Linux',
+    desktop: [
+      ['Use Chrome or Edge', 'Look for the small install icon at the right-hand end of the address bar.'],
+      ['Or the browser menu', 'Open the three-dot menu and choose “Install Festival Studio”.'],
+      ['It opens in its own window', 'No tabs, no address bar — and it stays available offline.']
+    ],
+    h2store: 'Is it on the Play Store or App Store?',
+    storeText: 'No, and it does not need to be. Festival Studio is a Progressive Web App, so it installs directly from this page. That means no store review, no APK file to sideload, no “unknown sources” warning, and updates arrive the moment you open it — you never have to download a new version by hand.',
+    h2offline: 'What works offline',
+    offlineText: 'The post maker, GIF maker, status maker, every template, all the stickers and the whole wishes collection work with no connection. Only the festival calendar needs the internet the first time it loads.'
   },
 
   about: {
@@ -339,7 +377,7 @@ const hi = {
     home: 'होम', templates: 'टेम्पलेट', postMaker: 'पोस्ट मेकर',
     gifMaker: 'GIF मेकर', statusMaker: 'स्टेटस मेकर', wishes: 'शुभकामनाएँ',
     howItWorks: 'कैसे काम करता है', about: 'हमारे बारे में', calendar: 'त्योहार कैलेंडर',
-    contact: 'संपर्क', faq: 'सवाल-जवाब'
+    contact: 'संपर्क', faq: 'सवाल-जवाब', app: 'ऐप'
   },
 
   footer: {
@@ -456,6 +494,44 @@ const hi = {
     photoText: 'जल्दी में हैं? एडिटर के ऊपर <strong>⚡ झटपट</strong> दबाइए: फ़ोटो अपलोड करें, त्योहार चुनें, लेआउट चुनें, नाम लिखें और बनाएँ दबाएँ। चार टैप, कोई साइनअप नहीं।',
     h2save: 'अपना काम सेव करना',
     saveText: 'ड्राफ़्ट आपके ब्राउज़र की लोकल स्टोरेज में, इसी डिवाइस पर सेव होते हैं। वे कभी अपलोड नहीं होते। ब्राउज़र डेटा साफ़ करने या प्राइवेट मोड में वे मिट जाते हैं।'
+  },
+
+  app: {
+    title: 'फेस्टिवल स्टूडियो ऐप — मुफ़्त फेस्टिवल पोस्ट मेकर इंस्टॉल करें',
+    desc: 'फेस्टिवल स्टूडियो को अपने फ़ोन या कंप्यूटर पर इंस्टॉल करें। ऑफ़लाइन चलता है, फ़ुल स्क्रीन खुलता है, न प्ले स्टोर, न साइनअप। मुफ़्त भारतीय त्योहार पोस्ट, GIF और स्टेटस मेकर।',
+    h1: 'फेस्टिवल स्टूडियो ऐप पाइए',
+    lead: 'फेस्टिवल स्टूडियो इसी पेज से इंस्टॉल हो जाता है। न कोई ऐप स्टोर, न डाउनलोड का इंतज़ार, न अकाउंट — यही साइट एक ऐप बन जाती है, होम स्क्रीन पर आइकन के साथ, फ़ुल स्क्रीन में, और ऑफ़लाइन भी पूरा चलता हुआ।',
+    cta: 'ऐप इंस्टॉल करें',
+    ctaNote: 'ऊपर वाला बटन दबाइए। अगर आपका ब्राउज़र विकल्प न दे, तो नीचे अपने डिवाइस के हिसाब से तरीका देखिए।',
+    h2why: 'इंस्टॉल क्यों करें',
+    why: [
+      ['ऑफ़लाइन चलता है', 'पहली बार खोलने के बाद एडिटर, टेम्पलेट, स्टिकर और शुभकामनाएँ आपके डिवाइस पर सेव हो जाती हैं — बिना नेटवर्क के भी पोस्ट बन जाएगी।'],
+      ['ऐप जैसा खुलता है', 'होम स्क्रीन पर आइकन और फ़ुल स्क्रीन विंडो — छोटे फ़ोन पर एड्रेस बार की जगह नहीं घेरती।'],
+      ['साइनअप कुछ नहीं', 'न अकाउंट, न ईमेल, न कोई परमिशन। आपकी फ़ोटो कभी डिवाइस से बाहर नहीं जाती।'],
+      ['जगह ना के बराबर', 'पूरा ऐप कुछ ही मेगाबाइट का है — आम स्टोर डाउनलोड से कहीं कम।']
+    ],
+    h2android: 'एंड्रॉइड — Chrome, Edge या Brave',
+    android: [
+      ['ऊपर Install दबाइए', 'ब्राउज़र “ऐप इंस्टॉल करें” या “होम स्क्रीन पर जोड़ें” दिखाएगा। उसे कन्फ़र्म कीजिए।'],
+      ['या ब्राउज़र मेन्यू से', 'ऊपर दाएँ कोने में तीन बिंदु दबाइए, फिर “होम स्क्रीन पर जोड़ें” या “ऐप इंस्टॉल करें”।'],
+      ['होम स्क्रीन से खोलिए', 'फेस्टिवल स्टूडियो का आइकन अब बाकी ऐप्स के साथ रहेगा और फ़ुल स्क्रीन खुलेगा।']
+    ],
+    h2ios: 'आईफ़ोन और आईपैड — Safari',
+    ios: [
+      ['यह पेज Safari में खोलिए', 'iOS पर इंस्टॉल सिर्फ़ Safari से होता है। Chrome या दूसरे ब्राउज़र यह नहीं कर सकते।'],
+      ['शेयर बटन दबाइए', 'स्क्रीन के नीचे वाला चौकोर आइकन जिसमें ऊपर की ओर तीर है।'],
+      ['“Add to Home Screen” चुनिए', 'शेयर शीट को स्क्रॉल कीजिए, फिर Add दबाइए। आइकन होम स्क्रीन पर आ जाएगा।']
+    ],
+    h2desktop: 'विंडोज़, मैक और लिनक्स',
+    desktop: [
+      ['Chrome या Edge इस्तेमाल कीजिए', 'एड्रेस बार के दाएँ सिरे पर छोटा इंस्टॉल आइकन दिखेगा।'],
+      ['या ब्राउज़र मेन्यू से', 'तीन बिंदु वाला मेन्यू खोलकर “Install Festival Studio” चुनिए।'],
+      ['अपनी अलग विंडो में खुलेगा', 'न टैब, न एड्रेस बार — और ऑफ़लाइन भी चलता रहेगा।']
+    ],
+    h2store: 'क्या यह प्ले स्टोर या ऐप स्टोर पर है?',
+    storeText: 'नहीं, और ज़रूरत भी नहीं। फेस्टिवल स्टूडियो एक Progressive Web App है, इसलिए यह सीधे इसी पेज से इंस्टॉल होता है। मतलब न स्टोर रिव्यू, न APK साइडलोड करना, न “unknown sources” की चेतावनी — और अपडेट अपने आप आते हैं, आपको नया वर्ज़न कभी हाथ से डाउनलोड नहीं करना पड़ेगा।',
+    h2offline: 'ऑफ़लाइन क्या-क्या चलता है',
+    offlineText: 'पोस्ट मेकर, GIF मेकर, स्टेटस मेकर, हर टेम्पलेट, सारे स्टिकर और पूरा शुभकामना संग्रह बिना नेटवर्क के चलते हैं। सिर्फ़ त्योहार कैलेंडर को पहली बार लोड होने के लिए इंटरनेट चाहिए।'
   },
 
   about: {
