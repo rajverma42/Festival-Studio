@@ -1,0 +1,8 @@
+# Screenshots and dumps written by tools/test.js. GitHub Pages serves the whole
+# repository, so these debug artefacts must never be committed.
+.shots/
+
+# Local tooling
+node_modules/
+*.log
+.DS_Store
