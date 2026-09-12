@@ -605,6 +605,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://festival-studio.work.gd/app.html</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://festival-studio.work.gd/app.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://festival-studio.work.gd/hi/app.html"/>
+  </url>
+  <url>
+    <loc>https://festival-studio.work.gd/hi/app.html</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://festival-studio.work.gd/app.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://festival-studio.work.gd/hi/app.html"/>
+  </url>
+  <url>
     <loc>https://festival-studio.work.gd/faq.html</loc>
     <lastmod>2026-09-12</lastmod>
     <changefreq>monthly</changefreq>

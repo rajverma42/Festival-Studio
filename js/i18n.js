@@ -106,6 +106,7 @@
     'Height (px)': 'ऊँचाई (px)', 'Apply size': 'साइज़ लागू करें',
     'Install app': 'ऐप इंस्टॉल करें',
     'Today': 'आज', 'Tomorrow': 'कल', 'in': 'में', 'days': 'दिन',
+    'Use your browser menu → “Add to Home screen”.': 'अपने ब्राउज़र मेन्यू → “होम स्क्रीन पर जोड़ें” चुनिए।',
     'Passed': 'बीत गया', 'Copied': 'कॉपी हो गया', 'Decline': 'नहीं', 'Accept': 'स्वीकार करें'
   };
 
