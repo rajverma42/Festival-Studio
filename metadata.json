@@ -1,0 +1,8 @@
+{
+  "name": "Festival Studio",
+  "description": "Create beautiful Indian festival posts, animated GIFs and WhatsApp statuses free. Diwali, Holi, Eid, Raksha Bandhan and more. No signup, no watermark, works on mobile.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

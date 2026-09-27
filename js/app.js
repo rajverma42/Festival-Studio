@@ -129,23 +129,91 @@
     var btn = document.getElementById('menu-btn');
     var drawer = document.getElementById('drawer');
     if (btn && drawer) {
-      btn.addEventListener('click', function () {
+      var backdrop = document.getElementById('drawer-backdrop');
+      if (!backdrop) {
+        backdrop = FS.el('div', { id: 'drawer-backdrop', class: 'drawer-backdrop', 'aria-hidden': 'true' });
+        drawer.parentNode.insertBefore(backdrop, drawer);
+      }
+
+      function setDrawer(open) {
+        var isOpen = Boolean(open);
+        drawer.setAttribute('data-open', String(isOpen));
+        backdrop.setAttribute('data-open', String(isOpen));
+        btn.setAttribute('aria-expanded', String(isOpen));
+        btn.setAttribute('aria-label', isOpen
+          ? (FS.LANG === 'hi' ? 'मेनू बंद करें' : 'Close menu')
+          : (FS.LANG === 'hi' ? 'मेनू खोलें' : 'Open menu'));
+        btn.innerHTML = isOpen ? FS.icon('close', 19) : FS.icon('menu', 19);
+        document.body.classList.toggle('drawer-open', isOpen);
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
         var open = drawer.getAttribute('data-open') === 'true';
-        drawer.setAttribute('data-open', String(!open));
-        btn.setAttribute('aria-expanded', String(!open));
+        setDrawer(!open);
       });
+
+      backdrop.addEventListener('click', function () {
+        setDrawer(false);
+      });
+
+      drawer.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          setDrawer(false);
+        });
+      });
+
       document.addEventListener('click', function (e) {
         if (!drawer.contains(e.target) && !btn.contains(e.target)) {
-          drawer.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false');
+          setDrawer(false);
         }
       });
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { drawer.setAttribute('data-open', 'false'); btn.setAttribute('aria-expanded', 'false'); }
+        if (e.key === 'Escape') { setDrawer(false); }
       });
     }
     FS.$$('[data-theme-toggle]').forEach(function (b) {
       b.addEventListener('click', FS.toggleTheme);
     });
+
+    var isHi = FS.LANG === 'hi';
+    var isApp = FS.isApp();
+    var actions = document.querySelector('.header-actions');
+
+    // In App mode: add APP badge and website switch
+    if (isApp) {
+      var logoSpan = document.querySelector('.logo span');
+      if (logoSpan && !logoSpan.querySelector('.app-mode-badge')) {
+        var badge = FS.el('span', { class: 'app-mode-badge' }, 'APP');
+        logoSpan.appendChild(badge);
+      }
+      if (actions && !actions.querySelector('[data-mode-toggle]')) {
+        var webBtn = FS.el('button', {
+          class: 'mode-switch-pill',
+          type: 'button',
+          'data-mode-toggle': 'web',
+          title: 'Switch to Website View'
+        }, '🌐 ' + (isHi ? 'वेबसाइट' : 'Web View'));
+        webBtn.addEventListener('click', function () { FS.setAppMode(false); });
+        actions.insertBefore(webBtn, actions.firstChild);
+      }
+    } else {
+      // In Website mode: add prominent "Download App" button in header
+      if (actions && !actions.querySelector('.btn-download-app')) {
+        var appPath = (FS.BASE || '') + (isHi ? 'hi/app.html' : 'app.html');
+        var dlLink = FS.el('a', {
+          class: 'btn-download-app',
+          href: appPath,
+          'data-download-app': '1',
+          'aria-label': isHi ? 'ऐप डाउनलोड करें' : 'Download Festival Studio App'
+        });
+        dlLink.innerHTML =
+          '<svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>' +
+          '<span>' + (isHi ? 'ऐप डाउनलोड' : 'Download App') + '</span>';
+        actions.insertBefore(dlLink, actions.firstChild);
+      }
+    }
+
     /* mark current page in nav */
     var here = location.pathname.replace(/index\.html$/, '').replace(/\/$/, '');
     FS.$$('.nav a, .drawer a').forEach(function (a) {
@@ -451,6 +519,182 @@
   };
 
   /* ------------------------------------------------------------------ */
+  /* Website vs App Separation                                           */
+  /* ------------------------------------------------------------------ */
+  FS.isApp = function () {
+    if (typeof window === 'undefined') return false;
+    // 1. Explicit query parameter (?app=1 or ?mode=app or ?source=app)
+    var search = window.location.search || '';
+    if (/[?&](app=1|app=true|mode=app|source=app)(&|$)/i.test(search)) return true;
+    if (/[?&]mode=web(&|$)/i.test(search)) return false;
+
+    // 2. Saved preference for testing or explicit choice
+    var savedMode = Store.pref('env_mode');
+    if (savedMode === 'app') return true;
+    if (savedMode === 'web') return false;
+
+    // 3. Android WebView / Hybrid wrapper / Native interface
+    if (window.AndroidBridge || window.AndroidAdMob || window.AdMob || window.isFestivalStudioApp) return true;
+    if (/FestivalStudioApp|wv|WebView/i.test(navigator.userAgent) && !/Chrome\/[.0-9]+ Mobile/i.test(navigator.userAgent.replace(/Version\/[.0-9]+/i, ''))) {
+      return true;
+    }
+
+    // 4. Standalone display-mode (PWA installed app)
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true;
+    return false;
+  };
+
+  FS.setAppMode = function (isApp) {
+    Store.pref('env_mode', isApp ? 'app' : 'web');
+    var url = new URL(window.location.href);
+    url.searchParams.set('mode', isApp ? 'app' : 'web');
+    window.location.href = url.toString();
+  };
+
+  /* ------------------------------------------------------------------ */
+  /* Google AdMob Engine (Strictly for App Mode)                         */
+  /* ------------------------------------------------------------------ */
+  FS.AdMob = {
+    initialized: false,
+    cfg: function () {
+      return (CFG && CFG.admob) || { enabled: true, testMode: true };
+    },
+    init: function () {
+      if (!FS.isApp()) return; // AdMob only runs in App!
+      var c = this.cfg();
+      if (!c.enabled) return;
+      if (this.initialized) return;
+      this.initialized = true;
+
+      // 1. Native Android / Capacitor / Cordova bridge check
+      if (window.AndroidAdMob && typeof window.AndroidAdMob.init === 'function') {
+        try { window.AndroidAdMob.init(c.appId || '', c.testMode !== false); } catch (e) {}
+      }
+      if (window.AndroidAdMob && typeof window.AndroidAdMob.showBanner === 'function') {
+        try { window.AndroidAdMob.showBanner(c.bannerSlotId || ''); } catch (e) {}
+        return;
+      }
+      if (window.AdMob && typeof window.AdMob.showBanner === 'function') {
+        try { window.AdMob.showBanner(c.bannerSlotId || ''); } catch (e) {}
+        return;
+      }
+
+      // 2. Render In-App AdMob Units
+      this.renderAppBanners();
+    },
+
+    createBannerElement: function () {
+      var c = this.cfg();
+      var isTest = c.testMode !== false;
+      var banner = FS.el('div', { class: 'admob-banner-wrap' });
+      banner.innerHTML =
+        '<div class="admob-banner-top">' +
+          '<span>Google AdMob · In-App Unit</span>' +
+          '<span class="admob-badge' + (isTest ? ' test' : '') + '">' + (isTest ? 'TEST AD' : 'AD') + '</span>' +
+        '</div>' +
+        '<div class="admob-banner-content">' +
+          '<div class="admob-app-icon">🎨</div>' +
+          '<div class="admob-app-details">' +
+            '<strong>Festival Studio Mobile App</strong>' +
+            '<span>Create Diwali, Holi & festival posts with your photo & business logo.</span>' +
+          '</div>' +
+          '<a class="admob-cta-btn" href="' + (c.appDownloadUrl || 'post-maker.html') + '">Create Post</a>' +
+        '</div>';
+      return banner;
+    },
+
+    renderAppBanners: function () {
+      if (!FS.isApp()) return;
+      var banners = FS.$$('[data-admob-slot], .admob-placeholder');
+      if (banners.length) {
+        banners.forEach(function (slot) {
+          slot.innerHTML = '';
+          slot.appendChild(FS.AdMob.createBannerElement());
+        });
+      } else {
+        var wrap = document.querySelector('.wrap');
+        if (wrap && !document.querySelector('.admob-banner-wrap')) {
+          wrap.appendChild(this.createBannerElement());
+        }
+      }
+    },
+
+    showInterstitial: function (onClose) {
+      if (!FS.isApp()) {
+        if (typeof onClose === 'function') onClose();
+        return;
+      }
+      var c = this.cfg();
+      if (!c.enabled) {
+        if (typeof onClose === 'function') onClose();
+        return;
+      }
+
+      // Check native bridge
+      if (window.AndroidAdMob && typeof window.AndroidAdMob.showInterstitial === 'function') {
+        try {
+          window.AndroidAdMob.showInterstitial(c.interstitialSlotId || '');
+          if (typeof onClose === 'function') onClose();
+          return;
+        } catch (e) {}
+      }
+      if (window.AdMob && typeof window.AdMob.showInterstitial === 'function') {
+        try {
+          window.AdMob.showInterstitial(c.interstitialSlotId || '');
+          if (typeof onClose === 'function') onClose();
+          return;
+        } catch (e) {}
+      }
+
+      // Display AdMob Interstitial Modal
+      var overlay = FS.el('div', { class: 'admob-interstitial-back', role: 'dialog', 'aria-modal': 'true' });
+      var box = FS.el('div', { class: 'admob-interstitial-box' });
+      var bar = FS.el('div', { class: 'admob-interstitial-bar' });
+      bar.innerHTML = '<span class="admob-badge' + (c.testMode !== false ? ' test' : '') + '">AdMob Interstitial Ad</span>';
+
+      var closeBtn = FS.el('button', { class: 'admob-close-btn', type: 'button', disabled: 'disabled' }, 'Close in 3s');
+      bar.appendChild(closeBtn);
+      box.appendChild(bar);
+
+      var body = FS.el('div', { class: 'admob-interstitial-body' });
+      body.innerHTML =
+        '<div class="admob-interstitial-media">🪔</div>' +
+        '<h3 style="margin:0 0 6px">Festival Studio App</h3>' +
+        '<p style="color:var(--muted);font-size:.9rem;margin:0 0 10px">Download unlimited HD festival posters and animated GIFs with no watermark.</p>' +
+        '<div class="admob-rating">★★★★★ 4.9 · 100K+ creators in India</div>' +
+        '<div style="margin-top:18px"><button class="btn btn-primary btn-block" type="button" id="admob-action-btn">Continue to Design</button></div>';
+      box.appendChild(body);
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+
+      var count = 3;
+      var timer = setInterval(function () {
+        count--;
+        if (count > 0) {
+          closeBtn.textContent = 'Close in ' + count + 's';
+        } else {
+          clearInterval(timer);
+          closeBtn.textContent = '✕ Close Ad';
+          closeBtn.removeAttribute('disabled');
+        }
+      }, 1000);
+
+      function dismiss() {
+        clearInterval(timer);
+        overlay.remove();
+        if (typeof onClose === 'function') onClose();
+      }
+
+      closeBtn.addEventListener('click', function () {
+        if (!closeBtn.hasAttribute('disabled')) dismiss();
+      });
+      var actionBtn = body.querySelector('#admob-action-btn');
+      if (actionBtn) actionBtn.addEventListener('click', dismiss);
+    }
+  };
+
+  /* ------------------------------------------------------------------ */
   /* Consent, ads and analytics                                          */
   /* ------------------------------------------------------------------ */
   var CFG = global.FS_CONFIG || {};
@@ -465,6 +709,11 @@
   }
 
   FS.loadMonetisation = function () {
+    // CRITICAL: Website ads must NEVER run in the app!
+    if (FS.isApp()) {
+      return;
+    }
+
     var ads = CFG.adsense || {};
     if (ads.enabled && ads.client) {
       loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ads.client),
@@ -495,6 +744,8 @@
   };
 
   function consentNeeded() {
+    // Suppress cookie consent for website ads when in app mode
+    if (FS.isApp()) return false;
     var mode = CFG.consent || 'auto';
     if (mode === 'never') return false;
     if (mode === 'always') return true;
@@ -502,6 +753,7 @@
   }
 
   function initConsent() {
+    if (FS.isApp()) return; // App mode does not show website cookie/ad dialog
     if (!consentNeeded()) {
       /* nothing that needs consent is configured — load whatever is on */
       FS.loadMonetisation();
@@ -526,26 +778,11 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Add-to-home-screen                                                  */
+  /* Direct App Download / Remove legacy browser install prompts         */
   /* ------------------------------------------------------------------ */
-  var deferredPrompt = null;
-  global.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    FS.$$('[data-install]').forEach(function (b) { b.hidden = false; });
-  });
   function initInstall() {
-    if (CFG.installPrompt === false) return;
-    FS.$$('[data-install]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        if (!deferredPrompt) { FS.toast(FS.t('Use your browser menu → “Add to Home screen”.')); return; }
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function () {
-          deferredPrompt = null;
-          FS.$$('[data-install]').forEach(function (x) { x.hidden = true; });
-        });
-      });
-    });
+    // Permanently remove any legacy browser install buttons
+    FS.$$('[data-install]').forEach(function (b) { b.remove(); });
   }
 
   /* ------------------------------------------------------------------ */
@@ -592,9 +829,76 @@
   }
 
   /* ------------------------------------------------------------------ */
+  /* Mobile App Bottom Navigation (App Mode)                            */
+  /* ------------------------------------------------------------------ */
+  function initAppBottomNav() {
+    if (!FS.isApp()) return;
+    if (document.querySelector('.app-bottom-nav')) return;
+
+    var nav = FS.el('nav', { class: 'app-bottom-nav', 'aria-label': 'App Navigation' });
+    var isHi = FS.LANG === 'hi';
+    var base = FS.BASE || '';
+    var path = location.pathname;
+
+    var items = [
+      { href: base + (isHi ? 'hi/index.html' : 'index.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: isHi ? 'होम' : 'Home', match: /index\.html$|^(\/hi)?\/$/ },
+      { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>', label: isHi ? 'पोस्ट' : 'Post', match: /post-maker/ },
+      { href: base + (isHi ? 'hi/gif-maker.html' : 'gif-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>', label: isHi ? 'GIF' : 'GIF', match: /gif-maker/ },
+      { href: base + (isHi ? 'hi/status-maker.html' : 'status-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>', label: isHi ? 'स्टेटस' : 'Status', match: /status-maker/ },
+      { href: base + (isHi ? 'hi/templates.html' : 'templates.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: isHi ? 'टेम्पलेट' : 'Templates', match: /templates/ }
+    ];
+
+    items.forEach(function (it) {
+      var a = FS.el('a', { class: 'app-nav-item' + (it.match.test(path) ? ' active' : ''), href: it.href });
+      a.innerHTML = it.icon + '<span>' + FS.esc(it.label) + '</span>';
+      nav.appendChild(a);
+    });
+
+    document.body.appendChild(nav);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Download App handlers (Website Mode)                                */
+  /* ------------------------------------------------------------------ */
+  function initDownloadButtons() {
+    FS.$$('[data-download-apk], [data-download-app]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        var isDirectApk = btn.hasAttribute('data-download-apk') || btn.getAttribute('data-download-app') === 'apk';
+        if (isDirectApk) {
+          e.preventDefault();
+          var apkUrl = (CFG.app && CFG.app.apkDownloadUrl) || '/downloads/FestivalStudio.apk';
+          FS.toast(FS.t('Downloading Festival Studio Android APK...'), 'ok', 3500);
+          var a = document.createElement('a');
+          a.href = apkUrl;
+          a.download = 'FestivalStudio.apk';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
   /* Boot                                                                */
   /* ------------------------------------------------------------------ */
   FS.ready(function () {
+    // Setup Environment Mode: Website vs App
+    if (FS.isApp()) {
+      document.documentElement.setAttribute('data-env', 'app');
+      document.body.classList.add('is-app-mode');
+
+      // CRITICAL: Strictly delete all website ad slots in App mode!
+      FS.$$('.ad-slot').forEach(function (box) { box.remove(); });
+
+      // Initialize AdMob in app
+      FS.AdMob.init();
+      initAppBottomNav();
+    } else {
+      initConsent();
+      initDownloadButtons();
+    }
+
     initHeader();
     var y = document.getElementById('year');
     if (y) y.textContent = new Date().getFullYear();
@@ -651,7 +955,6 @@
     /* Share buttons on any page ---------------------------------------- */
     FS.$$('[data-share-link]').forEach(function (b) { b.addEventListener('click', FS.shareLink); });
 
-    initConsent();
     initInstall();
     initCopyButtons();
     initLangSwitch();

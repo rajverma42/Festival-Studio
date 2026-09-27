@@ -604,6 +604,14 @@
       var c;
       try { c = self.exportCanvas(scale); }
       catch (e) { FS.toast('Export failed — try reducing the canvas size.', 'err'); return; }
+
+      // AdMob interstitial trigger for App mode
+      if (FS.isApp && FS.isApp() && FS.AdMob && typeof FS.AdMob.showInterstitial === 'function') {
+        setTimeout(function () {
+          FS.AdMob.showInterstitial();
+        }, 900);
+      }
+
       if (fmt === 'jpg') {
         var flat = document.createElement('canvas');
         flat.width = c.width; flat.height = c.height;

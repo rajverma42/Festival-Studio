@@ -90,6 +90,10 @@ const HEADER = (c, altHref) => `
       ${navItems(c).map(([h, l]) => `<a href="${c.navBase}${h}">${esc(l)}</a>`).join('\n      ')}
     </nav>
     <div class="header-actions">
+      <a class="btn-download-app web-only" href="${c.navBase}app.html" data-download-app="1" aria-label="${c.lang === 'hi' ? 'ऐप डाउनलोड करें' : 'Download Festival Studio App'}">
+        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+        <span>${c.lang === 'hi' ? 'ऐप डाउनलोड' : 'Download App'}</span>
+      </a>
       ${altHref ? `<a class="lang-pill" data-lang-switch href="${altHref}" hreflang="${c.lang === 'hi' ? 'en' : 'hi'}" lang="${c.lang === 'hi' ? 'en' : 'hi'}">${esc(c.S.otherLangName)}</a>` : ''}
       <button class="icon-btn" type="button" data-theme-toggle aria-label="${esc(c.S.common.theme)}">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -113,7 +117,7 @@ const FOOTER = (c) => `
       <div class="footer-about">
         ${LOGO(c)}
         <p style="margin-top:12px">${esc(c.S.footer.blurb)}</p>
-        <button class="btn btn-soft btn-sm" type="button" data-install hidden style="margin-top:10px">${esc(c.S.footer.install)}</button>
+        <div class="footer-app-cta" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="${c.navBase}app.html" style="gap:7px;display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg><span>${c.lang === 'hi' ? 'ऐप डाउनलोड करें (APK)' : 'Download Android App'}</span></a></div>
       </div>
       <div>
         <h4>${esc(c.S.footer.studio)}</h4>
@@ -345,6 +349,24 @@ bilingual('', 'hi/', (c) => {
     </div>
   </div>
 </section>
+
+<div class="wrap web-only">
+  <div class="download-app-banner">
+    <div class="download-app-content">
+      <span class="badge" style="margin-bottom:8px">📱 ${c.lang === 'hi' ? 'एंड्रॉइड ऐप उपलब्ध' : 'Android App Available'}</span>
+      <h3>${c.lang === 'hi' ? 'फेस्टिवल स्टूडियो ऐप डाउनलोड करें' : 'Get Festival Studio Mobile App'}</h3>
+      <p>${c.lang === 'hi' ? 'मुफ़्त APK डाउनलोड करें — बिना वेबसाइट ऐड्स, 100% ऑफ़लाइन सपोर्ट, और फ़ुल स्क्रीन मोबाइल अनुभव।' : 'Download the free Android APK — zero website banner ads, 100% offline support, and a clean fullscreen experience.'}</p>
+    </div>
+    <div class="download-app-actions">
+      <a class="btn btn-primary" href="${c.base}downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
+        📥 ${c.lang === 'hi' ? 'APK डाउनलोड करें (v2.4.0)' : 'Download APK (v2.4.0)'}
+      </a>
+      <a class="btn btn-soft" href="${c.navBase}app.html">
+        ${c.lang === 'hi' ? 'ऐप जानकारी व PWA →' : 'App Details & PWA →'}
+      </a>
+    </div>
+  </div>
+</div>
 
 <div class="wrap">${AD('home-top', 'leaderboard', S)}</div>
 
@@ -907,10 +929,68 @@ bilingual('app.html', 'hi/app.html', (c) => {
     <p class="breadcrumb"><a href="${c.navBase}index.html">${esc(S.common.home)}</a> / ${esc(S.nav.app)}</p>
     <h1>${esc(S.app.h1)}</h1>
     <p>${esc(S.app.lead)}</p>
-    <p style="margin-top:18px">
-      <button class="btn btn-primary btn-lg" type="button" data-install>${esc(S.app.cta)}</button>
-    </p>
-    <p class="note">${esc(S.app.ctaNote)}</p>
+
+    <!-- Download & Install Action Hub -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin:24px 0">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <span style="font-size:2rem">📱</span>
+        <div>
+          <strong style="display:block;font-size:1.15rem">Festival Studio Mobile (v2.4.0)</strong>
+          <small class="muted">${c.lang === 'hi' ? 'एंड्रॉइड APK व PWA · ~6.8 MB · कोई साइनअप नहीं' : 'Android APK & PWA · ~6.8 MB · No signup required'}</small>
+        </div>
+      </div>
+      <div class="download-app-actions" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+        <a class="btn btn-primary btn-lg" href="${c.base}downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+          ${c.lang === 'hi' ? 'Android APK डाउनलोड करें' : 'Download Android APK'}
+        </a>
+        <a class="btn btn-ghost btn-lg" href="${c.navBase}index.html?mode=app">
+          ${c.lang === 'hi' ? '📱 ऐप मोड खोलें' : '📱 Launch App Mode'}
+        </a>
+      </div>
+      <p class="hint" style="margin-top:12px">
+        ${c.lang === 'hi'
+          ? '💡 <strong>सुझाव:</strong> एंड्रॉइड यूज़र सीधे APK डाउनलोड कर सकते हैं, या ब्राउज़र मेन्यू से "Install App" चुन सकते हैं।'
+          : '💡 <strong>Tip:</strong> Android users can download the direct APK or tap Instant Install to add Festival Studio to the home screen.'}
+      </p>
+    </div>
+
+    <!-- Website vs App Differences Table -->
+    <h2>${c.lang === 'hi' ? 'वेबसाइट और ऐप में अंतर' : 'Website vs App — What is the difference?'}</h2>
+    <div style="overflow-x:auto;margin:16px 0">
+      <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)">
+        <thead>
+          <tr style="background:var(--surface-2);text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:12px 14px">${c.lang === 'hi' ? 'फ़ीचर' : 'Feature'}</th>
+            <th style="padding:12px 14px">${c.lang === 'hi' ? 'वेबसाइट (Website)' : 'Website'}</th>
+            <th style="padding:12px 14px">${c.lang === 'hi' ? 'ऐप (Festival Studio App)' : 'Festival Studio App'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>${c.lang === 'hi' ? 'वेबसाइट ऐड्स (Website Ads)' : 'Website Ads (Web Banners)'}</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">${c.lang === 'hi' ? 'हाँ (वेब ऐड्स दिखते हैं)' : 'Yes (Web banners support site)'}</td>
+            <td style="padding:10px 14px"><strong style="color:#10B981">${c.lang === 'hi' ? '❌ बंद (ऐप में वेबसाइट ऐड्स नहीं दिखेंगे)' : '❌ NONE (Website ads never show in app)'}</strong></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>${c.lang === 'hi' ? 'ऐप ऐड्स (App Ads)' : 'App In-App Ads'}</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">${c.lang === 'hi' ? 'नहीं' : 'No'}</td>
+            <td style="padding:10px 14px"><strong style="color:#3B82F6">${c.lang === 'hi' ? '✅ Google AdMob ऐड्स (बैनर व इंटरस्टिशियल)' : '✅ Google AdMob Ads (Native & In-App)'}</strong></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>${c.lang === 'hi' ? 'इंटरफ़ेस व नेविगेशन' : 'Navigation & Interface'}</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">${c.lang === 'hi' ? 'ब्राउज़र एड्रेस बार व हेडर' : 'Browser URL bar & header'}</td>
+            <td style="padding:10px 14px">${c.lang === 'hi' ? 'फ़ुल स्क्रीन + मोबाइल बॉटम नेविगेशन बार' : 'Full-screen + Mobile Bottom Bar'}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px"><strong>${c.lang === 'hi' ? 'ऑफ़लाइन काम' : 'Offline Mode'}</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">${c.lang === 'hi' ? 'पहली बार इंटरनेट चाहिए' : 'Requires internet initially'}</td>
+            <td style="padding:10px 14px"><strong style="color:#10B981">${c.lang === 'hi' ? '100% ऑफ़लाइन (बिना इंटरनेट तैयार)' : '100% Offline ready'}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     ${AD('app-top', 'leaderboard', S)}
 
     <h2>${esc(S.app.h2why)}</h2>

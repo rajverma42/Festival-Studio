@@ -1,0 +1,15 @@
+{
+  "name": "festival-studio",
+  "version": "1.0.0",
+  "description": "Free Indian festival post, GIF and status maker",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node tools/build.js",
+    "lint": "node -c server.js js/config.js js/app.js js/editor.js js/gif-maker.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

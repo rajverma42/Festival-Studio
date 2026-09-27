@@ -120,27 +120,181 @@ p { margin: 0 0 1em; }
 .icon-btn {
   width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--r-full);
   background: var(--surface-2); border: 1px solid var(--border); cursor: pointer; flex: none;
-  transition: transform .15s var(--ease), background .18s;
+  transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
 }
 .icon-btn:hover { background: var(--surface-3); }
-.icon-btn:active { transform: scale(.93); }
+.icon-btn:active { transform: scale(.92); }
 .icon-btn svg { width: 19px; height: 19px; }
 
-.drawer {
-  position: fixed; inset: var(--header-h) 0 auto 0; z-index: 59;
-  background: var(--bg-2); border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  display: grid; gap: 2px; padding: 10px var(--pad) 18px;
-  transform: translateY(-115%); transition: transform .28s var(--ease); visibility: hidden;
+#menu-btn {
+  position: relative;
+  overflow: hidden;
 }
-.drawer[data-open="true"] { transform: translateY(0); visibility: visible; }
-.drawer a { padding: 12px 14px; border-radius: var(--r-sm); font-weight: 500; }
-.drawer a:hover, .drawer a[aria-current="page"] { background: var(--surface-2); }
+#menu-btn svg {
+  transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+  transform-origin: center;
+}
+#menu-btn[aria-expanded="true"] {
+  background: var(--surface-3);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+#menu-btn[aria-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+
+/* Mobile Drawer Backdrop */
+.drawer-backdrop {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  z-index: 58;
+  background: rgba(18, 14, 12, .46);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .3s cubic-bezier(.16, 1, .3, 1),
+              visibility 0s linear .3s;
+  will-change: opacity;
+}
+.drawer-backdrop[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .32s cubic-bezier(.16, 1, .3, 1),
+              visibility 0s;
+}
+
+/* Mobile Drawer */
+.drawer {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  z-index: 59;
+  background: color-mix(in srgb, var(--bg-2) 95%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 16px 36px -6px rgba(28, 18, 14, .18), 0 4px 14px rgba(28, 18, 14, .08);
+  display: grid;
+  gap: 3px;
+  padding: 12px var(--pad) 20px;
+  max-height: calc(100vh - var(--header-h) - 12px);
+  max-height: calc(100dvh - var(--header-h) - 12px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  /* Smooth closed state */
+  opacity: 0;
+  transform: translateY(-16px) scaleY(.96);
+  transform-origin: top center;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform .28s cubic-bezier(.25, 1, .5, 1),
+              opacity .22s cubic-bezier(.25, 1, .5, 1),
+              visibility 0s linear .28s;
+  will-change: transform, opacity;
+}
+
+.drawer::-webkit-scrollbar { width: 5px; }
+.drawer::-webkit-scrollbar-track { background: transparent; }
+.drawer::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--r-full); }
+
+.drawer[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  visibility: visible;
+  pointer-events: auto;
+  transition: transform .36s cubic-bezier(.16, 1, .3, 1),
+              opacity .28s cubic-bezier(.16, 1, .3, 1),
+              visibility 0s;
+}
+
+.drawer a {
+  padding: 11px 14px;
+  border-radius: var(--r-sm);
+  font-weight: 500;
+  font-size: .94rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: transparent;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: transform .26s cubic-bezier(.16, 1, .3, 1),
+              opacity .22s ease,
+              background .16s var(--ease),
+              color .16s var(--ease),
+              padding-left .16s var(--ease);
+}
+.drawer a::after {
+  content: "›";
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--muted);
+  opacity: .5;
+  transition: transform .18s ease, color .18s ease, opacity .18s ease;
+}
+.drawer a:hover,
+.drawer a:active {
+  background: var(--surface-2);
+  color: var(--brand);
+  padding-left: 17px;
+}
+.drawer a:hover::after,
+.drawer a:active::after {
+  transform: translateX(3px);
+  color: var(--brand);
+  opacity: 1;
+}
+.drawer a[aria-current="page"] {
+  background: var(--surface-2);
+  color: var(--brand);
+  font-weight: 600;
+  border-left: 3px solid var(--brand);
+  padding-left: 14px;
+}
+.drawer a[aria-current="page"]::after {
+  color: var(--brand);
+  opacity: .9;
+}
+
+.drawer[data-open="true"] a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cascading stagger entrance when opening */
+.drawer[data-open="true"] a:nth-child(1)  { transition-delay: .02s; }
+.drawer[data-open="true"] a:nth-child(2)  { transition-delay: .04s; }
+.drawer[data-open="true"] a:nth-child(3)  { transition-delay: .06s; }
+.drawer[data-open="true"] a:nth-child(4)  { transition-delay: .08s; }
+.drawer[data-open="true"] a:nth-child(5)  { transition-delay: .10s; }
+.drawer[data-open="true"] a:nth-child(6)  { transition-delay: .12s; }
+.drawer[data-open="true"] a:nth-child(7)  { transition-delay: .14s; }
+.drawer[data-open="true"] a:nth-child(8)  { transition-delay: .16s; }
+.drawer[data-open="true"] a:nth-child(9)  { transition-delay: .18s; }
+.drawer[data-open="true"] a:nth-child(10) { transition-delay: .20s; }
+.drawer[data-open="true"] a:nth-child(11) { transition-delay: .22s; }
+.drawer[data-open="true"] a:nth-child(12) { transition-delay: .24s; }
+.drawer[data-open="true"] a:nth-child(13) { transition-delay: .26s; }
+.drawer[data-open="true"] a:nth-child(14) { transition-delay: .28s; }
+
+@media (max-width: 999.98px) {
+  body.drawer-open {
+    overflow: hidden;
+  }
+}
 
 @media (min-width: 1000px) {
   .nav { display: flex; align-items: center; gap: 2px; margin-left: 14px; }
   #menu-btn { display: none; }
-  .drawer { display: none !important; }
+  .drawer, .drawer-backdrop { display: none !important; }
 }
 
 /* ---------- 4. Buttons ---------- */
@@ -526,3 +680,200 @@ input[type="color"] { width: 100%; height: 40px; padding: 2px; border: 1px solid
   font-family: var(--font-dev); font-size: .92rem; display: flex; gap: 10px; align-items: flex-start; justify-content: space-between;
 }
 .wish-item button { flex: none; }
+
+/* ============================================================================
+   WEBSITE vs APP SEPARATION & ADMOB ADS
+   ========================================================================== */
+
+/* 1. Website ads MUST NOT appear in app mode */
+html[data-env="app"] .ad-slot,
+body.is-app-mode .ad-slot,
+html[data-env="app"] .consent,
+body.is-app-mode .consent,
+html[data-env="app"] .web-only,
+body.is-app-mode .web-only,
+html[data-env="app"] .footer-app-cta,
+body.is-app-mode .footer-app-cta,
+html[data-env="app"] .btn-download-app,
+body.is-app-mode .btn-download-app,
+html[data-env="app"] .download-app-banner,
+body.is-app-mode .download-app-banner {
+  display: none !important;
+}
+
+/* 1b. Legacy PWA install buttons permanently removed */
+[data-install] {
+  display: none !important;
+}
+
+/* 1c. Footer App CTA Button */
+.footer-app-cta {
+  margin-top: 14px;
+}
+.footer-app-cta .btn {
+  font-size: .84rem;
+  padding: 8px 16px;
+  min-height: 38px;
+  border-radius: var(--r-full);
+}
+
+/* 2. App-only elements (hidden on normal website, visible in app mode) */
+.app-only { display: none !important; }
+html[data-env="app"] .app-only,
+body.is-app-mode .app-only { display: block !important; }
+
+/* 3. Header Download App Button */
+.btn-download-app {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--r-full);
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF !important; font-weight: 700; font-size: .8rem;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, .35);
+  transition: transform .15s, box-shadow .2s;
+  white-space: nowrap;
+}
+.btn-download-app:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, .5);
+}
+.btn-download-app svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* 4. App Mode Badge & Switcher */
+.app-mode-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: var(--r-full);
+  background: var(--brand); color: #fff; font-size: .72rem;
+  font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+}
+.mode-switch-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: var(--r-full);
+  background: var(--surface-2); border: 1px solid var(--border);
+  font-size: .75rem; font-weight: 600; cursor: pointer; color: var(--muted);
+}
+.mode-switch-pill:hover { background: var(--surface-3); color: var(--text); }
+
+/* 5. Mobile App Bottom Navigation Bar (App Mode only) */
+.app-bottom-nav {
+  display: none;
+}
+@media (max-width: 999px) {
+  html[data-env="app"] .app-bottom-nav,
+  body.is-app-mode .app-bottom-nav {
+    display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+    height: 58px; background: var(--bg-2); border-top: 1px solid var(--border);
+    backdrop-filter: blur(14px); z-index: 95; justify-content: space-around;
+    align-items: center; padding: 0 6px; box-shadow: 0 -2px 12px rgba(0,0,0,.08);
+  }
+  html[data-env="app"] body,
+  body.is-app-mode {
+    padding-bottom: 60px;
+  }
+  .app-nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; font-size: .68rem; font-weight: 600; color: var(--muted);
+    padding: 6px 10px; border-radius: 8px; flex: 1; text-align: center;
+  }
+  .app-nav-item.active, .app-nav-item:hover {
+    color: var(--brand);
+  }
+  .app-nav-item svg { width: 20px; height: 20px; }
+}
+
+/* 6. Google AdMob In-App Banner Ads */
+.admob-banner-wrap {
+  width: 100%; max-width: 728px; margin: 18px auto;
+  border-radius: var(--r-md); border: 1px solid var(--border);
+  background: var(--surface); box-shadow: var(--shadow-sm);
+  overflow: hidden; animation: fadeUp .25s ease-out;
+}
+.admob-banner-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 12px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+  font-size: .68rem; font-weight: 700; color: var(--muted);
+}
+.admob-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #4285F4; color: #fff; padding: 2px 7px; border-radius: 4px;
+  font-size: .62rem; font-weight: 800; letter-spacing: .04em;
+}
+.admob-badge.test { background: #EA4335; }
+.admob-banner-content {
+  display: flex; align-items: center; gap: 14px; padding: 12px 16px;
+}
+.admob-app-icon {
+  width: 48px; height: 48px; border-radius: 12px; flex: none;
+  background: linear-gradient(135deg, #FF6F00, #FFB300);
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.admob-app-details { flex: 1; min-width: 0; }
+.admob-app-details strong { display: block; font-size: .92rem; line-height: 1.3; }
+.admob-app-details span { font-size: .78rem; color: var(--muted); display: block; }
+.admob-cta-btn {
+  padding: 8px 16px; border-radius: var(--r-full);
+  background: #1A73E8; color: #fff !important; font-size: .82rem;
+  font-weight: 700; border: none; cursor: pointer; flex: none;
+  transition: background .15s;
+}
+.admob-cta-btn:hover { background: #1557B0; }
+
+/* Fixed sticky AdMob bottom banner for app mode */
+.admob-fixed-banner {
+  position: sticky; bottom: 0; left: 0; right: 0; z-index: 85;
+  background: var(--bg-2); border-top: 1px solid var(--border);
+  padding: 6px 12px; box-shadow: 0 -4px 16px rgba(0,0,0,.15);
+}
+
+/* 7. Google AdMob Full-screen Interstitial Ad Modal */
+.admob-interstitial-back {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0, 0, 0, .85); backdrop-filter: blur(8px);
+  display: grid; place-items: center; padding: 16px;
+  animation: toastIn .22s ease-out;
+}
+.admob-interstitial-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); width: min(440px, 94vw);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .6); overflow: hidden;
+}
+.admob-interstitial-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.admob-close-btn {
+  background: var(--surface-3); border: 1px solid var(--border);
+  border-radius: var(--r-full); padding: 5px 12px; font-size: .76rem;
+  font-weight: 700; cursor: pointer; color: var(--text);
+}
+.admob-close-btn:disabled {
+  opacity: .6; cursor: not-allowed;
+}
+.admob-interstitial-body {
+  padding: 24px 20px; text-align: center;
+}
+.admob-interstitial-media {
+  width: 80px; height: 80px; border-radius: 20px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  margin: 0 auto 16px; display: grid; place-items: center;
+  font-size: 2.4rem; box-shadow: var(--shadow-md);
+}
+.admob-rating {
+  color: #F59E0B; font-size: .9rem; margin-top: 4px;
+}
+
+/* 8. Download App Banner on Website */
+.download-app-banner {
+  background: linear-gradient(125deg, color-mix(in srgb, var(--brand) 12%, var(--surface)), var(--surface));
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 24px 20px; margin: 24px 0; display: grid; gap: 18px;
+  align-items: center;
+}
+@media (min-width: 760px) {
+  .download-app-banner {
+    grid-template-columns: 1fr auto; padding: 28px 32px;
+  }
+}
+.download-app-content h3 { margin: 0 0 6px; font-size: 1.25rem; }
+.download-app-content p { margin: 0; color: var(--muted); font-size: .92rem; }
+.download-app-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+

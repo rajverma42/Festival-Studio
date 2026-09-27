@@ -291,7 +291,15 @@
 
     var row = el('div', { class: 'grid2', style: 'margin-top:10px' });
     var dl = el('button', { class: 'btn btn-primary btn-sm', type: 'button' }, FS.t('Download GIF'));
-    dl.addEventListener('click', function () { FS.saveBlob(blob, name); FS.toast('Saved ' + name, 'ok'); });
+    dl.addEventListener('click', function () {
+      FS.saveBlob(blob, name);
+      FS.toast('Saved ' + name, 'ok');
+      if (FS.isApp && FS.isApp() && FS.AdMob && typeof FS.AdMob.showInterstitial === 'function') {
+        setTimeout(function () {
+          FS.AdMob.showInterstitial();
+        }, 900);
+      }
+    });
     var sh = el('button', { class: 'btn btn-soft btn-sm', type: 'button' }, FS.t('Share'));
     sh.addEventListener('click', function () { FS.shareBlob(blob, name, 'Happy ' + FS.getFestival(self.festival).name + '!'); });
     var again = el('button', { class: 'btn btn-soft btn-sm', type: 'button' }, FS.t('Restart'));
