@@ -12,7 +12,7 @@
   var FS = (global.FS = global.FS || {});
 
   FS.TEMPLATE_CATEGORIES = [
-    'Festival Wishes', 'Business Greetings', 'Personal Greetings', 'Festival Offers',
+    'Festival Wishes', 'Navratri Special', 'Temple & Darshan', 'Business Greetings', 'Personal Greetings', 'Festival Offers',
     'Social Media Posts', 'WhatsApp Status', 'Instagram Posts', 'Instagram Stories', 'Facebook Posts'
   ];
 
@@ -351,12 +351,255 @@
           ]
         };
       }
+    },
+    /* 10 — Temple & Devotional Darshan ------------------------------- */
+    {
+      id: 'temple-darshan', label: 'Temple & Darshan', category: 'Temple & Darshan', size: 'ig-square', lang: 'hi',
+      build: function (f, d, W, H) {
+        var wish = pick(f.wishes.hi, 0) || pick(f.wishes.en, 0);
+        return {
+          background: {
+            type: 'linear', angle: 160,
+            stops: [{ c: '#1A002C', p: 0 }, { c: '#4A0E4E', p: 0.5 }, { c: '#880E4F', p: 1 }],
+            pattern: 'mandala', patternColor: '#FFD700', patternAlpha: 0.12, vignette: 0.35
+          },
+          objects: [
+            S({ shape: 'circle', x: W * .22, y: H * .08, w: W * .56, h: W * .56, fill: '#FFD700', opacity: .14, name: 'Divine Glow' }),
+            S({ shape: 'roundrect', x: W * .05, y: H * .05, w: W * .9, h: H * .9, fill: 'transparent', strokeColor: '#FFD700', strokeW: 3, radius: 24, name: 'Mandir Frame' }),
+            S({ shape: 'roundrect', x: W * .07, y: H * .07, w: W * .86, h: H * .86, fill: 'transparent', strokeColor: 'rgba(255,215,0,.35)', strokeW: 1.5, radius: 18, name: 'Inner Border' }),
+            K({ sid: 'bell', x: W * .1, y: H * .08, w: W * .14, h: W * .14, colors: { p: '#FFD700', s: '#FFA000', a: '#FFF8E1' }, name: 'Temple Bell L' }),
+            K({ sid: 'bell', x: W * .76, y: H * .08, w: W * .14, h: W * .14, colors: { p: '#FFD700', s: '#FFA000', a: '#FFF8E1' }, name: 'Temple Bell R' }),
+            K({ sid: 'temple', x: W * .35, y: H * .14, w: W * .3, h: W * .3, colors: { p: '#FFD700', s: '#FF6F00', a: '#FFF9C4' }, name: 'Grand Mandir' }),
+            T({
+              role: 'title', text: '॥ ॐ ' + (f.hi || f.name) + ' नमः ॥', font: 'Tiro Devanagari Hindi', size: W * .044, weight: 700,
+              color: '#FFD700', x: W * .08, y: H * .47, w: W * .84, align: 'center', name: 'Mantra Title'
+            }),
+            S({ shape: 'line', x: W * .3, y: H * .53, w: W * .4, h: 5, fill: '#FFD700', strokeW: 4, name: 'Golden Rule' }),
+            T({
+              role: 'wish', text: 'मंदिर दर्शन एवं पावन आशीर्वाद\n' + wish, font: 'Tiro Devanagari Hindi', size: W * .06, weight: 400, lh: 1.45,
+              color: '#FFFFFF', x: W * .08, y: H * .56, w: W * .84, align: 'center', name: 'Blessing Wish'
+            }),
+            K({ sid: 'diya', x: W * .12, y: H * .77, w: W * .18, h: W * .18, colors: { p: '#FF9800', s: '#FFD700', a: '#D84315' }, name: 'Diya Left' }),
+            K({ sid: 'diya', x: W * .7, y: H * .77, w: W * .18, h: W * .18, colors: { p: '#FF9800', s: '#FFD700', a: '#D84315' }, name: 'Diya Right' }),
+            T({
+              role: 'name', text: 'सप्रेम भेंट: ' + d.name, font: 'Tiro Devanagari Hindi', size: W * .048, weight: 600,
+              color: '#FFD700', x: W * .2, y: H * .81, w: W * .6, align: 'center', name: 'Devotee Name'
+            }),
+            T({
+              role: 'phone', text: d.phone ? '📞 ' + d.phone : '', font: 'Poppins', size: W * .028, weight: 500,
+              color: 'rgba(255,255,255,.8)', x: W * .1, y: H * .88, w: W * .8, align: 'center', name: 'Contact'
+            })
+          ]
+        };
+      }
+    },
+    /* 11 — Temple Maha Aarti Status ---------------------------------- */
+    {
+      id: 'temple-aarti', label: 'Temple Maha Aarti', category: 'Temple & Darshan', size: 'wa-status', lang: 'hi',
+      build: function (f, d, W, H) {
+        var wish = pick(f.wishes.hi, 0) || pick(f.wishes.en, 0);
+        return {
+          background: {
+            type: 'linear', angle: 180,
+            stops: [{ c: '#210002', p: 0 }, { c: '#5A0C08', p: 0.35 }, { c: '#8D1508', p: 0.75 }, { c: '#B71C1C', p: 1 }],
+            pattern: 'mandala', patternColor: '#FFD700', patternAlpha: 0.1, vignette: 0.4
+          },
+          objects: [
+            S({ shape: 'circle', x: W * .15, y: H * .08, w: W * .7, h: W * .7, fill: '#FFD700', opacity: .15, name: 'Sun Glow' }),
+            K({ sid: 'temple', x: W * .32, y: H * .09, w: W * .36, h: W * .36, colors: { p: '#FFD700', s: '#FF9800', a: '#FFF9C4' }, name: 'Mandir Top' }),
+            K({ sid: 'bell', x: W * .08, y: H * .05, w: W * .18, h: W * .18, colors: { p: '#FFD700', s: '#FFA000', a: '#FFF8E1' }, name: 'Bell Left' }),
+            K({ sid: 'bell', x: W * .74, y: H * .05, w: W * .18, h: W * .18, colors: { p: '#FFD700', s: '#FFA000', a: '#FFF8E1' }, name: 'Bell Right' }),
+            T({
+              role: 'title', text: '॥ दिव्य आरती एवं दर्शन ॥', font: 'Tiro Devanagari Hindi', size: W * .058, weight: 700,
+              color: '#FFD700', x: W * .06, y: H * .3, w: W * .88, align: 'center', name: 'Header Title'
+            }),
+            T({
+              role: 'subtitle', text: (f.hi || f.name) + ' महापर्व', font: 'Tiro Devanagari Hindi', size: W * .076, weight: 700,
+              color: '#FFFFFF', x: W * .06, y: H * .355, w: W * .88, align: 'center', name: 'Festival High'
+            }),
+            S({ shape: 'line', x: W * .25, y: H * .42, w: W * .5, h: 6, fill: '#FFD700', strokeW: 5, name: 'Divider Line' }),
+            T({
+              role: 'wish', text: 'प्रभु का पावन आशीर्वाद आपके और आपके परिवार पर सदा बना रहे।\n\n' + wish,
+              font: 'Tiro Devanagari Hindi', size: W * .052, weight: 400, lh: 1.5,
+              color: '#FFF8E7', x: W * .08, y: H * .45, w: W * .84, align: 'center', name: 'Status Blessing'
+            }),
+            K({ sid: 'thali', x: W * .36, y: H * .65, w: W * .28, h: W * .28, colors: { p: '#FFD700', s: '#D84315', a: '#FFF8E1' }, name: 'Puja Thali' }),
+            K({ sid: 'diya', x: W * .1, y: H * .72, w: W * .22, h: W * .22, colors: { p: '#FF9800', s: '#FFD700', a: '#D84315' }, name: 'Diya L' }),
+            K({ sid: 'diya', x: W * .68, y: H * .72, w: W * .22, h: W * .22, colors: { p: '#FF9800', s: '#FFD700', a: '#D84315' }, name: 'Diya R' }),
+            S({ shape: 'roundrect', x: W * .08, y: H * .84, w: W * .84, h: H * .09, fill: 'rgba(0,0,0,.45)', strokeColor: '#FFD700', strokeW: 2, radius: 18, name: 'Name Pill' }),
+            T({
+              role: 'name', text: 'शुभकामनाएँ: ' + d.name, font: 'Tiro Devanagari Hindi', size: W * .048, weight: 600,
+              color: '#FFD700', x: W * .1, y: H * .865, w: W * .8, align: 'center', name: 'Your Name'
+            })
+          ]
+        };
+      }
     }
   ];
 
   FS.LAYOUTS = LAYOUTS;
 
   /* ------------------------------------------------------------------ */
+
+  /* ------------------------------------------------------------------ */
+  /* Navratri 9 Days Special Templates Data                            */
+  /* ------------------------------------------------------------------ */
+  var NAVRATRI_DAYS = [
+    {
+      day: 1, slug: 'shailputri', name: 'Day 1 — Maa Shailputri', hiName: 'प्रथम दिवस — माँ शैलपुत्री',
+      devi: 'Maa Shailputri', deviHi: 'माँ शैलपुत्री', colorName: 'Yellow (पीला)',
+      mantra: 'वन्दे वाञ्छितलाभाय चन्द्रार्धकृतशेखराम्। वृषारूढां शूलधरां शैलपुत्रीं यशस्विनीम्॥',
+      wish: 'शारदीय नवरात्रि के प्रथम दिन माँ शैलपुत्री आपके जीवन में सुख, शांति और समृद्धि का संचार करें।',
+      bgGrad: [['#4A2E00', '#F57F17', '#FFD600']], accent: '#FFD600', accent2: '#FF6F00'
+    },
+    {
+      day: 2, slug: 'brahmacharini', name: 'Day 2 — Maa Brahmacharini', hiName: 'द्वितीय दिवस — माँ ब्रह्मचारिणी',
+      devi: 'Maa Brahmacharini', deviHi: 'माँ ब्रह्मचारिणी', colorName: 'Green (हरा)',
+      mantra: 'दधाना करपद्माभ्यामक्षमालाकमण्डलू। देवी प्रसीदतु मयि ब्रह्मचारिण्यनुत्तमा॥',
+      wish: 'नवरात्रि के द्वितीय दिन माँ ब्रह्मचारिणी आपको तप, त्याग, सदाचार और संयम की शक्ति प्रदान करें।',
+      bgGrad: [['#0B3D2E', '#1B5E20', '#4CAF50']], accent: '#69F0AE', accent2: '#FFD700'
+    },
+    {
+      day: 3, slug: 'chandraghanta', name: 'Day 3 — Maa Chandraghanta', hiName: 'तृतीय दिवस — माँ चंद्रघंटा',
+      devi: 'Maa Chandraghanta', deviHi: 'माँ चंद्रघंटा', colorName: 'Grey (धूसर)',
+      mantra: 'पिण्डजप्रवरारूढा चण्डकोपास्त्रकैर्युता। प्रसादम तनुते मह्यं चंद्रघण्टेति विश्रुता॥',
+      wish: 'माँ चंद्रघंटा के दिव्य आशीर्वाद से आपके सभी भय और कष्ट दूर हों तथा आत्मबल बढ़े।',
+      bgGrad: [['#263238', '#455A64', '#78909C']], accent: '#ECEFF1', accent2: '#FFB300'
+    },
+    {
+      day: 4, slug: 'kushmanda', name: 'Day 4 — Maa Kushmanda', hiName: 'चतुर्थ दिवस — माँ कूष्मांडा',
+      devi: 'Maa Kushmanda', deviHi: 'माँ कूष्मांडा', colorName: 'Orange (नारंगी)',
+      mantra: 'सुरासम्पूर्णकलशं रुधिराप्लुतमेव च। दधाना हस्तपद्माभ्यां कूष्माण्डा शुभदास्तु मे॥',
+      wish: 'नवरात्रि के चौथे दिन ब्रह्मांड की रचयिता माँ कूष्मांडा आपके जीवन में नई ऊर्जा व यश भर दें।',
+      bgGrad: [['#4E1D00', '#E65100', '#FF9800']], accent: '#FFE082', accent2: '#D84315'
+    },
+    {
+      day: 5, slug: 'skandamata', name: 'Day 5 — Maa Skandamata', hiName: 'पंचम दिवस — माँ स्कंदमाता',
+      devi: 'Maa Skandamata', deviHi: 'माँ स्कंदमाता', colorName: 'White (श्वेत)',
+      mantra: 'सिंहासनगता नित्यं पद्माश्रितकरद्वया। शुभदास्तु सदा देवी स्कन्दमाता यशस्विनी॥',
+      wish: 'भगवान कार्तिकेय की माता माँ स्कंदमाता आपके परिवार पर वात्सल्य और ममता की वर्षा करें।',
+      bgGrad: [['#1A237E', '#3949AB', '#9FA8DA']], accent: '#FFFFFF', accent2: '#FFD54F'
+    },
+    {
+      day: 6, slug: 'katyayani', name: 'Day 6 — Maa Katyayani', hiName: 'षष्ठम दिवस — माँ कात्यायनी',
+      devi: 'Maa Katyayani', deviHi: 'माँ कात्यायनी', colorName: 'Red (लाल)',
+      mantra: 'चन्द्रहासोज्ज्वलकरा शार्दूलवरवाहना। कात्यायनी शुभं दद्याद्देवी दानवघातिनी॥',
+      wish: 'महिषासुर मर्दिनी माँ कात्यायनी आपके समस्त शत्रुओं और विघ्नों का नाश कर सफलता प्रदान करें।',
+      bgGrad: [['#4A0007', '#B71C1C', '#E53935']], accent: '#FFD700', accent2: '#FF8A80'
+    },
+    {
+      day: 7, slug: 'kaalratri', name: 'Day 7 — Maa Kaalratri', hiName: 'सप्तम दिवस — माँ कालरात्रि',
+      devi: 'Maa Kaalratri', deviHi: 'माँ कालरात्रि', colorName: 'Royal Blue (नीला)',
+      mantra: 'एकवेणी जपाकर्णपूरा नग्ना खरास्थिता। लम्बोष्ठी कर्णिकाकर्णी तैलाभ्यक्तशरीरिणी॥',
+      wish: 'महाकालरात्रि आपके सभी भय, अंधकार और कष्टों को हर कर निर्भयता व विजय का वरदान दें।',
+      bgGrad: [['#05081A', '#0D2040', '#1565C0']], accent: '#80D8FF', accent2: '#FFD600'
+    },
+    {
+      day: 8, slug: 'mahagauri', name: 'Day 8 — Maa Mahagauri', hiName: 'अष्टम दिवस — माँ महागौरी (दुर्गाष्टमी)',
+      devi: 'Maa Mahagauri', deviHi: 'माँ महागौरी', colorName: 'Pink (गुलाबी)',
+      mantra: 'श्वेते वृषेसमारूढा श्वेताम्बरधरा शुचिः। महागौरी शुभं दद्यान्महादेवप्रमोददा॥',
+      wish: 'महाअष्टमी के पावन अवसर पर माँ महागौरी आपके सभी पापों का शमन कर परम शांति व पवित्रता दें।',
+      bgGrad: [['#4A0033', '#880E4F', '#D81B60']], accent: '#F8BBD0', accent2: '#FFD700'
+    },
+    {
+      day: 9, slug: 'siddhidatri', name: 'Day 9 — Maa Siddhidatri', hiName: 'नवम दिवस — माँ सिद्धिदात्री (महानवमी)',
+      devi: 'Maa Siddhidatri', deviHi: 'माँ सिद्धिदात्री', colorName: 'Purple (बैंगनी)',
+      mantra: 'सिद्धगन्धर्वयक्षाद्यैरसुरैरमरैरपि। सेव्यमाना सदा भूयात् सिद्धिदा सिद्धिदायिनी॥',
+      wish: 'महानवमी पर सर्वसिद्धियों की दात्री माँ सिद्धिदात्री आपकी सभी मनोकामनाएं व कार्य सिद्ध करें।',
+      bgGrad: [['#2A0845', '#4A148C', '#7B1FA2']], accent: '#E1BEE7', accent2: '#FFD54F'
+    }
+  ];
+  FS.NAVRATRI_DAYS = NAVRATRI_DAYS;
+
+  function buildNavratriDayScene(dayConfig, d, W, H) {
+    return {
+      background: {
+        type: 'linear', angle: 155,
+        stops: dayConfig.bgGrad[0].map(function (c, i, a) { return { c: c, p: i / (a.length - 1) }; }),
+        pattern: 'mandala', patternColor: '#FFFFFF', patternAlpha: 0.12, vignette: 0.35
+      },
+      objects: [
+        S({ shape: 'circle', x: W * .15, y: -H * .1, w: W * .7, h: W * .7, fill: dayConfig.accent, opacity: .16, name: 'Sun Halo' }),
+        S({ shape: 'roundrect', x: W * .05, y: H * .05, w: W * .9, h: H * .9, fill: 'transparent', strokeColor: dayConfig.accent, strokeW: 3.5, radius: 26, name: 'Outer Frame' }),
+        S({ shape: 'roundrect', x: W * .07, y: H * .07, w: W * .86, h: H * .86, fill: 'rgba(0,0,0,.22)', strokeColor: 'rgba(255,255,255,.25)', strokeW: 1.5, radius: 20, name: 'Pooja Plate' }),
+        K({ sid: 'kalash', x: W * .1, y: H * .09, w: W * .15, h: W * .15, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Kalash Left' }),
+        K({ sid: 'diya', x: W * .75, y: H * .09, w: W * .15, h: W * .15, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Diya Right' }),
+        T({
+          role: 'title', text: '॥ शुभ नवरात्रि ' + dayConfig.hiName + ' ॥', font: 'Tiro Devanagari Hindi', size: W * .042, weight: 700,
+          color: dayConfig.accent, x: W * .08, y: H * .22, w: W * .84, align: 'center', name: 'Day Header'
+        }),
+        T({
+          role: 'subtitle', text: 'आज का पावन रंग: ' + dayConfig.colorName, font: 'Tiro Devanagari Hindi', size: W * .036, weight: 600,
+          color: '#FFFFFF', x: W * .08, y: H * .275, w: W * .84, align: 'center', name: 'Color of the Day'
+        }),
+        S({ shape: 'line', x: W * .35, y: H * .325, w: W * .3, h: 4, fill: dayConfig.accent, strokeW: 4, name: 'Rule' }),
+        T({
+          role: 'devi', text: dayConfig.deviHi, font: 'Tiro Devanagari Hindi', size: W * .078, weight: 700,
+          color: dayConfig.accent, x: W * .08, y: H * .345, w: W * .84, align: 'center', name: 'Devi Name'
+        }),
+        T({
+          role: 'mantra', text: '“ ' + dayConfig.mantra + ' ”', font: 'Tiro Devanagari Hindi', size: W * .038, weight: 400, lh: 1.45,
+          color: '#FFE082', x: W * .09, y: H * .45, w: W * .82, align: 'center', name: 'Devi Stuti Mantra'
+        }),
+        T({
+          role: 'wish', text: dayConfig.wish, font: 'Tiro Devanagari Hindi', size: W * .052, weight: 400, lh: 1.45,
+          color: '#FFFFFF', x: W * .08, y: H * .59, w: W * .84, align: 'center', name: 'Navratri Wish'
+        }),
+        K({ sid: 'temple', x: W * .4, y: H * .72, w: W * .2, h: W * .2, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Temple' }),
+        K({ sid: 'flower', x: W * .15, y: H * .75, w: W * .14, h: W * .14, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Flower L' }),
+        K({ sid: 'flower', x: W * .71, y: H * .75, w: W * .14, h: W * .14, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Flower R' }),
+        T({
+          role: 'name', text: 'हार्दिक शुभकामनाएँ: ' + d.name, font: 'Tiro Devanagari Hindi', size: W * .046, weight: 600,
+          color: dayConfig.accent, x: W * .08, y: H * .865, w: W * .84, align: 'center', name: 'Your Name'
+        })
+      ]
+    };
+  }
+
+  function buildNavratriStatusScene(dayConfig, d, W, H) {
+    return {
+      background: {
+        type: 'linear', angle: 180,
+        stops: dayConfig.bgGrad[0].map(function (c, i, a) { return { c: c, p: i / (a.length - 1) }; }),
+        pattern: 'mandala', patternColor: '#FFFFFF', patternAlpha: 0.12, vignette: 0.4
+      },
+      objects: [
+        S({ shape: 'circle', x: W * .15, y: H * .08, w: W * .7, h: W * .7, fill: dayConfig.accent, opacity: .18, name: 'Sun Halo' }),
+        K({ sid: 'temple', x: W * .35, y: H * .08, w: W * .3, h: W * .3, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Temple' }),
+        K({ sid: 'bell', x: W * .1, y: H * .06, w: W * .16, h: W * .16, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Bell Left' }),
+        K({ sid: 'bell', x: W * .74, y: H * .06, w: W * .16, h: W * .16, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Bell Right' }),
+        T({
+          role: 'title', text: '॥ जय माता दी ॥\nनवरात्रि ' + dayConfig.hiName, font: 'Tiro Devanagari Hindi', size: W * .052, weight: 700, lh: 1.35,
+          color: dayConfig.accent, x: W * .06, y: H * .26, w: W * .88, align: 'center', name: 'Header Title'
+        }),
+        T({
+          role: 'devi', text: dayConfig.deviHi, font: 'Tiro Devanagari Hindi', size: W * .084, weight: 700,
+          color: '#FFFFFF', x: W * .06, y: H * .35, w: W * .88, align: 'center', name: 'Devi Name'
+        }),
+        T({
+          role: 'color', text: '✨ आज का शुभ रंग: ' + dayConfig.colorName, font: 'Tiro Devanagari Hindi', size: W * .044, weight: 600,
+          color: dayConfig.accent, x: W * .06, y: H * .42, w: W * .88, align: 'center', name: 'Color Subtitle'
+        }),
+        S({ shape: 'line', x: W * .25, y: H * .47, w: W * .5, h: 5, fill: dayConfig.accent, strokeW: 4, name: 'Divider' }),
+        T({
+          role: 'mantra', text: '“ ' + dayConfig.mantra + ' ”', font: 'Tiro Devanagari Hindi', size: W * .042, weight: 400, lh: 1.45,
+          color: '#FFE082', x: W * .08, y: H * .5, w: W * .84, align: 'center', name: 'Mantra Stuti'
+        }),
+        T({
+          role: 'wish', text: dayConfig.wish, font: 'Tiro Devanagari Hindi', size: W * .054, weight: 400, lh: 1.5,
+          color: '#FFFFFF', x: W * .08, y: H * .63, w: W * .84, align: 'center', name: 'Navratri Blessing'
+        }),
+        K({ sid: 'thali', x: W * .38, y: H * .77, w: W * .24, h: W * .24, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Puja Thali' }),
+        K({ sid: 'diya', x: W * .12, y: H * .8, w: W * .18, h: W * .18, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Diya L' }),
+        K({ sid: 'diya', x: W * .7, y: H * .8, w: W * .18, h: W * .18, colors: { p: dayConfig.accent, s: dayConfig.accent2, a: '#FFFFFF' }, name: 'Diya R' }),
+        T({
+          role: 'name', text: 'प्रेषक: ' + d.name, font: 'Tiro Devanagari Hindi', size: W * .046, weight: 600,
+          color: dayConfig.accent, x: W * .08, y: H * .92, w: W * .84, align: 'center', name: 'Your Name'
+        })
+      ]
+    };
+  }
+
   /* Template catalogue                                                  */
   /* ------------------------------------------------------------------ */
   function sizeOf(id) {
@@ -385,6 +628,44 @@
     });
   });
 
+  /* Navratri 9 Days Dedicated Special Templates */
+  var sqSz = sizeOf('ig-square');
+  var waSz = sizeOf('wa-status');
+  NAVRATRI_DAYS.forEach(function (nd, ndi) {
+    /* Day Square Post */
+    FS.TEMPLATES.push({
+      id: 'navratri--day-' + nd.day + '-' + nd.slug,
+      festival: 'navratri',
+      festivalName: 'Navratri',
+      layout: 'navratri-day-square',
+      navratriDay: nd.day,
+      name: 'Navratri ' + nd.name + ' (Post)',
+      category: 'Navratri Special',
+      sizeId: 'ig-square',
+      w: sqSz.w,
+      h: sqSz.h,
+      previewH: sqSz.h / sqSz.w,
+      lang: 'hi',
+      order: 100 + ndi * 2
+    });
+    /* Day WhatsApp Status */
+    FS.TEMPLATES.push({
+      id: 'navratri--day-' + nd.day + '-' + nd.slug + '-status',
+      festival: 'navratri',
+      festivalName: 'Navratri',
+      layout: 'navratri-day-status',
+      navratriDay: nd.day,
+      name: 'Navratri ' + nd.name + ' (Status)',
+      category: 'Navratri Special',
+      sizeId: 'wa-status',
+      w: waSz.w,
+      h: waSz.h,
+      previewH: waSz.h / waSz.w,
+      lang: 'hi',
+      order: 101 + ndi * 2
+    });
+  });
+
   FS.getTemplate = function (id) {
     for (var i = 0; i < FS.TEMPLATES.length; i++) if (FS.TEMPLATES[i].id === id) return FS.TEMPLATES[i];
     return null;
@@ -395,10 +676,21 @@
     var tpl = typeof tplId === 'string' ? FS.getTemplate(tplId) : tplId;
     if (!tpl) return FS.newScene(1080, 1080);
     var f = FS.getFestival(tpl.festival);
-    var L = LAYOUTS.filter(function (l) { return l.id === tpl.layout; })[0] || LAYOUTS[0];
     var sz = sizeOf(tpl.sizeId);
     var d = defaults(fields);
-    var built = L.build(f, d, sz.w, sz.h);
+    var built;
+
+    if (tpl.layout === 'navratri-day-square' || tpl.layout === 'navratri-day-status') {
+      var nDay = NAVRATRI_DAYS.filter(function (x) { return x.day === tpl.navratriDay; })[0] || NAVRATRI_DAYS[0];
+      if (tpl.layout === 'navratri-day-status') {
+        built = buildNavratriStatusScene(nDay, d, sz.w, sz.h);
+      } else {
+        built = buildNavratriDayScene(nDay, d, sz.w, sz.h);
+      }
+    } else {
+      var L = LAYOUTS.filter(function (l) { return l.id === tpl.layout; })[0] || LAYOUTS[0];
+      built = L.build(f, d, sz.w, sz.h);
+    }
     var scene = { width: sz.w, height: sz.h, background: built.background, objects: built.objects };
     /* strip empty optional roles so the canvas never shows blank boxes */
     scene.objects = scene.objects.filter(function (o) {

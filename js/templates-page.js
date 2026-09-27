@@ -23,8 +23,19 @@
       festSel.appendChild(FS.el('option', { value: f.slug, selected: f.slug === state.festival ? 'selected' : null }, f.icon + '  ' + f.name));
     });
 
+    var CAT_LABELS = {
+      'Navratri Special': (FS.LANG === 'hi' ? '🌸 नवरात्रि स्पेशल (9 दिन)' : '🌸 Navratri Special (9 Days)'),
+      'Temple & Darshan': (FS.LANG === 'hi' ? '🛕 मंदिर दर्शन व आरती' : '🛕 Temple & Darshan'),
+      'Festival Wishes': (FS.LANG === 'hi' ? 'शुभकामनाएँ' : 'Festival Wishes'),
+      'Business Greetings': (FS.LANG === 'hi' ? 'बिज़नेस ग्रीटिंग' : 'Business Greetings'),
+      'Personal Greetings': (FS.LANG === 'hi' ? 'पर्सनल ग्रीटिंग' : 'Personal Greetings'),
+      'Festival Offers': (FS.LANG === 'hi' ? 'फ़ेस्टिवल ऑफ़र' : 'Festival Offers'),
+      'WhatsApp Status': (FS.LANG === 'hi' ? 'व्हाट्सऐप स्टेटस' : 'WhatsApp Status')
+    };
+
     ['all'].concat(FS.TEMPLATE_CATEGORIES).forEach(function (c) {
-      var b = FS.el('button', { class: 'chip', type: 'button', 'aria-pressed': String(c === state.category) }, c === 'all' ? (chips.getAttribute('data-all') || 'All categories') : c);
+      var label = c === 'all' ? (chips.getAttribute('data-all') || 'All categories') : (CAT_LABELS[c] || c);
+      var b = FS.el('button', { class: 'chip', type: 'button', 'aria-pressed': String(c === state.category) }, label);
       b.addEventListener('click', function () {
         state.category = c; state.shown = PAGE;
         FS.$$('.chip', chips).forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });

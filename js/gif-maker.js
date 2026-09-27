@@ -179,9 +179,18 @@
         self.loadTemplate(); self.fit(); self.buildPanel();
       }));
 
-    p.appendChild(select('Design', FS.TEMPLATES.filter(function (t) { return t.festival === self.festival; })
-      .map(function (t) { return { value: t.id, label: t.category }; }),
-      this.festival + '--status', function (v) { self.loadTemplate(v); self.fit(); }));
+    var tplOptions = FS.TEMPLATES.filter(function (t) {
+      if (self.festival === 'all') return true;
+      return t.festival === self.festival;
+    }).map(function (t) {
+      return { value: t.id, label: t.name || t.category };
+    });
+    // Ensure the default template exists in options
+    var defaultVal = tplOptions.some(function(o){ return o.value === self.festival + '--status'; }) ?
+      self.festival + '--status' : (tplOptions[0] ? tplOptions[0].value : '');
+
+    p.appendChild(select('Design', tplOptions,
+      defaultVal, function (v) { self.loadTemplate(v); self.fit(); }));
 
     p.appendChild(textInput('Your name', this.fields.name, function (v) {
       self.fields.name = v; Store.pref('fields', Object.assign(Store.pref('fields') || {}, { name: v }));
