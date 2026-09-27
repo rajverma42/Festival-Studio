@@ -180,23 +180,16 @@
     var isApp = FS.isApp();
     var actions = document.querySelector('.header-actions');
 
-    // In App mode: add APP badge and website switch
+    // In App mode: keep header clean, native, and app-like
     if (isApp) {
       var logoSpan = document.querySelector('.logo span');
       if (logoSpan && !logoSpan.querySelector('.app-mode-badge')) {
-        var badge = FS.el('span', { class: 'app-mode-badge' }, 'APP');
+        var badge = FS.el('span', { class: 'app-mode-badge' }, 'PRO');
         logoSpan.appendChild(badge);
       }
-      if (actions && !actions.querySelector('[data-mode-toggle]')) {
-        var webBtn = FS.el('button', {
-          class: 'mode-switch-pill',
-          type: 'button',
-          'data-mode-toggle': 'web',
-          title: 'Switch to Website View'
-        }, '🌐 ' + (isHi ? 'वेबसाइट' : 'Web View'));
-        webBtn.addEventListener('click', function () { FS.setAppMode(false); });
-        actions.insertBefore(webBtn, actions.firstChild);
-      }
+      // Remove any website mode switch in app mode
+      var existingModeBtn = actions && actions.querySelector('[data-mode-toggle]');
+      if (existingModeBtn) existingModeBtn.remove();
     } else {
       // In Website mode: add prominent "Download App" button in header
       if (actions && !actions.querySelector('.btn-download-app')) {
@@ -523,6 +516,9 @@
   /* ------------------------------------------------------------------ */
   FS.isApp = function () {
     if (typeof window === 'undefined') return false;
+    // 0. Android WebView AssetLoader origin
+    if (window.location && window.location.hostname === 'appassets.androidplatform.net') return true;
+
     // 1. Explicit query parameter (?app=1 or ?mode=app or ?source=app)
     var search = window.location.search || '';
     if (/[?&](app=1|app=true|mode=app|source=app)(&|$)/i.test(search)) return true;
@@ -885,11 +881,65 @@
   FS.ready(function () {
     // Setup Environment Mode: Website vs App
     if (FS.isApp()) {
+      Store.pref('env_mode', 'app');
       document.documentElement.setAttribute('data-env', 'app');
       document.body.classList.add('is-app-mode');
 
-      // CRITICAL: Strictly delete all website ad slots in App mode!
-      FS.$$('.ad-slot').forEach(function (box) { box.remove(); });
+      // CRITICAL: Remove all website-only elements in App mode
+      FS.$$('.site-footer, .breadcrumb, .skip-link, .ad-slot, .consent, .web-only, .footer-app-cta, .btn-download-app, [data-download-apk], [data-download-app], .download-app-banner, .download-app-actions').forEach(function (box) {
+        box.remove();
+      });
+
+      // Customize Drawer for App Mode
+      var drawer = document.getElementById('drawer');
+      if (drawer) {
+        // Remove website-only links from drawer
+        drawer.querySelectorAll('a').forEach(function (a) {
+          var h = a.getAttribute('href') || '';
+          if (/about|contact|faq|how-it-works|app\.html|cookies|terms|privacy|licences|dmca|sitemap/i.test(h)) {
+            a.remove();
+          }
+        });
+        if (!drawer.querySelector('.app-info-card')) {
+          var isHi = FS.LANG === 'hi';
+          var card = FS.el('div', { class: 'app-info-card' });
+          card.innerHTML =
+            '<strong>✨ ' + (isHi ? 'फेस्टिवल स्टूडियो प्रो' : 'Festival Studio Pro') + '</strong>' +
+            '<div style="color:var(--muted);font-size:.78rem">v2.4.0 · Official Mobile Build</div>' +
+            '<div class="app-status-badge">⚡ ' + (isHi ? 'ऑफ़लाइन रेडी' : 'Offline Ready') + '</div>' +
+            '<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">' +
+              '<button type="button" class="btn btn-ghost btn-sm" id="btn-clear-cache" style="width:100%;font-size:.75rem">' +
+                '🧹 ' + (isHi ? 'कैश / ड्राफ्ट साफ़ करें' : 'Clear Cache & Drafts') +
+              '</button>' +
+            '</div>';
+          drawer.appendChild(card);
+          var clrBtn = card.querySelector('#btn-clear-cache');
+          if (clrBtn) {
+            clrBtn.addEventListener('click', function () {
+              try {
+                localStorage.removeItem('fs:scene');
+                localStorage.removeItem('fs:history');
+                FS.toast(isHi ? 'ड्राफ्ट साफ़ कर दिया गया' : 'Drafts cache cleared', 'ok');
+              } catch (e) {}
+            });
+          }
+        }
+      }
+
+      // Seamless in-app navigation
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a || !a.href) return;
+        try {
+          var u = new URL(a.href, window.location.href);
+          if (u.origin === window.location.origin) {
+            if (!u.searchParams.has('mode') && !u.pathname.endsWith('.apk') && !u.pathname.endsWith('.zip')) {
+              u.searchParams.set('mode', 'app');
+              a.href = u.toString();
+            }
+          }
+        } catch (err) {}
+      }, true);
 
       // Initialize AdMob in app
       FS.AdMob.init();

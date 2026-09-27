@@ -685,7 +685,13 @@ input[type="color"] { width: 100%; height: 40px; padding: 2px; border: 1px solid
    WEBSITE vs APP SEPARATION & ADMOB ADS
    ========================================================================== */
 
-/* 1. Website ads MUST NOT appear in app mode */
+/* 1. Website-only elements MUST NOT appear in app mode */
+html[data-env="app"] .site-footer,
+body.is-app-mode .site-footer,
+html[data-env="app"] .breadcrumb,
+body.is-app-mode .breadcrumb,
+html[data-env="app"] .skip-link,
+body.is-app-mode .skip-link,
 html[data-env="app"] .ad-slot,
 body.is-app-mode .ad-slot,
 html[data-env="app"] .consent,
@@ -696,9 +702,33 @@ html[data-env="app"] .footer-app-cta,
 body.is-app-mode .footer-app-cta,
 html[data-env="app"] .btn-download-app,
 body.is-app-mode .btn-download-app,
+html[data-env="app"] [data-download-apk],
+body.is-app-mode [data-download-apk],
+html[data-env="app"] [data-download-app],
+body.is-app-mode [data-download-app],
 html[data-env="app"] .download-app-banner,
-body.is-app-mode .download-app-banner {
+body.is-app-mode .download-app-banner,
+html[data-env="app"] .download-app-actions,
+body.is-app-mode .download-app-actions {
   display: none !important;
+}
+
+/* In App Mode: Hide desktop website nav links in header for a clean native app bar */
+html[data-env="app"] .site-header .nav,
+body.is-app-mode .site-header .nav {
+  display: none !important;
+}
+
+/* In App Mode: Header is sticky and compact */
+html[data-env="app"] .site-header,
+body.is-app-mode .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  backdrop-filter: blur(14px);
 }
 
 /* 1b. Legacy PWA install buttons permanently removed */
@@ -706,7 +736,7 @@ body.is-app-mode .download-app-banner {
   display: none !important;
 }
 
-/* 1c. Footer App CTA Button */
+/* 1c. Footer App CTA Button (visible on website only) */
 .footer-app-cta {
   margin-top: 14px;
 }
@@ -722,7 +752,7 @@ body.is-app-mode .download-app-banner {
 html[data-env="app"] .app-only,
 body.is-app-mode .app-only { display: block !important; }
 
-/* 3. Header Download App Button */
+/* 3. Header Download App Button (website view only) */
 .btn-download-app {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: var(--r-full);
@@ -738,11 +768,11 @@ body.is-app-mode .app-only { display: block !important; }
 }
 .btn-download-app svg { width: 16px; height: 16px; fill: currentColor; }
 
-/* 4. App Mode Badge & Switcher */
+/* 4. App Mode Badge */
 .app-mode-badge {
   display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: var(--r-full);
-  background: var(--brand); color: #fff; font-size: .72rem;
+  padding: 3px 8px; border-radius: var(--r-full);
+  background: var(--brand); color: #fff; font-size: .68rem;
   font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
 }
 .mode-switch-pill {
@@ -757,27 +787,83 @@ body.is-app-mode .app-only { display: block !important; }
 .app-bottom-nav {
   display: none;
 }
-@media (max-width: 999px) {
-  html[data-env="app"] .app-bottom-nav,
-  body.is-app-mode .app-bottom-nav {
-    display: flex; position: fixed; bottom: 0; left: 0; right: 0;
-    height: 58px; background: var(--bg-2); border-top: 1px solid var(--border);
-    backdrop-filter: blur(14px); z-index: 95; justify-content: space-around;
-    align-items: center; padding: 0 6px; box-shadow: 0 -2px 12px rgba(0,0,0,.08);
-  }
-  html[data-env="app"] body,
-  body.is-app-mode {
-    padding-bottom: 60px;
-  }
-  .app-nav-item {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; font-size: .68rem; font-weight: 600; color: var(--muted);
-    padding: 6px 10px; border-radius: 8px; flex: 1; text-align: center;
-  }
-  .app-nav-item.active, .app-nav-item:hover {
-    color: var(--brand);
-  }
-  .app-nav-item svg { width: 20px; height: 20px; }
+html[data-env="app"] .app-bottom-nav,
+body.is-app-mode .app-bottom-nav {
+  display: flex !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 4px;
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, .08);
+}
+html[data-env="app"] body,
+body.is-app-mode {
+  padding-bottom: 74px !important;
+}
+.app-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  transition: color .15s ease, transform .15s ease;
+}
+.app-nav-item:active {
+  transform: scale(0.94);
+}
+.app-nav-item.active, .app-nav-item:hover {
+  color: var(--brand);
+}
+.app-nav-item svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* In-App Drawer Settings Sheet */
+html[data-env="app"] .drawer,
+body.is-app-mode .drawer {
+  padding: 20px;
+}
+.app-info-card {
+  padding: 16px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-top: 16px;
+  font-size: .84rem;
+}
+.app-info-card strong {
+  display: block;
+  font-size: .95rem;
+  margin-bottom: 4px;
+}
+.app-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--r-full);
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  font-size: .72rem;
+  font-weight: 700;
+  margin-top: 8px;
 }
 
 /* 6. Google AdMob In-App Banner Ads */
