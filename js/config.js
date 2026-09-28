@@ -36,12 +36,12 @@ window.FS_CONFIG = {
      Replace with your real AdMob Ad Unit IDs before releasing to Play Store: */
   admob: {
     enabled: true,
-    testMode: true, // Set to false when using your real production AdMob IDs
-    appId: 'ca-app-pub-3940256099942544~3347511713', // Google AdMob App ID
-    bannerSlotId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
-    interstitialSlotId: 'ca-app-pub-3940256099942544/1033173712', // Test Interstitial ID
-    rewardedSlotId: 'ca-app-pub-3940256099942544/5224354917',
-    showOnExport: true // Shows AdMob interstitial after saving/downloading design
+    testMode: false, // Live production AdMob enabled
+    appId: 'ca-app-pub-5486620063829815~1609270109', // Google AdMob Publisher account: 5486620063829815
+    bannerSlotId: 'ca-app-pub-5486620063829815/3904260951', // Live AdMob Banner Unit ID
+    interstitialSlotId: 'ca-app-pub-5486620063829815/3271593728', // Live AdMob Interstitial Unit ID
+    rewardedSlotId: 'ca-app-pub-5486620063829815/2457205504', // Live AdMob Rewarded Video Unit ID
+    showOnExport: true // Trigger non-intrusive interstitial after saving/downloading design
   },
 
   /* ---- App Download & Package Information -------------------------------- */
