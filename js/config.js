@@ -47,7 +47,7 @@ window.FS_CONFIG = {
   /* ---- App Download & Package Information -------------------------------- */
   app: {
     version: '2.4.0',
-    apkDownloadUrl: '/downloads/FestivalStudio.apk',
+    apkDownloadUrl: '/downloads/FestivalStudio.apk?v=20260929_1',
     directDownloadPath: '/download/apk',
     packageName: 'com.festivalstudio.app',
     name: 'Festival Studio App'

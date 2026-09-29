@@ -924,3 +924,110 @@ body.is-app-mode .drawer {
 .download-app-content p { margin: 0; color: var(--muted); font-size: .92rem; }
 .download-app-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 
+
+
+/* ------------------------------------------------------------------ */
+/* In-App Update Modal Styling                                         */
+/* ------------------------------------------------------------------ */
+.app-update-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: appFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.app-update-modal-backdrop.closing {
+  animation: appFadeOut 0.2s ease forwards;
+}
+
+.app-update-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: appCardSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.app-update-header {
+  padding: 18px 20px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border, #f1f5f9);
+}
+
+.app-update-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff7700, #e11d48);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(225,29,72,0.25);
+}
+
+.app-update-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #fef08a;
+  color: #854d0e;
+  text-transform: uppercase;
+}
+
+.app-update-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--muted, #94a3b8);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.app-update-close:hover {
+  color: var(--text, #111);
+  background: var(--surface-soft, #f8fafc);
+}
+
+.app-update-body {
+  padding: 16px 20px;
+}
+
+.app-update-actions {
+  padding: 14px 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-soft, #f8fafc);
+  border-top: 1px solid var(--border, #f1f5f9);
+}
+
+@keyframes appFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes appFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes appCardSlideUp {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

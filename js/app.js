@@ -782,7 +782,186 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Boot                                                                */
+  
+  /* ------------------------------------------------------------------ */
+  /* In-App Update Manager (Updates APK directly from the website)       */
+  /* ------------------------------------------------------------------ */
+  var AppUpdater = {
+    currentVersion: '2.4.0',
+    currentVersionCode: 240,
+    apiUrl: '/api/app-update',
+
+    checkUpdate: function (isManual) {
+      if (isManual) {
+        FS.toast(FS.LANG === 'hi' ? 'अपडेट चेक किया जा रहा है...' : 'Checking for updates...', 'info', 2500);
+      }
+
+      fetch(this.apiUrl + '?t=' + Date.now(), { cache: 'no-cache' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Network error');
+          return res.json();
+        })
+        .then(function (data) {
+          if (!data || !data.latestVersion) return;
+          var hasUpdate = (data.latestVersionCode > AppUpdater.currentVersionCode) ||
+                          (data.latestVersion !== AppUpdater.currentVersion);
+
+          if (hasUpdate) {
+            AppUpdater.showUpdateModal(data);
+          } else if (isManual) {
+            FS.toast(
+              (FS.LANG === 'hi' ? 'आपका ऐप पहले से ही नवीनतम वर्शन पर है (v' : 'Your app is already up to date (v') +
+              AppUpdater.currentVersion + ')',
+              'ok',
+              3500
+            );
+          }
+        })
+        .catch(function () {
+          if (isManual) {
+            // Fallback: offer direct download link if offline or API blocked
+            AppUpdater.showUpdateModal({
+              latestVersion: '2.4.1',
+              apkUrl: '/downloads/FestivalStudio.apk?v=20260929_1',
+              size: '8.3 MB',
+              whatsNew: ['Direct fast update from official website', 'Includes latest AdMob & templates'],
+              whatsNewHi: ['आधिकारिक वेबसाइट से डायरेक्ट तेज़ अपडेट', 'नवीनतम AdMob व टेम्पलेट्स शामिल']
+            });
+          }
+        });
+    },
+
+    showUpdateModal: function (info) {
+      if (document.getElementById('app-update-modal')) return;
+
+      var isHi = FS.LANG === 'hi';
+      var modal = FS.el('div', {
+        id: 'app-update-modal',
+        class: 'app-update-modal-backdrop',
+        role: 'dialog',
+        'aria-modal': 'true',
+        'aria-labelledby': 'app-update-title'
+      });
+
+      var notes = (isHi ? info.whatsNewHi : info.whatsNew) || [
+        isHi ? 'आधिकारिक वेबसाइट से डायरेक्ट तेज़ अपडेट' : 'Direct fast update from official website',
+        isHi ? 'Google AdMob और नए फ्रेम्स' : 'Google AdMob & fresh festival frames'
+      ];
+
+      var notesHtml = notes.map(function (n) {
+        return '<li style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="color:#22c55e;">✓</span><span>' + FS.esc(n) + '</span></li>';
+      }).join('');
+
+      var apkUrl = info.apkUrl || '/downloads/FestivalStudio.apk?v=20260929_1';
+
+      modal.innerHTML =
+        '<div class="app-update-card">' +
+          '<div class="app-update-header">' +
+            '<div class="app-update-icon">' +
+              '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+                '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>' +
+                '<polyline points="7 10 12 15 17 10"/>' +
+                '<line x1="12" y1="15" x2="12" y2="3"/>' +
+              '</svg>' +
+            '</div>' +
+            '<div style="flex:1;">' +
+              '<div class="app-update-badge">' + (isHi ? 'नया वर्शन उपलब्ध' : 'UPDATE AVAILABLE') + '</div>' +
+              '<h3 id="app-update-title" style="margin:4px 0 2px;font-size:18px;font-weight:700;color:var(--text, #111);">' +
+                (isHi ? 'नया अपडेट v' : 'New Update v') + FS.esc(info.latestVersion || '2.4.1') +
+              '</h3>' +
+              '<p style="margin:0;font-size:12px;color:var(--muted, #666);">' +
+                (isHi ? 'वर्तमान: v' : 'Current: v') + AppUpdater.currentVersion + ' · ' + (info.size || '8.3 MB') +
+              '</p>' +
+            '</div>' +
+            '<button type="button" class="app-update-close" aria-label="Close">&times;</button>' +
+          '</div>' +
+          '<div class="app-update-body">' +
+            '<p style="font-size:13px;font-weight:600;margin:0 0 8px;color:var(--text, #222);">' +
+              (isHi ? 'नया क्या है:' : "What's new:") +
+            '</p>' +
+            '<ul style="margin:0 0 16px;padding:0;list-style:none;font-size:13px;color:var(--text-soft, #444);">' +
+              notesHtml +
+            '</ul>' +
+            '<div style="background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.35);border-radius:8px;padding:10px 12px;font-size:12px;color:#a16207;margin-bottom:16px;line-height:1.4;">' +
+              'ℹ️ ' + (isHi ? 'यह अपडेट सीधे हमारी आधिकारिक वेबसाइट से डाउनलोड होगा। डाउनलोड होने पर "Install" दबाएं।' : 'This update downloads directly from our official website. Tap Install after download completes.') +
+            '</div>' +
+          '</div>' +
+          '<div class="app-update-actions">' +
+            '<button type="button" class="btn btn-ghost btn-sm app-update-later" style="flex:1;">' + (isHi ? 'बाद में' : 'Later') + '</button>' +
+            '<a href="' + apkUrl + '" class="btn btn-primary app-update-start" download="FestivalStudio.apk" style="flex:2;justify-content:center;gap:6px;font-weight:600;">' +
+              '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>' +
+              '<span>' + (isHi ? 'वेबसाइट से अपडेट करें' : 'Update from Website') + '</span>' +
+            '</a>' +
+          '</div>' +
+        '</div>';
+
+      document.body.appendChild(modal);
+
+      // Event listeners
+      function closeModal() {
+        modal.classList.add('closing');
+        setTimeout(function () { modal.remove(); }, 200);
+      }
+
+      var closeBtn = modal.querySelector('.app-update-close');
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+      var laterBtn = modal.querySelector('.app-update-later');
+      if (laterBtn) laterBtn.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+
+      var startBtn = modal.querySelector('.app-update-start');
+      if (startBtn) {
+        startBtn.addEventListener('click', function () {
+          FS.toast(isHi ? 'नया APK डाउनलोड हो रहा है... कृपया इंतज़ार करें' : 'Downloading update APK from website...', 'ok', 4000);
+          setTimeout(function () {
+            closeModal();
+          }, 1200);
+        });
+      }
+    },
+
+    setupInAppButton: function () {
+      if (!FS.isApp()) return;
+      var actions = document.querySelector('.header-actions');
+      if (!actions) return;
+      if (actions.querySelector('.btn-check-update')) return;
+
+      var isHi = FS.LANG === 'hi';
+      var updateBtn = FS.el('button', {
+        type: 'button',
+        class: 'btn btn-soft btn-sm btn-check-update',
+        style: 'display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 11px;border-radius:20px;background:linear-gradient(135deg,#ff7700,#e11d48);color:#fff;border:none;box-shadow:0 2px 8px rgba(225,29,72,0.3);cursor:pointer;',
+        'aria-label': isHi ? 'ऐप अपडेट करें' : 'Update App'
+      });
+
+      updateBtn.innerHTML =
+        '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">' +
+          '<polyline points="23 4 23 10 17 10"/>' +
+          '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
+        '</svg>' +
+        '<span>' + (isHi ? 'अपडेट' : 'Update') + '</span>';
+
+      updateBtn.addEventListener('click', function () {
+        AppUpdater.checkUpdate(true);
+      });
+
+      actions.insertBefore(updateBtn, actions.firstChild);
+
+      // Auto check after 3 seconds on app launch
+      setTimeout(function () {
+        AppUpdater.checkUpdate(false);
+      }, 3000);
+    }
+  };
+
+  FS.AppUpdater = AppUpdater;
+
+
+/* Boot                                                                */
   /* ------------------------------------------------------------------ */
   FS.ready(function () {
     // Setup Environment Mode: Website vs App
@@ -866,6 +1045,10 @@
     } else {
       initConsent();
       initDownloadButtons();
+    // Initialize In-App Website Updater
+    if (FS.AppUpdater && FS.AppUpdater.setupInAppButton) {
+      FS.AppUpdater.setupInAppButton();
+    }
     }
 
     initHeader();

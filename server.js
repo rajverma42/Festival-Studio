@@ -6,17 +6,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const HOST = '0.0.0.0';
 
 // Dedicated route for ads.txt and app-ads.txt (Google AdMob / AdSense crawler)
 app.get(['/ads.txt', '/app-ads.txt'], (req, res) => {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.status(200).send('google.com, pub-5486620063829815, DIRECT, f08c47fec0942fa0
-');
+  res.status(200).send(`google.com, pub-5486620063829815, DIRECT, f08c47fec0942fa0\n`);
 });
 
-// Direct APK download routes
 // Direct APK download routes
 app.get(['/download/apk', '/download/app', '/download'], (req, res) => {
   const apkPath = path.join(__dirname, 'downloads', 'FestivalStudio.apk');
@@ -27,16 +25,31 @@ app.get(['/download/apk', '/download/app', '/download'], (req, res) => {
   });
 });
 
-// App info API
-app.get('/api/app-info', (req, res) => {
+// App info & update check API
+app.get(['/api/app-info', '/api/app-update', '/api/version'], (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.json({
     name: 'Festival Studio App',
-    version: '2.4.0',
-    packageName: 'com.festivalstudio.app',
-    apkUrl: '/downloads/FestivalStudio.apk',
-    size: '6.8 MB',
+    latestVersion: '2.4.1',
+    latestVersionCode: 241,
+    currentVersion: '2.4.0',
+    packageName: 'net.mikespub.mywebview',
+    apkUrl: '/downloads/FestivalStudio.apk?v=20260929_1',
+    size: '8.3 MB',
+    releaseDate: '2026-09-29',
     minAndroid: 'Android 5.0 (Lollipop)+',
-    adsType: 'Google AdMob (App)'
+    whatsNew: [
+      '⚡ Direct fast update from official website',
+      '💎 Full Google AdMob integration with real Ad Units',
+      '🎨 50+ New Indian festival templates & HD frames',
+      '🔒 100% On-device private processing'
+    ],
+    whatsNewHi: [
+      '⚡ आधिकारिक वेबसाइट से डायरेक्ट तेज़ अपडेट',
+      '💎 असली Ad Units के साथ पूर्ण Google AdMob इंटीग्रेशन',
+      '🎨 50+ नए भारतीय त्यौहार टेम्पलेट्स और HD फ्रेम्स',
+      '🔒 100% डिवाइस पर सुरक्षित और प्राइवेट'
+    ]
   });
 });
 
