@@ -9,6 +9,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
+// Dedicated route for ads.txt and app-ads.txt (Google AdMob / AdSense crawler)
+app.get(['/ads.txt', '/app-ads.txt'], (req, res) => {
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.status(200).send('google.com, pub-5486620063829815, DIRECT, f08c47fec0942fa0
+');
+});
+
+// Direct APK download routes
 // Direct APK download routes
 app.get(['/download/apk', '/download/app', '/download'], (req, res) => {
   const apkPath = path.join(__dirname, 'downloads', 'FestivalStudio.apk');
