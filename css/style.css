@@ -1031,3 +1031,51 @@ body.is-app-mode .drawer {
   from { opacity: 0; transform: translateY(18px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+
+/* My Designs Modal styling */
+.my-designs-tabs .tab-btn {
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted, #64748b);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.my-designs-tabs .tab-btn.active {
+  color: #ff7700;
+  border-bottom-color: #ff7700;
+}
+.app-nav-create {
+  color: #ff7700 !important;
+  font-weight: 700;
+}
+.app-nav-create svg {
+  transform: scale(1.15);
+}
+
+
+/* More screen styling */
+.more-screen-backdrop {
+  z-index: 100000;
+}
+.more-menu-item {
+  transition: transform 0.15s ease, background 0.15s ease;
+  background: var(--surface-soft, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+}
+.more-menu-item:hover, .more-menu-item:active {
+  transform: translateY(-2px);
+  background: var(--surface, #ffffff);
+  border-color: #ff7700;
+}
+.more-row {
+  transition: background 0.15s ease;
+  color: var(--text, #111);
+}
+.more-row:hover, .more-row:active {
+  background: var(--surface-soft, #f8fafc);
+}

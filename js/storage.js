@@ -72,6 +72,56 @@
       var list = Store.get('drafts', []).filter(function (d) { return d.id !== id; });
       Store.set('drafts', list);
     },
+        /* ---- favorites (templates, wishes, designs) ---- */
+    listFavorites: function (type) {
+      var all = Store.get('favorites', { templates: [], wishes: [], designs: [] });
+      if (!all || typeof all !== 'object') all = { templates: [], wishes: [], designs: [] };
+      return type ? (all[type] || []) : all;
+    },
+    isFavorite: function (type, id) {
+      var list = Store.listFavorites(type);
+      return list.indexOf(id) !== -1;
+    },
+    toggleFavorite: function (type, id, meta) {
+      var all = Store.get('favorites', { templates: [], wishes: [], designs: [] });
+      if (!all[type]) all[type] = [];
+      var idx = all[type].indexOf(id);
+      var added = false;
+      if (idx !== -1) {
+        all[type].splice(idx, 1);
+        if (all[type + '_meta']) delete all[type + '_meta'][id];
+      } else {
+        all[type].unshift(id);
+        if (meta) {
+          if (!all[type + '_meta']) all[type + '_meta'] = {};
+          all[type + '_meta'][id] = meta;
+        }
+        added = true;
+      }
+      Store.set('favorites', all);
+      return added;
+    },
+    getFavoriteMeta: function (type, id) {
+      var all = Store.get('favorites', {});
+      return (all[type + '_meta'] && all[type + '_meta'][id]) || null;
+    },
+    /* ---- saved exported designs (history) ---- */
+    listSavedDesigns: function () { return Store.get('saved_designs', []); },
+    addSavedDesign: function (design) {
+      var list = Store.get('saved_designs', []);
+      design.id = design.id || 's' + Date.now().toString(36);
+      design.created = Date.now();
+      var idx = list.findIndex(function (d) { return d.id === design.id; });
+      if (idx >= 0) list.splice(idx, 1);
+      list.unshift(design);
+      while (list.length > 24) list.pop();
+      Store.set('saved_designs', list);
+      return design.id;
+    },
+    deleteSavedDesign: function (id) {
+      var list = Store.get('saved_designs', []).filter(function (d) { return d.id !== id; });
+      Store.set('saved_designs', list);
+    },
     clearDrafts: function () { Store.remove('drafts'); }
   };
 

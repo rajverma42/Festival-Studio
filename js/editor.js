@@ -129,7 +129,21 @@
       self.fit();
       self.refreshPanels();
       self.fit();
-      if (new URLSearchParams(location.search).get('quick') === '1') self.quickStart();
+      var sp = new URLSearchParams(location.search);
+      var qk = sp.get('quick');
+      if (qk === '1' || qk === 'photo') {
+        self.quickStart();
+      } else if (qk === 'quote') {
+        setTimeout(function() {
+          self.addText(FS.LANG === 'hi' ? 'सफलता का कोई शॉर्टकट नहीं होता, यह केवल कड़ी मेहनत और लगन से मिलती है।' : 'Believe in yourself and you will be unstoppable.');
+        }, 300);
+      }
+      var msgParam = sp.get('msg');
+      if (msgParam) {
+        setTimeout(function() {
+          self.addText(msgParam);
+        }, 300);
+      }
       window.addEventListener('resize', function () { self.fit(); });
       if (window.visualViewport) window.visualViewport.addEventListener('resize', function () { self.fit(); });
       /* the tool dock changes height as panels swap — keep the canvas fitted */
@@ -596,7 +610,10 @@
   };
   Editor.prototype.fileName = function (ext) {
     var f = FS.getFestival(this.festival);
-    return FS.slugify(f.name) + '-festival-' + (this.mode === 'status' ? 'status' : 'post') + '.' + ext;
+    var year = new Date().getFullYear();
+    var festPart = f && f.name ? f.name.replace(/[^a-zA-Z0-9]/g, '') : 'Design';
+    var rand = Math.floor(100 + Math.random() * 900);
+    return 'FestivalStudio_' + festPart + '_' + year + '_' + rand + '.' + ext;
   };
   Editor.prototype.download = function (fmt, quality, scale) {
     var self = this;
@@ -612,15 +629,27 @@
         }, 900);
       }
 
+      var flat = null;
       if (fmt === 'jpg') {
-        var flat = document.createElement('canvas');
+        flat = document.createElement('canvas');
         flat.width = c.width; flat.height = c.height;
         var fx = flat.getContext('2d');
         fx.fillStyle = '#FFFFFF'; fx.fillRect(0, 0, flat.width, flat.height);
         fx.drawImage(c, 0, 0);
-        return FS.downloadCanvas(flat, self.fileName('jpg'), 'image/jpeg', quality);
       }
-      return FS.downloadCanvas(c, self.fileName('png'), 'image/png');
+      var fname = self.fileName(fmt === 'jpg' ? 'jpg' : 'png');
+      var thumb = '';
+      try { thumb = FS.renderToCanvas(self.scene, 180).toDataURL('image/jpeg', 0.6); } catch (e) {}
+      if (FS.Store && FS.Store.addSavedDesign) {
+        FS.Store.addSavedDesign({
+          name: (f && f.name) ? f.name + ' Design' : 'Festival Design',
+          filename: fname,
+          format: (fmt || 'png').toUpperCase(),
+          thumbnail: thumb,
+          festival: self.festival
+        });
+      }
+      return FS.downloadCanvas(fmt === 'jpg' ? flat : c, fname, fmt === 'jpg' ? 'image/jpeg' : 'image/png', quality);
     });
   };
 

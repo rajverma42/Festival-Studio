@@ -52,37 +52,44 @@ self.addEventListener('activate', function (e) {
   );
 });
 
+
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;   /* never touch fonts/ads */
 
-  var isDoc = req.mode === 'navigate' || (req.headers.get('accept') || '').indexOf('text/html') > -1;
-
-  if (isDoc) {
+  // Shell assets: cache first
+  if (url.origin === location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.js') || url.pathname.endsWith('.png') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.svg'))) {
     e.respondWith(
-      fetch(req).then(function (res) {
-        var copy = res.clone();
-        caches.open(VERSION).then(function (c) { c.put(req, copy); });
-        return res;
-      }).catch(function () {
-        return caches.match(req).then(function (r) { return r || caches.match('./index.html'); });
+      caches.match(req).then(function (res) {
+        return res || fetch(req).then(function (netRes) {
+          if (netRes && netRes.ok) {
+            var copy = netRes.clone();
+            caches.open(VERSION).then(function (c) { c.put(req, copy); });
+          }
+          return netRes;
+        });
       })
     );
     return;
   }
 
-  e.respondWith(
-    caches.match(req).then(function (hit) {
-      if (hit) return hit;
-      return fetch(req).then(function (res) {
-        if (res && res.status === 200 && res.type === 'basic') {
-          var copy = res.clone();
-          caches.open(VERSION).then(function (c) { c.put(req, copy); });
-        }
-        return res;
-      });
-    }).catch(function () { return caches.match('./index.html'); })
-  );
+  // HTML navigation requests
+  if (req.mode === 'navigate' || (req.headers.get('accept') && req.headers.get('accept').includes('text/html'))) {
+    e.respondWith(
+      fetch(req).catch(function () {
+        return caches.match(req).then(function (matched) {
+          if (matched) return matched;
+          return caches.match('./index.html').then(function(indexRes) {
+            if (indexRes) return indexRes;
+            return new Response(
+              '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>You\'re Offline - Festival Studio</title><style>body{font-family:sans-serif;background:#FBF7F4;color:#1e293b;padding:40px 20px;text-align:center;line-height:1.5;}h2{color:#ff7700;margin-top:10px;}.btn{display:inline-block;padding:12px 24px;border-radius:10px;background:#ff7700;color:#fff;text-decoration:none;font-weight:600;margin-top:16px;}</style></head><body><div style="font-size:48px;">🪔</div><h2>You\'re Offline</h2><p>You can still create and edit your saved designs.</p><a href="./index.html" class="btn">Continue Offline</a></body></html>',
+              { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+            );
+          });
+        });
+      })
+    );
+    return;
+  }
 });

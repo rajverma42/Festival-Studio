@@ -420,9 +420,23 @@
       var holder = FS.el('div', { style: 'width:100%' });
       prev.appendChild(holder);
       card.appendChild(prev);
-      card.appendChild(FS.el('div', { class: 'info' },
-        '<strong>' + FS.esc(t.festivalName) + '</strong>' +
-        '<span>' + FS.esc(t.category) + '</span>'));
+      var isFav = FS.Store.isFavorite('templates', t.id);
+      var infoEl = FS.el('div', { class: 'info', style: 'display:flex;align-items:center;justify-content:space-between;' },
+        '<div><strong>' + FS.esc(t.festivalName) + '</strong><span>' + FS.esc(t.category) + '</span></div>' +
+        '<button type="button" class="btn-fav-toggle" aria-label="Favorite template" data-tpl-id="' + t.id + '" style="background:none;border:none;cursor:pointer;font-size:18px;color:' + (isFav ? '#e11d48' : '#94a3b8') + ';padding:4px 6px;">' + (isFav ? '♥' : '♡') + '</button>');
+      
+      var favBtn = infoEl.querySelector('.btn-fav-toggle');
+      if (favBtn) {
+        favBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          var added = FS.Store.toggleFavorite('templates', t.id, { name: t.name, festival: t.festival, category: t.category });
+          favBtn.textContent = added ? '♥' : '♡';
+          favBtn.style.color = added ? '#e11d48' : '#94a3b8';
+          FS.toast(added ? (FS.LANG === 'hi' ? 'फेवरेट्स में जोड़ा गया ♥' : 'Saved to Favorites ♥') : (FS.LANG === 'hi' ? 'फेवरेट्स से हटाया गया' : 'Removed from Favorites'), 'info', 1800);
+        });
+      }
+      card.appendChild(infoEl);
       var acts = FS.el('div', { class: 'acts' });
       var open = (opts.editorBase || 'post-maker.html') + '?tpl=' + encodeURIComponent(t.id);
       acts.appendChild(FS.el('a', { class: 'btn btn-primary btn-sm', href: open }, 'Create'));
@@ -691,26 +705,72 @@
   /* Copy-to-clipboard buttons (wishes pages)                            */
   /* ------------------------------------------------------------------ */
   function initCopyButtons() {
+    // 1. Copy Buttons
     FS.$$('[data-copy]').forEach(function (b) {
       b.addEventListener('click', function () {
         var text = b.getAttribute('data-copy');
         var done = function () {
           var old = b.textContent;
           b.textContent = '✓';
-          FS.toast('Copied', 'ok', 1400);
-          setTimeout(function () { b.textContent = old; }, 1400);
+          FS.toast(FS.LANG === 'hi' ? 'कॉपी हो गया ✓' : 'Copied to clipboard ✓', 'ok', 1600);
+          setTimeout(function () { b.textContent = old; }, 1600);
         };
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(done).catch(function () {
-            FS.toast('Could not copy — select the text and copy manually.', 'err');
+            FS.toast(FS.LANG === 'hi' ? 'कॉपी नहीं हो सका' : 'Could not copy', 'err');
           });
         } else {
           try {
             var ta = FS.el('textarea', { style: 'position:fixed;opacity:0' });
             ta.value = text; document.body.appendChild(ta); ta.select();
             document.execCommand('copy'); ta.remove(); done();
-          } catch (e) { FS.toast('Could not copy — select the text and copy manually.', 'err'); }
+          } catch (e) { FS.toast(FS.LANG === 'hi' ? 'कॉपी नहीं हो सका' : 'Could not copy', 'err'); }
         }
+      });
+    });
+
+    // 2. Native Share Buttons for Wishes
+    FS.$$('[data-share-wish]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var text = b.getAttribute('data-share-wish') || '';
+        if (navigator.share) {
+          navigator.share({
+            title: 'Festival Studio Wish',
+            text: text + '\n\n— Created with Festival Studio\nhttps://festival-studio.work.gd/'
+          }).catch(function () {});
+        } else {
+          // Fallback to WhatsApp share
+          var waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text + '\n\n— Created with Festival Studio\nhttps://festival-studio.work.gd/');
+          window.open(waUrl, '_blank');
+        }
+      });
+    });
+
+    // 3. Use in Design (Auto-opens editor with this wish)
+    FS.$$('[data-use-wish]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var text = b.getAttribute('data-use-wish') || '';
+        var fest = b.getAttribute('data-festival') || '';
+        var base = (FS.BASE || '');
+        var targetUrl = base + 'post-maker.html?msg=' + encodeURIComponent(text) + (fest ? '&festival=' + encodeURIComponent(fest) : '');
+        if (FS.isApp()) targetUrl += (targetUrl.indexOf('?') !== -1 ? '&' : '?') + 'mode=app';
+        window.location.href = targetUrl;
+      });
+    });
+
+    // 4. Favorite Wish Toggle
+    FS.$$('[data-fav-wish]').forEach(function (b) {
+      var wishId = b.getAttribute('data-fav-wish');
+      if (FS.Store.isFavorite('wishes', wishId)) {
+        b.textContent = '♥';
+        b.style.color = '#e11d48';
+      }
+      b.addEventListener('click', function () {
+        var text = b.getAttribute('data-wish-text') || '';
+        var added = FS.Store.toggleFavorite('wishes', wishId, { text: text });
+        b.textContent = added ? '♥' : '♡';
+        b.style.color = added ? '#e11d48' : '#94a3b8';
+        FS.toast(added ? (FS.LANG === 'hi' ? 'विश सेव हो गई ♥' : 'Wish saved to Favorites ♥') : (FS.LANG === 'hi' ? 'फेवरेट्स से हटाया गया' : 'Removed from Favorites'), 'info', 1600);
       });
     });
   }
@@ -744,15 +804,27 @@
 
     var items = [
       { href: base + (isHi ? 'hi/index.html' : 'index.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: isHi ? 'होम' : 'Home', match: /index\.html$|^(\/hi)?\/$/ },
-      { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>', label: isHi ? 'पोस्ट' : 'Post', match: /post-maker/ },
-      { href: base + (isHi ? 'hi/gif-maker.html' : 'gif-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>', label: isHi ? 'GIF' : 'GIF', match: /gif-maker/ },
-      { href: base + (isHi ? 'hi/status-maker.html' : 'status-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>', label: isHi ? 'स्टेटस' : 'Status', match: /status-maker/ },
-      { href: base + (isHi ? 'hi/templates.html' : 'templates.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: isHi ? 'टेम्पलेट' : 'Templates', match: /templates/ }
+      { href: base + (isHi ? 'hi/templates.html' : 'templates.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: isHi ? 'टेम्पलेट्स' : 'Templates', match: /templates/ },
+      { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', label: isHi ? 'क्रिएट' : 'Create', match: /post-maker|status-maker|gif-maker/, special: true },
+      { href: '#my-designs', action: 'my-designs', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>', label: isHi ? 'माई डिज़ाइन्स' : 'My Designs', match: /my-designs/ },
+      { href: '#more', action: 'more', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>', label: isHi ? 'अधिक' : 'More', match: /more/ }
     ];
 
     items.forEach(function (it) {
-      var a = FS.el('a', { class: 'app-nav-item' + (it.match.test(path) ? ' active' : ''), href: it.href });
+      var isAct = it.match && it.match.test(path);
+      var a = FS.el('a', { class: 'app-nav-item' + (isAct ? ' active' : '') + (it.special ? ' app-nav-create' : ''), href: it.href });
       a.innerHTML = it.icon + '<span>' + FS.esc(it.label) + '</span>';
+      if (it.action === 'my-designs') {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (FS.openMyDesignsModal) FS.openMyDesignsModal();
+        });
+      } else if (it.action === 'more') {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (FS.openMoreModal) FS.openMoreModal();
+        });
+      }
       nav.appendChild(a);
     });
 
@@ -959,6 +1031,378 @@
   };
 
   FS.AppUpdater = AppUpdater;
+
+  /* ------------------------------------------------------------------ */
+  /* My Designs Manager (Recent, Drafts, Saved, Favorites)               */
+  /* ------------------------------------------------------------------ */
+  
+  /* ------------------------------------------------------------------ */
+  /* More Screen Modal (Festival Calendar, Wishes, GIF Maker, Status,   */
+  /* My Designs, Favorites, Language, Theme, Privacy, Terms, Feedback)  */
+  /* ------------------------------------------------------------------ */
+  FS.openMoreModal = function () {
+    var existing = document.getElementById('more-screen-modal');
+    if (existing) existing.remove();
+
+    var isHi = FS.LANG === 'hi';
+    var base = FS.BASE || '';
+    var modal = FS.el('div', {
+      id: 'more-screen-modal',
+      class: 'app-update-modal-backdrop more-screen-backdrop',
+      role: 'dialog',
+      'aria-modal': 'true'
+    });
+
+    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+
+    modal.innerHTML =
+      '<div class="app-update-card more-screen-card" style="max-width:500px;max-height:88vh;display:flex;flex-direction:column;">' +
+        '<div class="app-update-header" style="padding:14px 18px;border-bottom:1px solid var(--border,#e2e8f0);">' +
+          '<div style="display:flex;align-items:center;gap:10px;flex:1;">' +
+            '<div style="width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#ff7700,#e11d48);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;">' +
+              '🪔' +
+            '</div>' +
+            '<div>' +
+              '<h3 style="margin:0;font-size:17px;font-weight:700;">Festival Studio</h3>' +
+              '<p style="margin:0;font-size:12px;color:var(--muted,#666);">' + (isHi ? 'क्रिएट • सेलिब्रेट • शेयर' : 'Create • Celebrate • Share') + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="app-update-close" aria-label="Close" style="font-size:24px;">&times;</button>' +
+        '</div>' +
+        '<div class="more-screen-body" style="padding:16px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px;">' +
+
+          /* Section 1: Creative Studios & Tools */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isHi ? 'क्रिएटिव स्टूडियो व टूल्स' : 'Creative Studio & Tools') +
+            '</div>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' +
+              '<a href="' + base + (isHi ? 'hi/calendar.html' : 'calendar.html') + '?mode=app" class="card more-menu-item" style="padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;border-radius:12px;">' +
+                '<span style="font-size:22px;">📅</span>' +
+                '<div><strong style="display:block;font-size:13px;color:var(--text,#111);">' + (isHi ? 'त्यौहार कैलेंडर' : 'Festival Calendar') + '</strong><span style="font-size:11px;color:var(--muted,#777);">' + (isHi ? 'काउंटडाउन व तिथियां' : 'Dates & Countdown') + '</span></div>' +
+              '</a>' +
+              '<a href="' + base + (isHi ? 'hi/wishes.html' : 'wishes.html') + '?mode=app" class="card more-menu-item" style="padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;border-radius:12px;">' +
+                '<span style="font-size:22px;">💬</span>' +
+                '<div><strong style="display:block;font-size:13px;color:var(--text,#111);">' + (isHi ? 'शुभकामना संदेश' : 'Wishes Library') + '</strong><span style="font-size:11px;color:var(--muted,#777);">' + (isHi ? 'हिंदी व अंग्रेजी' : 'Hindi & English') + '</span></div>' +
+              '</a>' +
+              '<a href="' + base + (isHi ? 'hi/status-maker.html' : 'status-maker.html') + '?mode=app" class="card more-menu-item" style="padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;border-radius:12px;">' +
+                '<span style="font-size:22px;">📱</span>' +
+                '<div><strong style="display:block;font-size:13px;color:var(--text,#111);">' + (isHi ? 'स्टेटस मेकर' : 'Status Maker') + '</strong><span style="font-size:11px;color:var(--muted,#777);">9:16 WhatsApp</span></div>' +
+              '</a>' +
+              '<a href="' + base + (isHi ? 'hi/gif-maker.html' : 'gif-maker.html') + '?mode=app" class="card more-menu-item" style="padding:12px;display:flex;align-items:center;gap:10px;text-decoration:none;border-radius:12px;">' +
+                '<span style="font-size:22px;">🎞️</span>' +
+                '<div><strong style="display:block;font-size:13px;color:var(--text,#111);">' + (isHi ? 'GIF मेकर' : 'GIF Maker') + '</strong><span style="font-size:11px;color:var(--muted,#777);">' + (isHi ? 'एनिमेटेड लूप' : 'Animation loop') + '</span></div>' +
+              '</a>' +
+            '</div>' +
+          '</div>' +
+
+          /* Section 2: Preferences (Language & Theme) */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isHi ? 'प्राथमिकताएं (Settings)' : 'Preferences') +
+            '</div>' +
+            '<div class="card" style="padding:10px 14px;border-radius:12px;display:flex;flex-direction:column;gap:12px;">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  '<span style="font-size:18px;">🌐</span>' +
+                  '<div><strong style="font-size:13px;">' + (isHi ? 'भाषा (Language)' : 'Language') + '</strong></div>' +
+                '</div>' +
+                '<div style="display:flex;gap:6px;">' +
+                  '<a href="' + (location.pathname.replace(/\/hi\//, '/')) + '?mode=app" class="btn btn-sm ' + (!isHi ? 'btn-primary' : 'btn-ghost') + '" style="padding:3px 9px;font-size:11px;">English</a>' +
+                  '<a href="' + (location.pathname.includes('/hi/') ? location.pathname : base + 'hi/' + location.pathname.replace(/^\//, '')) + '?mode=app" class="btn btn-sm ' + (isHi ? 'btn-primary' : 'btn-ghost') + '" style="padding:3px 9px;font-size:11px;">हिन्दी</a>' +
+                '</div>' +
+              '</div>' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border,#f1f5f9);padding-top:10px;">' +
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  '<span style="font-size:18px;">🌓</span>' +
+                  '<div><strong style="font-size:13px;">' + (isHi ? 'थीम (Dark / Light)' : 'Appearance Theme') + '</strong></div>' +
+                '</div>' +
+                '<button type="button" class="btn btn-soft btn-sm btn-toggle-theme" style="padding:4px 10px;font-size:12px;">' +
+                  (currentTheme === 'dark' ? '🌙 Dark' : '☀️ Light') +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* Section 3: Legal, Privacy & Sharing */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isHi ? 'सहायता एवं सुरक्षा' : 'Support & Privacy') +
+            '</div>' +
+            '<div class="card" style="border-radius:12px;overflow:hidden;">' +
+              '<a href="' + base + (isHi ? 'hi/privacy.html' : 'privacy.html') + '?mode=app" class="more-row" style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;border-bottom:1px solid var(--border,#f1f5f9);">' +
+                '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'गोपनीयता नीति (Privacy Policy)' : 'Privacy Policy') + '</span>' +
+                '<span style="color:var(--muted,#999);">&rsaquo;</span>' +
+              '</a>' +
+              '<a href="' + base + (isHi ? 'hi/terms.html' : 'terms.html') + '?mode=app" class="more-row" style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;border-bottom:1px solid var(--border,#f1f5f9);">' +
+                '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'नियम व शर्तें (Terms & Conditions)' : 'Terms & Conditions') + '</span>' +
+                '<span style="color:var(--muted,#999);">&rsaquo;</span>' +
+              '</a>' +
+              '<a href="' + base + (isHi ? 'hi/about.html' : 'about.html') + '?mode=app" class="more-row" style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;border-bottom:1px solid var(--border,#f1f5f9);">' +
+                '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'हमारे बारे में (About App)' : 'About Festival Studio') + '</span>' +
+                '<span style="color:var(--muted,#999);">&rsaquo;</span>' +
+              '</a>' +
+              '<button type="button" class="more-row btn-share-app" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;">' +
+                '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'ऐप शेयर करें (Share App)' : 'Share Festival Studio App') + '</span>' +
+                '<span style="font-size:14px;">↗</span>' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+
+          /* Section 4: App Version & Offline-First Badge */
+          '<div style="text-align:center;padding:10px 0 4px;">' +
+            '<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(34,197,94,0.12);color:#16a34a;font-size:11px;font-weight:600;">' +
+              '<span>✓</span> 100% On-Device &amp; Offline-Ready' +
+            '</div>' +
+            '<p style="margin:6px 0 0;font-size:11px;color:var(--muted,#888);">' +
+              'Festival Studio v2.4.1 (Official Production Release)' +
+            '</p>' +
+          '</div>' +
+
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(modal);
+
+    function closeModal() {
+      modal.classList.add('closing');
+      setTimeout(function () { modal.remove(); }, 200);
+    }
+
+    var closeBtn = modal.querySelector('.app-update-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    // Theme toggle button inside more screen
+    var themeBtn = modal.querySelector('.btn-toggle-theme');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function() {
+        var now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', now);
+        try {
+          var p = JSON.parse(localStorage.getItem('fs:prefs') || '{}');
+          p.theme = now;
+          localStorage.setItem('fs:prefs', JSON.stringify(p));
+        } catch(e) {}
+        themeBtn.textContent = now === 'dark' ? '🌙 Dark' : '☀️ Light';
+        FS.toast(now === 'dark' ? 'Dark theme enabled' : 'Light theme enabled', 'info', 1400);
+      });
+    }
+
+    // Share app button
+    var shareBtn = modal.querySelector('.btn-share-app');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        if (navigator.share) {
+          navigator.share({
+            title: 'Festival Studio',
+            text: 'Create beautiful festival posts, WhatsApp statuses and animated GIFs free! Download Festival Studio:\\nhttps://festival-studio.work.gd/'
+          }).catch(function() {});
+        } else {
+          var url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent('Create beautiful festival posts, WhatsApp statuses and animated GIFs free! Download Festival Studio:\\nhttps://festival-studio.work.gd/');
+          window.open(url, '_blank');
+        }
+      });
+    }
+  };
+
+
+  FS.openMyDesignsModal = function (initialTab) {
+    var existing = document.getElementById('my-designs-modal');
+    if (existing) { existing.remove(); }
+
+    var isHi = FS.LANG === 'hi';
+    var activeTab = initialTab || 'drafts';
+
+    var modal = FS.el('div', {
+      id: 'my-designs-modal',
+      class: 'app-update-modal-backdrop my-designs-backdrop',
+      role: 'dialog',
+      'aria-modal': 'true'
+    });
+
+    modal.innerHTML =
+      '<div class="app-update-card my-designs-card" style="max-width:560px;max-height:85vh;display:flex;flex-direction:column;">' +
+        '<div class="app-update-header" style="padding:14px 18px;">' +
+          '<div style="display:flex;align-items:center;gap:10px;flex:1;">' +
+            '<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ff7700,#e11d48);color:#fff;display:flex;align-items:center;justify-content:center;">' +
+              '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>' +
+            '</div>' +
+            '<div>' +
+              '<h3 style="margin:0;font-size:17px;font-weight:700;">' + (isHi ? 'माई डिज़ाइन्स' : 'My Designs') + '</h3>' +
+              '<p style="margin:0;font-size:12px;color:var(--muted,#666);">' + (isHi ? 'आपके द्वारा बनाए गए ड्राफ्ट्स व सेव किए गए डिज़ाइन्स' : 'Locally saved drafts, designs & favorites') + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="app-update-close" aria-label="Close" style="font-size:24px;">&times;</button>' +
+        '</div>' +
+        '<div class="my-designs-tabs" style="display:flex;border-bottom:1px solid var(--border,#e2e8f0);padding:0 18px;background:var(--surface-soft,#f8fafc);gap:8px;">' +
+          '<button type="button" class="tab-btn' + (activeTab === 'drafts' ? ' active' : '') + '" data-tab="drafts">' + (isHi ? 'ड्राफ्ट्स' : 'Drafts') + '</button>' +
+          '<button type="button" class="tab-btn' + (activeTab === 'saved' ? ' active' : '') + '" data-tab="saved">' + (isHi ? 'सेव किए गए' : 'Saved') + '</button>' +
+          '<button type="button" class="tab-btn' + (activeTab === 'favorites' ? ' active' : '') + '" data-tab="favorites">' + (isHi ? 'फेवरेट्स' : 'Favorites') + '</button>' +
+        '</div>' +
+        '<div class="my-designs-content" style="padding:16px;overflow-y:auto;flex:1;">' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(modal);
+
+    var content = modal.querySelector('.my-designs-content');
+    var closeBtn = modal.querySelector('.app-update-close');
+
+    function closeModal() {
+      modal.classList.add('closing');
+      setTimeout(function () { modal.remove(); }, 200);
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    function renderTab(tab) {
+      activeTab = tab;
+      modal.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+      });
+
+      content.innerHTML = '';
+
+      if (tab === 'drafts') {
+        var drafts = FS.Store.listDrafts();
+        if (!drafts.length) {
+          content.innerHTML =
+            '<div class="empty" style="padding:30px 10px;text-align:center;">' +
+              '<div style="font-size:40px;margin-bottom:8px;">📝</div>' +
+              '<h4 style="margin:0 0 6px;font-size:16px;">' + (isHi ? 'कोई ड्राफ्ट नहीं मिला' : 'No Drafts Yet') + '</h4>' +
+              '<p style="font-size:13px;color:var(--muted,#666);margin:0 0 16px;">' + (isHi ? 'एडिटर में किया गया कोई भी काम यहाँ स्वतः सुरक्षित रहता है।' : 'Any unfinished work in the editor is automatically saved here.') + '</p>' +
+              '<a href="post-maker.html?mode=app" class="btn btn-primary btn-sm">' + (isHi ? 'नई डिज़ाइन बनाएं' : 'Create New Design') + '</a>' +
+            '</div>';
+          return;
+        }
+
+        var grid = FS.el('div', { class: 'grid', style: 'grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:12px;' });
+        drafts.forEach(function(d) {
+          var item = FS.el('div', { class: 'card', style: 'padding:8px;display:flex;flex-direction:column;position:relative;' });
+          var preview = '<div style="height:120px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;font-size:24px;">🎨</div>';
+          if (d.preview) {
+            preview = '<img src="' + d.preview + '" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;" alt="Draft preview" />';
+          }
+          item.innerHTML = preview +
+            '<div style="flex:1;"><strong style="display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + FS.esc(d.name || (isHi ? 'अनाम ड्राफ्ट' : 'Untitled Draft')) + '</strong>' +
+            '<span style="font-size:10px;color:var(--muted,#777);">' + new Date(d.updated || Date.now()).toLocaleDateString() + '</span></div>' +
+            '<div style="display:flex;gap:4px;margin-top:8px;">' +
+              '<a href="post-maker.html?draft=' + d.id + '&mode=app" class="btn btn-primary btn-sm" style="flex:1;padding:4px 6px;font-size:11px;justify-content:center;">' + (isHi ? 'एडिट' : 'Edit') + '</a>' +
+              '<button type="button" class="btn btn-ghost btn-sm btn-del-draft" data-id="' + d.id + '" style="padding:4px 6px;color:#e11d48;" aria-label="Delete draft">&times;</button>' +
+            '</div>';
+
+          var delBtn = item.querySelector('.btn-del-draft');
+          delBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (confirm(isHi ? 'क्या आप इस ड्राफ्ट को हटाना चाहते हैं?' : 'Delete this draft?')) {
+              FS.Store.deleteDraft(d.id);
+              renderTab('drafts');
+            }
+          });
+
+          grid.appendChild(item);
+        });
+        content.appendChild(grid);
+
+      } else if (tab === 'saved') {
+        var saved = FS.Store.listSavedDesigns();
+        if (!saved.length) {
+          content.innerHTML =
+            '<div class="empty" style="padding:30px 10px;text-align:center;">' +
+              '<div style="font-size:40px;margin-bottom:8px;">🖼️</div>' +
+              '<h4 style="margin:0 0 6px;font-size:16px;">' + (isHi ? 'कोई सेव्ड डिज़ाइन नहीं' : 'No Saved Designs Yet') + '</h4>' +
+              '<p style="font-size:13px;color:var(--muted,#666);margin:0 0 16px;">' + (isHi ? 'जब आप कोई पोस्टर एक्सपोर्ट करेंगे, तो वह यहाँ दिखेगा।' : 'When you export posters, your creations will appear here.') + '</p>' +
+              '<a href="post-maker.html?mode=app" class="btn btn-primary btn-sm">' + (isHi ? 'पहला डिज़ाइन बनाएं' : 'Create First Design') + '</a>' +
+            '</div>';
+          return;
+        }
+
+        var sGrid = FS.el('div', { class: 'grid', style: 'grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:12px;' });
+        saved.forEach(function(s) {
+          var sItem = FS.el('div', { class: 'card', style: 'padding:8px;display:flex;flex-direction:column;' });
+          var sPrev = s.thumbnail ? '<img src="' + s.thumbnail + '" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;" />' : '<div style="height:120px;background:#f1f5f9;border-radius:8px;margin-bottom:8px;"></div>';
+          sItem.innerHTML = sPrev +
+            '<div style="flex:1;"><strong style="display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + FS.esc(s.name || 'Poster') + '</strong>' +
+            '<span style="font-size:10px;color:var(--muted,#777);">' + (s.format || 'PNG') + ' · ' + (s.size || '') + '</span></div>' +
+            '<div style="display:flex;gap:4px;margin-top:8px;">' +
+              '<a href="' + (s.url || '#') + '" download="' + (s.filename || 'FestivalStudio_Design.png') + '" class="btn btn-primary btn-sm" style="flex:1;padding:4px 6px;font-size:11px;justify-content:center;">' + (isHi ? 'डाउनलोड' : 'Save') + '</a>' +
+              '<button type="button" class="btn btn-ghost btn-sm btn-del-saved" data-id="' + s.id + '" style="padding:4px 6px;color:#e11d48;" aria-label="Delete">&times;</button>' +
+            '</div>';
+
+          sItem.querySelector('.btn-del-saved').addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (confirm(isHi ? 'क्या आप इसे हटाना चाहते हैं?' : 'Delete this item?')) {
+              FS.Store.deleteSavedDesign(s.id);
+              renderTab('saved');
+            }
+          });
+          sGrid.appendChild(sItem);
+        });
+        content.appendChild(sGrid);
+
+      } else if (tab === 'favorites') {
+        var favTpls = FS.Store.listFavorites('templates');
+        var favWishes = FS.Store.listFavorites('wishes');
+
+        if (!favTpls.length && !favWishes.length) {
+          content.innerHTML =
+            '<div class="empty" style="padding:30px 10px;text-align:center;">' +
+              '<div style="font-size:40px;margin-bottom:8px;">♥</div>' +
+              '<h4 style="margin:0 0 6px;font-size:16px;">' + (isHi ? 'कोई पसंदीदा आइटम नहीं' : 'No Favorites Yet') + '</h4>' +
+              '<p style="font-size:13px;color:var(--muted,#666);margin:0 0 16px;">' + (isHi ? 'किसी भी टेम्पलेट या विश पर दिल (♥) दबाकर उसे यहाँ जोड़ें।' : 'Tap the heart icon on any template or wish to save it here.') + '</p>' +
+              '<a href="templates.html?mode=app" class="btn btn-primary btn-sm">' + (isHi ? 'टेम्पलेट्स देखें' : 'Explore Templates') + '</a>' +
+            '</div>';
+          return;
+        }
+
+        var favWrap = FS.el('div', { style: 'display:flex;flex-direction:column;gap:16px;' });
+
+        if (favTpls.length) {
+          favWrap.appendChild(FS.el('h5', { style: 'margin:0;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted,#777);' }, (isHi ? 'फेवरेट टेम्पलेट्स (' : 'Favorite Templates (') + favTpls.length + ')'));
+          var tGrid = FS.el('div', { class: 'grid', style: 'grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));gap:10px;' });
+          favTpls.forEach(function(tid) {
+            var meta = FS.Store.getFavoriteMeta('templates', tid) || {};
+            var tCard = FS.el('div', { class: 'card', style: 'padding:8px;' });
+            tCard.innerHTML =
+              '<div style="height:90px;background:#fdf2f8;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;font-size:22px;">🪔</div>' +
+              '<strong style="display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + FS.esc(meta.name || tid) + '</strong>' +
+              '<a href="post-maker.html?tpl=' + encodeURIComponent(tid) + '&mode=app" class="btn btn-primary btn-sm" style="display:block;text-align:center;padding:3px 6px;font-size:11px;margin-top:6px;">' + (isHi ? 'ओपन करें' : 'Open') + '</a>';
+            tGrid.appendChild(tCard);
+          });
+          favWrap.appendChild(tGrid);
+        }
+
+        if (favWishes.length) {
+          favWrap.appendChild(FS.el('h5', { style: 'margin:12px 0 0;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted,#777);' }, (isHi ? 'फेवरेट विशेस (' : 'Favorite Wishes (') + favWishes.length + ')'));
+          favWishes.forEach(function(wid) {
+            var wMeta = FS.Store.getFavoriteMeta('wishes', wid) || {};
+            var wBox = FS.el('div', { class: 'card', style: 'padding:10px;margin-top:6px;display:flex;align-items:center;gap:10px;' });
+            wBox.innerHTML =
+              '<p style="margin:0;flex:1;font-size:13px;line-height:1.4;">' + FS.esc(wMeta.text || wid) + '</p>' +
+              '<button type="button" class="btn btn-ghost btn-sm" data-use-wish="' + FS.esc(wMeta.text || wid) + '" style="font-size:11px;padding:4px 8px;">' + (isHi ? 'डिज़ाइन बनाएं' : 'Design') + '</button>';
+            favWrap.appendChild(wBox);
+          });
+        }
+
+        content.appendChild(favWrap);
+      }
+    }
+
+    modal.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        renderTab(btn.getAttribute('data-tab'));
+      });
+    });
+
+    renderTab(activeTab);
+  };
+
 
 
 /* Boot                                                                */

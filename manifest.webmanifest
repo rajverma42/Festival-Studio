@@ -1,45 +1,41 @@
 {
   "name": "Festival Studio",
   "short_name": "Festival Studio",
-  "description": "Free Indian festival post, GIF and status maker.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "description": "Create \u2022 Celebrate \u2022 Share \u2014 Free Indian festival posts, WhatsApp status, animated GIFs and wishes maker.",
+  "start_url": "/index.html?mode=app",
+  "scope": "/",
   "display": "standalone",
-  "orientation": "any",
-  "lang": "en-IN",
+  "orientation": "portrait",
+  "theme_color": "#ff7700",
   "background_color": "#FBF7F4",
-  "theme_color": "#E1306C",
-  "categories": [
-    "graphics",
-    "photo",
-    "utilities"
-  ],
   "icons": [
     {
-      "src": "./assets/icons/icon-192.png",
+      "src": "/assets/icons/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/logo-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "./assets/icons/icon-512.png",
+      "src": "/assets/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Post Maker",
-      "url": "./post-maker.html"
-    },
-    {
-      "name": "GIF Maker",
-      "url": "./gif-maker.html"
-    },
-    {
-      "name": "Status Maker",
-      "url": "./status-maker.html"
-    }
+  "categories": [
+    "design",
+    "photo",
+    "entertainment",
+    "lifestyle"
   ]
 }

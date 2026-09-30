@@ -19,7 +19,7 @@ const ROOT = path.resolve(__dirname, '..');
 const STR = require('./strings');
 
 /* ---- EDIT ME (or pass SITE_URL=… on the command line) ------------------- */
-const SITE = (process.env.SITE_URL || 'https://example.github.io/festival-studio').replace(/\/$/, '');
+const SITE = (process.env.SITE_URL || 'https://festival-studio.work.gd').replace(/\/$/, '');
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'hello@festivalstudio.example';
 /* Paste the token from Google Search Console → HTML tag verification.       */
 const GOOGLE_VERIFY = process.env.GOOGLE_VERIFY || '';
