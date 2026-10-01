@@ -53,6 +53,11 @@ app.get(['/api/app-info', '/api/app-update', '/api/version'], (req, res) => {
   });
 });
 
+// Expose provisioned Firebase configuration to clients
+app.get('/api/firebase-config', (req, res) => {
+  res.sendFile(path.join(__dirname, 'firebase-applet-config.json'));
+});
+
 // Serve static assets from project root
 app.use(express.static(__dirname, {
   extensions: ['html'],

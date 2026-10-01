@@ -125,6 +125,355 @@
   /* ------------------------------------------------------------------ */
   /* Header behaviour                                                    */
   /* ------------------------------------------------------------------ */
+  
+  /* ------------------------------------------------------------------ */
+  /* Quick Settings & Options Panel (3-line Menu / Settings Modal)      */
+  /* ------------------------------------------------------------------ */
+  FS.openSettingsModal = function () {
+    var existing = document.getElementById('fs-settings-modal');
+    if (existing) { existing.remove(); return; }
+
+    var isHi = FS.LANG === 'hi';
+    var isApp = FS.isApp && FS.isApp();
+    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+
+    var modal = FS.el('div', {
+      id: 'fs-settings-modal',
+      class: 'app-update-modal-backdrop fs-settings-backdrop',
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': isHi ? 'सेटिंग्स और विकल्प' : 'Settings & Options'
+    });
+
+    modal.innerHTML =
+      '<div class="app-update-card fs-settings-card" style="max-width:440px;width:92%;max-height:86vh;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.22);">' +
+        '<div class="app-update-header" style="padding:16px 20px;border-bottom:1px solid var(--border,#e2e8f0);background:var(--surface,#fff);">' +
+          '<div style="display:flex;align-items:center;gap:12px;flex:1;">' +
+            '<div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#ff7700,#e11d48);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;">' +
+              '⚙️' +
+            '</div>' +
+            '<div>' +
+              '<h3 style="margin:0;font-size:17px;font-weight:700;color:var(--text,#111);">' + (isHi ? 'सेटिंग्स और विकल्प' : 'Settings & Options') + '</h3>' +
+              '<p style="margin:2px 0 0;font-size:12px;color:var(--muted,#666);">' + (isHi ? 'ऐप वरीयताएँ, भाषा व इंस्टॉल' : 'Preferences, display & app install') + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="app-update-close" aria-label="Close" style="font-size:24px;border:none;background:none;cursor:pointer;color:var(--muted,#666);">&times;</button>' +
+        '</div>' +
+
+        '<div class="fs-settings-body" style="padding:18px 20px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:18px;background:var(--bg,#fbf7f4);">' +
+
+          /* Section 1: Appearance & Display */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isHi ? 'दिखावट (Appearance)' : 'Appearance & Theme') +
+            '</div>' +
+            '<div class="card" style="padding:12px 14px;border-radius:14px;background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);display:flex;flex-direction:column;gap:12px;">' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  '<span style="font-size:20px;">🌓</span>' +
+                  '<div><strong style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'कलर थीम' : 'Color Theme') + '</strong><span style="display:block;font-size:11px;color:var(--muted,#777);">' + (currentTheme === 'dark' ? (isHi ? 'डार्क मोड सक्रिय' : 'Dark mode active') : (isHi ? 'लाइट मोड सक्रिय' : 'Light mode active')) + '</span></div>' +
+                '</div>' +
+                '<button type="button" class="btn btn-soft btn-sm btn-settings-theme" style="padding:5px 12px;font-size:12px;font-weight:600;border-radius:20px;">' +
+                  (currentTheme === 'dark' ? '🌙 Dark' : '☀️ Light') +
+                '</button>' +
+              '</div>' +
+              '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border,#f1f5f9);padding-top:10px;">' +
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  '<span style="font-size:20px;">🌐</span>' +
+                  '<div><strong style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'भाषा (Language)' : 'Language') + '</strong><span style="display:block;font-size:11px;color:var(--muted,#777);">' + (isHi ? 'हिन्दी चुनी गई है' : 'English selected') + '</span></div>' +
+                '</div>' +
+                '<div style="display:flex;gap:4px;">' +
+                  '<button type="button" class="btn btn-sm ' + (!isHi ? 'btn-primary' : 'btn-ghost') + ' btn-set-en" style="padding:4px 10px;font-size:11px;border-radius:20px;">EN</button>' +
+                  '<button type="button" class="btn btn-sm ' + (isHi ? 'btn-primary' : 'btn-ghost') + ' btn-set-hi" style="padding:4px 10px;font-size:11px;border-radius:20px;">हिन्दी</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* Section 2: In App Mode -> App Update Check | In Website Mode -> App Install Option */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isApp ? (isHi ? 'ऐप अपडेट और वर्शन' : 'App Updates & Version') : (isHi ? 'मोबाइल ऐप (Install Festival Studio)' : 'Festival Studio Mobile App')) +
+            '</div>' +
+            '<div class="card" style="padding:14px;border-radius:14px;background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);display:flex;flex-direction:column;gap:10px;">' +
+              (isApp ? (
+                /* APP MODE ONLY: Check for Updates */
+                '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+                  '<div style="display:flex;align-items:center;gap:10px;">' +
+                    '<span style="font-size:22px;">🔄</span>' +
+                    '<div>' +
+                      '<strong style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'ऐप अपडेट चेक करें' : 'Check for Updates') + '</strong>' +
+                      '<span style="display:block;font-size:11px;color:var(--muted,#777);">' + (isHi ? 'वर्तमान वर्शन: v2.4.0 (लेटेस्ट)' : 'Current Version: v2.4.0 (Latest)') + '</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<button type="button" class="btn btn-primary btn-sm btn-check-app-update" style="font-size:12px;padding:6px 14px;border-radius:12px;font-weight:600;">' +
+                    '🔄 ' + (isHi ? 'अपडेट चेक करें' : 'Check Now') +
+                  '</button>' +
+                '</div>'
+              ) : (
+                /* WEBSITE MODE ONLY: Install App Option */
+                '<div style="display:flex;align-items:center;gap:10px;">' +
+                  '<span style="font-size:22px;">📲</span>' +
+                  '<div style="flex:1;">' +
+                    '<strong style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'Festival Studio ऐप इंस्टॉल करें' : 'Install Festival Studio App') + '</strong>' +
+                    '<span style="display:block;font-size:11px;color:var(--muted,#777);">' + (isHi ? 'बिना इंटरनेट ऑफलाइन भी चलेगा · 100% फ्री' : 'Works 100% offline · No signup') + '</span>' +
+                  '</div>' +
+                '</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">' +
+                  '<button type="button" class="btn btn-primary btn-sm btn-trigger-install" style="font-size:12px;padding:8px 10px;border-radius:10px;justify-content:center;font-weight:600;">' +
+                    '⚡ ' + (isHi ? 'ऐप इंस्टॉल करें' : 'Install App') +
+                  '</button>' +
+                  '<a href="/downloads/FestivalStudio.apk" download="FestivalStudio.apk" class="btn btn-ghost btn-sm" style="font-size:12px;padding:8px 10px;border-radius:10px;justify-content:center;text-decoration:none;">' +
+                    '📥 ' + (isHi ? 'APK डाउनलोड' : 'Download APK') +
+                  '</a>' +
+                '</div>'
+              )) +
+            '</div>' +
+          '</div>' +
+
+          /* Section 3: Data & Offline Cache */
+          '<div>' +
+            '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted,#64748b);margin-bottom:8px;">' +
+              (isHi ? 'डेटा व स्टोरेज' : 'Data & Local Storage') +
+            '</div>' +
+            '<div class="card" style="padding:12px 14px;border-radius:14px;background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);display:flex;align-items:center;justify-content:space-between;">' +
+              '<div style="display:flex;align-items:center;gap:10px;">' +
+                '<span style="font-size:18px;">🧹</span>' +
+                '<div><strong style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'लोकल ड्राफ्ट्स व कैश' : 'Local Drafts & Storage') + '</strong><span style="display:block;font-size:11px;color:var(--muted,#777);">' + (isHi ? 'स्थानीय डिवाइस पर सुरक्षित' : 'Safe on-device storage') + '</span></div>' +
+              '</div>' +
+              '<button type="button" class="btn btn-ghost btn-sm btn-clear-cache" style="padding:4px 10px;font-size:11px;border-radius:8px;">' +
+                (isHi ? 'खाली करें' : 'Clear Drafts') +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+
+          /* Section 4: Links & Privacy */
+          '<div style="display:flex;justify-content:center;gap:14px;font-size:12px;padding:4px 0;">' +
+            '<a href="/privacy.html" style="color:var(--muted,#666);text-decoration:underline;">' + (isHi ? 'गोपनीयता नीति' : 'Privacy Policy') + '</a>' +
+            '<span style="color:var(--muted,#ccc);">•</span>' +
+            '<a href="/terms.html" style="color:var(--muted,#666);text-decoration:underline;">' + (isHi ? 'नियम व शर्तें' : 'Terms') + '</a>' +
+            '<span style="color:var(--muted,#ccc);">•</span>' +
+            '<a href="/about.html" style="color:var(--muted,#666);text-decoration:underline;">' + (isHi ? 'हमारे बारे में' : 'About') + '</a>' +
+          '</div>' +
+
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(modal);
+
+    function closeModal() {
+      modal.classList.add('closing');
+      setTimeout(function () { modal.remove(); }, 200);
+    }
+
+    var closeBtn = modal.querySelector('.app-update-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    // Theme toggle
+    var themeBtn = modal.querySelector('.btn-settings-theme');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        var now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', now);
+        try {
+          var p = JSON.parse(localStorage.getItem('fs:prefs') || '{}');
+          p.theme = now;
+          localStorage.setItem('fs:prefs', JSON.stringify(p));
+        } catch (e) {}
+        themeBtn.textContent = now === 'dark' ? '🌙 Dark' : '☀️ Light';
+        FS.toast(now === 'dark' ? 'डार्क मोड सक्रिय' : 'लाइट मोड सक्रिय', 'info', 1400);
+      });
+    }
+
+    // Language buttons
+    var enBtn = modal.querySelector('.btn-set-en');
+    var hiBtn = modal.querySelector('.btn-set-hi');
+    if (enBtn) {
+      enBtn.addEventListener('click', function () {
+        var target = location.pathname.replace(/\/hi\//, '/').replace(/^\/hi$/, '/');
+        location.href = target + location.search;
+      });
+    }
+    if (hiBtn) {
+      hiBtn.addEventListener('click', function () {
+        var p = location.pathname;
+        if (!p.includes('/hi/')) {
+          var target = p === '/' ? '/hi/' : '/hi' + p;
+          location.href = target + location.search;
+        }
+      });
+    }
+
+    // Check for App Updates trigger
+    var updateBtn = modal.querySelector('.btn-check-app-update');
+    if (updateBtn) {
+      updateBtn.addEventListener('click', function () {
+        if (typeof AppUpdater !== 'undefined' && AppUpdater.checkUpdate) {
+          AppUpdater.checkUpdate(true);
+        } else {
+          FS.toast(isHi ? 'आपका ऐप पहले से ही नवीनतम वर्शन (v2.4.0) पर है!' : 'Your app is already on the latest version (v2.4.0)!', 'ok', 3000);
+        }
+      });
+    }
+
+    // Install App button trigger
+    var installBtn = modal.querySelector('.btn-trigger-install');
+    if (installBtn) {
+      installBtn.addEventListener('click', function () {
+        if (FS.promptInstall) {
+          FS.promptInstall();
+          closeModal();
+        } else {
+          // Direct fallback to APK download
+          var a = document.createElement('a');
+          a.href = '/downloads/FestivalStudio.apk';
+          a.download = 'FestivalStudio.apk';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          FS.toast(isHi ? 'APK डाउनलोड शुरू हो गया है!' : 'Downloading Festival Studio APK...', 'ok', 3500);
+          closeModal();
+        }
+      });
+    }
+
+    // Clear Drafts
+    var clearBtn = modal.querySelector('.btn-clear-cache');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        if (confirm(isHi ? 'क्या आप सभी लोकल ड्राफ्ट्स हटाना चाहते हैं?' : 'Clear all local drafts?')) {
+          if (FS.Store && FS.Store.clearDrafts) FS.Store.clearDrafts();
+          FS.toast(isHi ? 'ड्राफ्ट्स साफ़ कर दिए गए' : 'Drafts cleared', 'ok', 1500);
+        }
+      });
+    }
+  };
+
+
+  /* ------------------------------------------------------------------ */
+  /* Robust PWA & APK Installation Engine                                */
+  /* ------------------------------------------------------------------ */
+  var deferredInstallPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    FS.canInstallPWA = true;
+
+    // Show install buttons if any exist
+    FS.$$('[data-install-btn], .btn-install-app').forEach(function (btn) {
+      btn.hidden = false;
+      btn.style.display = 'inline-flex';
+    });
+  });
+
+  window.addEventListener('appinstalled', function () {
+    deferredInstallPrompt = null;
+    FS.canInstallPWA = false;
+    FS.toast(FS.LANG === 'hi' ? 'Festival Studio सफलतापूर्वक इंस्टॉल हो गया!' : 'Festival Studio installed successfully!', 'ok', 3500);
+  });
+
+  FS.promptInstall = function () {
+    var isHi = FS.LANG === 'hi';
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function (choice) {
+        if (choice.outcome === 'accepted') {
+          FS.toast(isHi ? 'ऐप इंस्टॉल हो रहा है...' : 'Installing app...', 'ok', 2500);
+        } else {
+          FS.toast(isHi ? 'इंस्टॉलेशन रद्द किया गया' : 'Installation cancelled', 'info', 2000);
+        }
+        deferredInstallPrompt = null;
+      });
+      return;
+    }
+
+    // If beforeinstallprompt is not supported or not yet triggered (e.g. desktop/iOS/Safari or direct APK):
+    FS.openInstallModal();
+  };
+
+  FS.openInstallModal = function () {
+    var existing = document.getElementById('fs-install-modal');
+    if (existing) { existing.remove(); return; }
+
+    var isHi = FS.LANG === 'hi';
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    var modal = FS.el('div', {
+      id: 'fs-install-modal',
+      class: 'app-update-modal-backdrop fs-install-backdrop',
+      role: 'dialog',
+      'aria-modal': 'true'
+    });
+
+    modal.innerHTML =
+      '<div class="app-update-card fs-install-card" style="max-width:440px;width:92%;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.25);">' +
+        '<div class="app-update-header" style="padding:16px 20px;border-bottom:1px solid var(--border,#e2e8f0);background:var(--surface,#fff);">' +
+          '<div style="display:flex;align-items:center;gap:12px;flex:1;">' +
+            '<div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#ff7700,#e11d48);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;">' +
+              '📱' +
+            '</div>' +
+            '<div>' +
+              '<h3 style="margin:0;font-size:17px;font-weight:700;color:var(--text,#111);">' + (isHi ? 'ऐप इंस्टॉल करें' : 'Install Festival Studio') + '</h3>' +
+              '<p style="margin:2px 0 0;font-size:12px;color:var(--muted,#666);">' + (isHi ? 'होम स्क्रीन पर जोड़ें या APK डाउनलोड करें' : 'Add to home screen or download APK') + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="app-update-close" aria-label="Close" style="font-size:24px;border:none;background:none;cursor:pointer;color:var(--muted,#666);">&times;</button>' +
+        '</div>' +
+        '<div style="padding:20px;background:var(--bg,#fbf7f4);display:flex;flex-direction:column;gap:16px;">' +
+          (isIOS
+            ? '<div class="card" style="padding:14px;border-radius:14px;background:#fff;border:1px solid var(--border,#e2e8f0);">' +
+                '<strong style="display:block;font-size:14px;margin-bottom:6px;">' + (isHi ? 'iOS / iPhone पर इंस्टॉल करने का तरीका:' : 'To install on iOS / iPhone:') + '</strong>' +
+                '<ol style="margin:0;padding-left:20px;font-size:13px;line-height:1.6;color:var(--text,#333);">' +
+                  '<li>' + (isHi ? 'सफ़ारी (Safari) में नीचे दिए गए <b>शेयर (Share) बटन</b> ⎋ पर टैप करें।' : 'Tap the <b>Share</b> button ⎋ in Safari.') + '</li>' +
+                  '<li>' + (isHi ? 'सूची में स्क्रॉल करके <b>"Add to Home Screen" ⊞</b> चुनें।' : 'Scroll down and tap <b>"Add to Home Screen" ⊞</b>.') + '</li>' +
+                  '<li>' + (isHi ? 'ऊपर दाईं ओर <b>Add</b> पर टैप करें।' : 'Tap <b>Add</b> at top right.') + '</li>' +
+                '</ol>' +
+              '</div>'
+            : '<div class="card" style="padding:14px;border-radius:14px;background:#fff;border:1px solid var(--border,#e2e8f0);display:flex;flex-direction:column;gap:10px;">' +
+                '<strong style="font-size:14px;color:var(--text,#111);">' + (isHi ? 'ऑफ़िशियल Android APK (100% ऑफ़लाइन)' : 'Official Android APK (100% Offline)') + '</strong>' +
+                '<p style="margin:0;font-size:12px;color:var(--muted,#666);">' + (isHi ? 'सीधे अपने फोन में APK डाउनलोड करके इंस्टॉल करें। बिना इंटरनेट सब फीचर्स काम करेंगे।' : 'Direct installation file with offline festival templates and canvas tools.') + '</p>' +
+                '<a href="/downloads/FestivalStudio.apk" download="FestivalStudio.apk" class="btn btn-primary" style="padding:12px;border-radius:12px;font-size:14px;font-weight:700;justify-content:center;text-decoration:none;">' +
+                  '📥 ' + (isHi ? 'डाउनलोड Android APK (8.5 MB)' : 'Download Android APK (8.5 MB)') + '</a>' +
+              '</div>' +
+              '<div class="card" style="padding:14px;border-radius:14px;background:#fff;border:1px solid var(--border,#e2e8f0);">' +
+                '<strong style="display:block;font-size:13px;margin-bottom:4px;">' + (isHi ? 'ब्राउज़र मेनू से होम स्क्रीन पर जोड़ें:' : 'Or Add via Browser Menu:') + '</strong>' +
+                '<p style="margin:0;font-size:12px;color:var(--muted,#666);line-height:1.5;">' +
+                  (isHi ? 'Chrome ब्राउज़र में ऊपर दाईं ओर <b>3 डॉट्स (⋮)</b> पर टैप करें और <b>"Install app"</b> या <b>"Add to Home screen"</b> चुनें।' : 'In Chrome, tap the <b>3 dots menu (⋮)</b> at top right, then select <b>"Install app"</b> or <b>"Add to Home screen"</b>.') +
+                '</p>' +
+              '</div>') +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(modal);
+
+    function closeModal() {
+      modal.classList.add('closing');
+      setTimeout(function () { modal.remove(); }, 200);
+    }
+
+    var closeBtn = modal.querySelector('.app-update-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+  };
+
+    FS.setDrawer = function(open) {
+    var drawer = document.getElementById('drawer');
+    var backdrop = document.getElementById('drawer-backdrop');
+    var btn = document.getElementById('menu-btn');
+    if (!drawer) return;
+    var isOpen = Boolean(open);
+    drawer.setAttribute('data-open', String(isOpen));
+    if (backdrop) backdrop.setAttribute('data-open', String(isOpen));
+    if (btn) btn.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('drawer-open', isOpen);
+  };
+
   function initHeader() {
     var btn = document.getElementById('menu-btn');
     var drawer = document.getElementById('drawer');
@@ -146,9 +495,15 @@
         btn.innerHTML = isOpen ? FS.icon('close', 19) : FS.icon('menu', 19);
         document.body.classList.toggle('drawer-open', isOpen);
       }
+      FS.setDrawer = setDrawer;
 
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
+        // If on desktop (>=1000px), 3-line button opens Settings & Options modal directly
+        if (window.innerWidth >= 1000) {
+          if (FS.openSettingsModal) FS.openSettingsModal();
+          return;
+        }
         var open = drawer.getAttribute('data-open') === 'true';
         setDrawer(!open);
       });
@@ -157,7 +512,22 @@
         setDrawer(false);
       });
 
-      drawer.querySelectorAll('a').forEach(function (a) {
+      // Add Settings & Install item to mobile drawer if not already present
+    if (!drawer.querySelector('.drawer-settings-btn')) {
+      var setRow = FS.el('button', {
+        type: 'button',
+        class: 'drawer-settings-btn',
+        style: 'display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 14px;background:linear-gradient(135deg,rgba(255,119,0,0.12),rgba(225,29,72,0.12));border:1px solid rgba(255,119,0,0.25);border-radius:12px;font-size:14px;font-weight:600;color:var(--brand,#ff7700);cursor:pointer;margin-bottom:6px;'
+      }, '<span style="display:flex;align-items:center;gap:8px;">⚙️ ' + (FS.isApp() ? (FS.LANG === 'hi' ? 'सेटिंग्स व अपडेट चेक' : 'Settings & Check Updates') : (FS.LANG === 'hi' ? 'सेटिंग्स व ऐप इंस्टॉल' : 'Settings & Install App')) + '</span><span>›</span>');
+
+      setRow.addEventListener('click', function() {
+        if (FS.setDrawer) FS.setDrawer(false);
+        if (FS.openSettingsModal) FS.openSettingsModal();
+      });
+      drawer.insertBefore(setRow, drawer.firstChild);
+    }
+
+    drawer.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', function () {
           setDrawer(false);
         });
@@ -698,7 +1068,8 @@
   /* ------------------------------------------------------------------ */
   function initInstall() {
     // Permanently remove any legacy browser install buttons
-    FS.$$('[data-install]').forEach(function (b) { b.remove(); });
+    // Keep install buttons active
+    FS.$$('[data-install]').forEach(function (b) { b.removeAttribute('hidden'); b.style.display = 'inline-flex'; });
   }
 
   /* ------------------------------------------------------------------ */
@@ -835,13 +1206,25 @@
   /* Download App handlers (Website Mode)                                */
   /* ------------------------------------------------------------------ */
   function initDownloadButtons() {
-    FS.$$('[data-download-apk], [data-download-app]').forEach(function (btn) {
+    // 1. Download APK buttons
+    FS.$$('[data-download-apk]').forEach(function (btn) {
       btn.addEventListener('click', function (e) {
-        var isDirectApk = btn.hasAttribute('data-download-apk') || btn.getAttribute('data-download-app') === 'apk';
-        if (isDirectApk) {
-          e.preventDefault();
+        var apkUrl = (CFG.app && CFG.app.apkDownloadUrl) || '/downloads/FestivalStudio.apk';
+        FS.toast(FS.LANG === 'hi' ? 'Festival Studio Android APK डाउनलोड हो रहा है...' : 'Downloading Festival Studio Android APK...', 'ok', 3500);
+      });
+    });
+
+    // 2. Download / Install App buttons (e.g. in header or action cards)
+    FS.$$('[data-download-app]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        // If native PWA install prompt is ready, offer it directly
+        if (FS.promptInstall) {
+          FS.promptInstall();
+        } else {
+          // Fallback to downloading direct APK
           var apkUrl = (CFG.app && CFG.app.apkDownloadUrl) || '/downloads/FestivalStudio.apk';
-          FS.toast(FS.t('Downloading Festival Studio Android APK...'), 'ok', 3500);
+          FS.toast(FS.LANG === 'hi' ? 'Festival Studio Android APK डाउनलोड हो रहा है...' : 'Downloading Festival Studio Android APK...', 'ok', 3500);
           var a = document.createElement('a');
           a.href = apkUrl;
           a.download = 'FestivalStudio.apk';
@@ -849,6 +1232,16 @@
           a.click();
           a.remove();
         }
+      });
+    });
+
+    // 3. Any element with [data-install] or [data-install-btn]
+    FS.$$('[data-install], [data-install-btn]').forEach(function (btn) {
+      btn.removeAttribute('hidden');
+      btn.style.display = 'inline-flex';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (FS.promptInstall) FS.promptInstall();
       });
     });
   }
@@ -1142,6 +1535,10 @@
                 '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'हमारे बारे में (About App)' : 'About Festival Studio') + '</span>' +
                 '<span style="color:var(--muted,#999);">&rsaquo;</span>' +
               '</a>' +
+              '<button type="button" class="more-row btn-more-check-update" style="width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--border,#f1f5f9);cursor:pointer;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;">' +
+                '<span style="font-size:13px;color:var(--text,#111);font-weight:600;">🔄 ' + (isHi ? 'ऐप अपडेट चेक करें (Check for Updates)' : 'Check for Updates') + '</span>' +
+                '<span style="font-size:11px;color:var(--brand,#ff7700);font-weight:700;">v2.4.0</span>' +
+              '</button>' +
               '<button type="button" class="more-row btn-share-app" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;">' +
                 '<span style="font-size:13px;color:var(--text,#111);">' + (isHi ? 'ऐप शेयर करें (Share App)' : 'Share Festival Studio App') + '</span>' +
                 '<span style="font-size:14px;">↗</span>' +
@@ -1188,6 +1585,18 @@
         } catch(e) {}
         themeBtn.textContent = now === 'dark' ? '🌙 Dark' : '☀️ Light';
         FS.toast(now === 'dark' ? 'Dark theme enabled' : 'Light theme enabled', 'info', 1400);
+      });
+    }
+
+    // Check for updates button
+    var moreUpdateBtn = modal.querySelector('.btn-more-check-update');
+    if (moreUpdateBtn) {
+      moreUpdateBtn.addEventListener('click', function() {
+        if (typeof AppUpdater !== 'undefined' && AppUpdater.checkUpdate) {
+          AppUpdater.checkUpdate(true);
+        } else {
+          FS.toast(isHi ? 'आपका ऐप पहले से ही नवीनतम वर्शन (v2.4.0) पर है!' : 'Your app is already on the latest version (v2.4.0)!', 'ok', 3000);
+        }
       });
     }
 
@@ -1436,7 +1845,22 @@
       var drawer = document.getElementById('drawer');
       if (drawer) {
         // Remove website-only links from drawer
-        drawer.querySelectorAll('a').forEach(function (a) {
+        // Add Settings & Install item to mobile drawer if not already present
+    if (!drawer.querySelector('.drawer-settings-btn')) {
+      var setRow = FS.el('button', {
+        type: 'button',
+        class: 'drawer-settings-btn',
+        style: 'display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 14px;background:linear-gradient(135deg,rgba(255,119,0,0.12),rgba(225,29,72,0.12));border:1px solid rgba(255,119,0,0.25);border-radius:12px;font-size:14px;font-weight:600;color:var(--brand,#ff7700);cursor:pointer;margin-bottom:6px;'
+      }, '<span style="display:flex;align-items:center;gap:8px;">⚙️ ' + (FS.isApp() ? (FS.LANG === 'hi' ? 'सेटिंग्स व अपडेट चेक' : 'Settings & Check Updates') : (FS.LANG === 'hi' ? 'सेटिंग्स व ऐप इंस्टॉल' : 'Settings & Install App')) + '</span><span>›</span>');
+
+      setRow.addEventListener('click', function() {
+        if (FS.setDrawer) FS.setDrawer(false);
+        if (FS.openSettingsModal) FS.openSettingsModal();
+      });
+      drawer.insertBefore(setRow, drawer.firstChild);
+    }
+
+    drawer.querySelectorAll('a').forEach(function (a) {
           var h = a.getAttribute('href') || '';
           if (/about|contact|faq|how-it-works|app\.html|cookies|terms|privacy|licences|dmca|sitemap/i.test(h)) {
             a.remove();

@@ -63,6 +63,9 @@
       list.unshift(draft);
       while (list.length > 12) list.pop();
       var saved = Store.set('drafts', list);
+      if (saved && FS.CloudDB && FS.CloudDB.saveDraftToCloud) {
+        try { FS.CloudDB.saveDraftToCloud(draft); } catch (e) {}
+      }
       return saved ? draft.id : null;
     },
     getDraft: function (id) {
@@ -71,6 +74,9 @@
     deleteDraft: function (id) {
       var list = Store.get('drafts', []).filter(function (d) { return d.id !== id; });
       Store.set('drafts', list);
+      if (FS.CloudDB && FS.CloudDB.deleteCloudDraft) {
+        try { FS.CloudDB.deleteCloudDraft(id); } catch (e) {}
+      }
     },
         /* ---- favorites (templates, wishes, designs) ---- */
     listFavorites: function (type) {

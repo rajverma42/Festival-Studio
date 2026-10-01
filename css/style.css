@@ -293,7 +293,7 @@ p { margin: 0 0 1em; }
 
 @media (min-width: 1000px) {
   .nav { display: flex; align-items: center; gap: 2px; margin-left: 14px; }
-  #menu-btn { display: none; }
+  #menu-btn { display: inline-flex !important; }
   .drawer, .drawer-backdrop { display: none !important; }
 }
 

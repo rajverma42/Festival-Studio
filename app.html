@@ -107,8 +107,12 @@
           <small class="muted">Android APK & PWA · ~6.8 MB · No signup required</small>
         </div>
       </div>
-      <div class="download-app-actions" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
-        <a class="btn btn-primary btn-lg" href="downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
+      <div class="download-app-actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;">
+        <button type="button" class="btn btn-primary btn-lg btn-install-app" onclick="if(window.FS&&FS.promptInstall)FS.promptInstall();">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ⚡ Install App Now
+        </button>
+        <a class="btn btn-dark btn-lg" href="downloads/FestivalStudio.apk" download="FestivalStudio.apk" data-download-apk>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
           Download Android APK
         </a>
@@ -116,60 +120,6 @@
           📱 Launch App Mode
         </a>
       </div>
-      <p class="hint" style="margin-top:12px">
-        💡 <strong>Tip:</strong> Android users can download the direct APK or tap Instant Install to add Festival Studio to the home screen.
-      </p>
-    </div>
-
-    <!-- Website vs App Differences Table -->
-    <h2>Website vs App — What is the difference?</h2>
-    <div style="overflow-x:auto;margin:16px 0">
-      <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)">
-        <thead>
-          <tr style="background:var(--surface-2);text-align:left;border-bottom:1px solid var(--border)">
-            <th style="padding:12px 14px">Feature</th>
-            <th style="padding:12px 14px">Website</th>
-            <th style="padding:12px 14px">Festival Studio App</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>Website Ads (Web Banners)</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">Yes (Web banners support site)</td>
-            <td style="padding:10px 14px"><strong style="color:#10B981">❌ NONE (Website ads never show in app)</strong></td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>App In-App Ads</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">No</td>
-            <td style="padding:10px 14px"><strong style="color:#3B82F6">✅ Google AdMob Ads (Native & In-App)</strong></td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>Navigation & Interface</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">Browser URL bar & header</td>
-            <td style="padding:10px 14px">Full-screen + Mobile Bottom Bar</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 14px"><strong>Offline Mode</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">Requires internet initially</td>
-            <td style="padding:10px 14px"><strong style="color:#10B981">100% Offline ready</strong></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="app-top" aria-label="Advertisement area">
-  AD SLOT<small>app-top</small>
-</div>
-
-    <h2>Why install it</h2>
-    <div class="steps">
-      <div class="step"><h3>Works offline</h3><p>After your first visit the editor, templates, stickers and wishes are stored on your device, so you can finish a post with no signal at all.</p></div>
-      <div class="step"><h3>Opens like an app</h3><p>A home screen icon and a full-screen window, with no address bar eating space on a small phone.</p></div>
-      <div class="step"><h3>Nothing to sign up for</h3><p>No account, no email, no permissions to accept. Your photos never leave your device.</p></div>
-      <div class="step"><h3>Barely any space</h3><p>The whole app is a few megabytes, a fraction of a typical store download.</p></div>
     </div>
 
     <h2>Android — Chrome, Edge or Brave</h2>
