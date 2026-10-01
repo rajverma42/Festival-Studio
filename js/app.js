@@ -379,20 +379,33 @@
 
   FS.promptInstall = function () {
     var isHi = FS.LANG === 'hi';
+    // 1. If native PWA install prompt is ready, trigger it
     if (deferredInstallPrompt) {
       deferredInstallPrompt.prompt();
       deferredInstallPrompt.userChoice.then(function (choice) {
         if (choice.outcome === 'accepted') {
           FS.toast(isHi ? 'ऐप इंस्टॉल हो रहा है...' : 'Installing app...', 'ok', 2500);
-        } else {
-          FS.toast(isHi ? 'इंस्टॉलेशन रद्द किया गया' : 'Installation cancelled', 'info', 2000);
         }
         deferredInstallPrompt = null;
       });
       return;
     }
 
-    // If beforeinstallprompt is not supported or not yet triggered (e.g. desktop/iOS/Safari or direct APK):
+    // 2. If Android mobile browser, trigger direct APK download immediately so user gets the app instantly!
+    var isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+      var apkUrl = (CFG.app && CFG.app.apkDownloadUrl) || '/downloads/FestivalStudio.apk';
+      FS.toast(isHi ? 'Festival Studio Android APK डाउनलोड हो रहा है...' : 'Downloading Festival Studio APK...', 'ok', 4000);
+      var a = document.createElement('a');
+      a.href = apkUrl;
+      a.download = 'FestivalStudio.apk';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { a.remove(); }, 100);
+      return;
+    }
+
+    // 3. For all other browsers (Desktop Chrome, iOS Safari, etc.), open the full Install Modal
     FS.openInstallModal();
   };
 

@@ -107,19 +107,69 @@
           <small class="muted">एंड्रॉइड APK व PWA · ~6.8 MB · कोई साइनअप नहीं</small>
         </div>
       </div>
-      <div class="download-app-actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;">
-        <button type="button" class="btn btn-primary btn-lg btn-install-app" onclick="if(window.FS&&FS.promptInstall)FS.promptInstall();">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          ऐप इंस्टॉल करें (Install App)
-        </button>
-        <a class="btn btn-dark btn-lg" href="downloads/FestivalStudio.apk" download="FestivalStudio.apk" data-download-apk>
+      <div class="download-app-actions" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+        <a class="btn btn-primary btn-lg" href="../downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-          Android APK डाउनलोड
+          Android APK डाउनलोड करें
         </a>
         <a class="btn btn-ghost btn-lg" href="index.html?mode=app">
-          📱 ऐप मोड चलाएँ
+          📱 ऐप मोड खोलें
         </a>
       </div>
+      <p class="hint" style="margin-top:12px">
+        💡 <strong>सुझाव:</strong> एंड्रॉइड यूज़र सीधे APK डाउनलोड कर सकते हैं, या ब्राउज़र मेन्यू से "Install App" चुन सकते हैं।
+      </p>
+    </div>
+
+    <!-- Website vs App Differences Table -->
+    <h2>वेबसाइट और ऐप में अंतर</h2>
+    <div style="overflow-x:auto;margin:16px 0">
+      <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)">
+        <thead>
+          <tr style="background:var(--surface-2);text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:12px 14px">फ़ीचर</th>
+            <th style="padding:12px 14px">वेबसाइट (Website)</th>
+            <th style="padding:12px 14px">ऐप (Festival Studio App)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>वेबसाइट ऐड्स (Website Ads)</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">हाँ (वेब ऐड्स दिखते हैं)</td>
+            <td style="padding:10px 14px"><strong style="color:#10B981">❌ बंद (ऐप में वेबसाइट ऐड्स नहीं दिखेंगे)</strong></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>ऐप ऐड्स (App Ads)</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">नहीं</td>
+            <td style="padding:10px 14px"><strong style="color:#3B82F6">✅ Google AdMob ऐड्स (बैनर व इंटरस्टिशियल)</strong></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:10px 14px"><strong>इंटरफ़ेस व नेविगेशन</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">ब्राउज़र एड्रेस बार व हेडर</td>
+            <td style="padding:10px 14px">फ़ुल स्क्रीन + मोबाइल बॉटम नेविगेशन बार</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px"><strong>ऑफ़लाइन काम</strong></td>
+            <td style="padding:10px 14px;color:var(--muted)">पहली बार इंटरनेट चाहिए</td>
+            <td style="padding:10px 14px"><strong style="color:#10B981">100% ऑफ़लाइन (बिना इंटरनेट तैयार)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
+     once the visitor accepts the cookie notice (see js/config.js). -->
+<div class="ad-slot" data-size="leaderboard" data-ad-slot="app-top" aria-label="Advertisement area">
+  विज्ञापन स्थान<small>app-top</small>
+</div>
+
+    <h2>इंस्टॉल क्यों करें</h2>
+    <div class="steps">
+      <div class="step"><h3>ऑफ़लाइन चलता है</h3><p>पहली बार खोलने के बाद एडिटर, टेम्पलेट, स्टिकर और शुभकामनाएँ आपके डिवाइस पर सेव हो जाती हैं — बिना नेटवर्क के भी पोस्ट बन जाएगी।</p></div>
+      <div class="step"><h3>ऐप जैसा खुलता है</h3><p>होम स्क्रीन पर आइकन और फ़ुल स्क्रीन विंडो — छोटे फ़ोन पर एड्रेस बार की जगह नहीं घेरती।</p></div>
+      <div class="step"><h3>साइनअप कुछ नहीं</h3><p>न अकाउंट, न ईमेल, न कोई परमिशन। आपकी फ़ोटो कभी डिवाइस से बाहर नहीं जाती।</p></div>
+      <div class="step"><h3>जगह ना के बराबर</h3><p>पूरा ऐप कुछ ही मेगाबाइट का है — आम स्टोर डाउनलोड से कहीं कम।</p></div>
     </div>
 
     <h2>एंड्रॉइड — Chrome, Edge या Brave</h2>
@@ -214,6 +264,7 @@
 </footer>
   <script src="../js/config.js" defer></script>
   <script src="../js/storage.js" defer></script>
+  <script src="../js/firebase-init.js" defer></script>
   <script src="../js/i18n.js" defer></script>
   <script src="../js/festivals.js" defer></script>
   <script src="../js/wishes.js" defer></script>

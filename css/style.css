@@ -1079,3 +1079,92 @@ body.is-app-mode .drawer {
 .more-row:hover, .more-row:active {
   background: var(--surface-soft, #f8fafc);
 }
+
+
+/* Responsive Header Constraints - Prevents 3-line menu button (#menu-btn) from being pushed off mobile screens */
+.site-header {
+  overflow: visible;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: var(--header-h);
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+#menu-btn {
+  display: inline-flex !important;
+  flex-shrink: 0 !important;
+  z-index: 62;
+}
+
+@media (max-width: 640px) {
+  .logo {
+    min-width: 0;
+    max-width: calc(100% - 190px);
+  }
+  .logo span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .logo small {
+    display: none;
+  }
+  .btn-download-app {
+    padding: 5px 9px;
+    font-size: .74rem;
+    gap: 4px;
+  }
+  .btn-download-app span {
+    display: none;
+  }
+  .btn-download-app::after {
+    content: "App";
+    font-weight: 700;
+  }
+  .lang-pill {
+    padding: 4px 8px;
+    font-size: .75rem;
+  }
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 380px) {
+  .logo-mark {
+    width: 30px;
+    height: 30px;
+  }
+  .header-actions {
+    gap: 4px;
+  }
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+
+/* Mobile Drawer Settings & Action Button */
+.drawer .drawer-settings-btn {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  display: flex !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+.drawer[data-open="true"] .drawer-settings-btn {
+  opacity: 1 !important;
+  transform: none !important;
+}
