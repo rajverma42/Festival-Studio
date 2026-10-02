@@ -1,0 +1,33 @@
+# Built application files
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Gradle files
+.gradle/
+build/
+app/build/
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Keystores & Signing
+*.jks
+*.keystore
+secrets.xml
+
+# Node & Web
+node_modules/
+npm-debug.log
+EOF
