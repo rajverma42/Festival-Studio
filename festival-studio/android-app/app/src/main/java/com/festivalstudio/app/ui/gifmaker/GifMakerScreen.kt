@@ -22,10 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.festivalstudio.app.utils.AnimatedGifEncoder
 import com.festivalstudio.app.utils.MediaSaver
 import kotlinx.coroutines.Dispatchers
@@ -122,14 +125,30 @@ fun GifMakerScreen(
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(Color.DarkGray)
                         ) {
-                            Text(
-                                text = "#${index + 1}",
-                                color = Color.White,
-                                fontSize = 12.sp,
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(uri)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Frame ${index + 1}",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Color.Black.copy(alpha = 0.6f),
                                 modifier = Modifier
                                     .align(Alignment.TopStart)
                                     .padding(4.dp)
-                            )
+                            ) {
+                                Text(
+                                    text = "#${index + 1}",
+                                    color = Color.White,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                )
+                            }
                             IconButton(
                                 onClick = { selectedImages.removeAt(index) },
                                 modifier = Modifier.align(Alignment.TopEnd)

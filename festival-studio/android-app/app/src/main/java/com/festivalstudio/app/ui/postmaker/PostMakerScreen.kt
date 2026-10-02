@@ -40,11 +40,13 @@ import com.festivalstudio.app.utils.MediaSaver
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostMakerScreen(
+    initialTemplateId: String? = null,
     onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val templates = FestivalRepository.templates
-    var selectedTemplateIndex by remember { mutableStateOf(0) }
+    val initialIndex = templates.indexOfFirst { it.id == initialTemplateId }.let { if (it >= 0) it else 0 }
+    var selectedTemplateIndex by remember { mutableStateOf(initialIndex) }
     val currentTemplate = templates[selectedTemplateIndex]
 
     var userGreeting by remember { mutableStateOf(currentTemplate.greeting) }

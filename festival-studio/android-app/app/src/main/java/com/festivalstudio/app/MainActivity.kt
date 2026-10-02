@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -48,8 +50,16 @@ fun FestivalStudioApp() {
                 onNavigate = { route -> navController.navigate(route) }
             )
         }
-        composable(Screen.PostMaker.route) {
+        composable(
+            route = Screen.PostMaker.route,
+            arguments = listOf(navArgument("templateId") {
+                type = NavType.StringType
+                defaultValue = "diwali-1"
+            })
+        ) { backStackEntry ->
+            val templateId = backStackEntry.arguments?.getString("templateId") ?: "diwali-1"
             PostMakerScreen(
+                initialTemplateId = templateId,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

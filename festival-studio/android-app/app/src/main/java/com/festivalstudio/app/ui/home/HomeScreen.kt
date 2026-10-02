@@ -110,7 +110,7 @@ fun HomeScreen(
                         subtitle = "HD Cards & Frames",
                         icon = "🖼️",
                         modifier = Modifier.weight(1f),
-                        onClick = { onNavigate(Screen.PostMaker.route) }
+                        onClick = { onNavigate(Screen.PostMaker.createRoute("diwali-1")) }
                     )
                     CreationToolCard(
                         title = "GIF Maker",
@@ -147,7 +147,7 @@ fun HomeScreen(
             }
 
             items(FestivalRepository.templates) { template ->
-                TemplateItemRow(template = template, onClick = { onNavigate(Screen.PostMaker.route) })
+                TemplateItemRow(template = template, onClick = { onNavigate(Screen.PostMaker.createRoute(template.id)) })
             }
 
             item {

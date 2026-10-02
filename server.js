@@ -30,13 +30,13 @@ app.get(['/api/app-info', '/api/app-update', '/api/version'], (req, res) => {
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.json({
     name: 'Festival Studio App',
-    latestVersion: '2.4.1',
-    latestVersionCode: 241,
+    latestVersion: '2.4.0',
+    latestVersionCode: 240,
     currentVersion: '2.4.0',
     packageName: 'net.mikespub.mywebview',
-    apkUrl: '/downloads/FestivalStudio.apk?v=20260929_1',
-    size: '8.3 MB',
-    releaseDate: '2026-09-29',
+    apkUrl: '/downloads/FestivalStudio.apk',
+    size: '8.2 MB',
+    releaseDate: '2026-10-01',
     minAndroid: 'Android 5.0 (Lollipop)+',
     whatsNew: [
       '⚡ Direct fast update from official website',
