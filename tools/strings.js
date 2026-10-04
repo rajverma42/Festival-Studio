@@ -54,11 +54,30 @@ const en = {
     features: [
       ['🖼️', 'Canvas editor', 'Drag, resize, rotate and layer text, photos, shapes and stickers on a true canvas — not a fake preview.'],
       ['🎞️', 'Real GIF export', 'Animated greetings encoded on your own device with a built-in GIF encoder. No API, no upload, no waiting queue.'],
+      ['🎥', 'AI Video Reels (Coming Soon 🚀)', 'Cinematic 9:16 festival video templates with devotional audio, temple bells & animated diyas powered by Google Veo AI are arriving soon!'],
       ['🇮🇳', 'Hindi & English', 'Proper Unicode Devanagari support with हिन्दी, English and Hinglish wishes for every festival.'],
       ['🏪', 'Business posts', 'Add your business name, logo, phone, website and offer — perfect for shops, clinics and service businesses.'],
-      ['🔒', 'Private by design', 'No account, no tracking of your designs, no photo uploads. Drafts stay in your own browser storage.'],
-      ['⚡', 'Built for phones', 'Touch-friendly controls, lazy-loaded previews and a fast first load even on a 4G connection.']
+      ['🔒', 'Private by design', 'No account, no tracking of your designs, no photo uploads. Drafts stay in your own browser storage.']
     ],
+    appDownload: {
+      eyebrow: 'Official Mobile App',
+      head: 'Get the Festival Studio App',
+      sub: 'Create stunning festival posts and wishes on the go. Works 100% offline, zero ads popups, fast & private.',
+      apkTitle: 'Android APK Download',
+      apkBadge: 'Recommended',
+      apkDesc: 'Direct APK installation for all Android smartphones (Android 5.0+). Full-screen experience, completely offline.',
+      apkBtn: 'Download Android APK (~8.2 MB)',
+      pwaTitle: 'Web App (PWA)',
+      pwaBadge: '0 MB Storage',
+      pwaDesc: 'Instant 1-tap install on iPhone (iOS Safari), Android and PC. Always up to date with zero storage required.',
+      pwaBtn: 'Launch / Install Web App',
+      qrTitle: 'Scan QR to Install on Phone',
+      qrDesc: 'Point your mobile phone camera at this QR code to download and install the app instantly.',
+      stepsHead: 'How to install Festival Studio on Android in 3 simple steps:',
+      step1: ['1. Download APK', 'Click the "Download Android APK" button above to save the installer on your phone.'],
+      step2: ['2. Open Downloaded File', 'Tap the notification or open FestivalStudio.apk from your Downloads folder.'],
+      step3: ['3. Tap Install & Done', 'Confirm "Install" (allow "Install from unknown source" if prompted) and start designing!']
+    },
     stepsEyebrow: 'Three steps', stepsHead: 'How Festival Studio works',
     steps: [
       ['Choose a festival or template', 'Start from any of the ready-made designs, or open a blank canvas in the size you need.'],
@@ -360,6 +379,32 @@ const en = {
     h2wishes: 'Festival wishes', h2legal: 'Legal & info', h2hi: 'हिन्दी pages'
   },
 
+  video: {
+    title: 'Festival Video & Reels Maker — Coming Soon | Festival Studio',
+    desc: 'Cinematic AI festival video templates powered by Google Veo AI are arriving soon! Vertical reels with devotional chants, temple bells, and personalized business branding.',
+    h1: 'AI Festival Video & Reels Maker',
+    badge: '🚀 COMING SOON',
+    lead: 'We are integrating Google’s cutting-edge Veo AI video engine. Soon you will be able to generate 9:16 vertical festive reels with temple bells, devotional music, animated diya sparks, and your own shop logo!',
+    teaserHead: 'What is coming in Festival Video Studio:',
+    teaserFeatures: [
+      ['🎬', '9:16 Vertical HD Reels', 'Designed specifically for Instagram Reels, YouTube Shorts, and WhatsApp Status with smooth transitions.'],
+      ['🔔', 'Divine Chants & Temple Bells', 'Authentic Indian festival audio themes, aarti chimes, dhol beats, and ambient festival sounds.'],
+      ['✨', 'Animated Festive Overlays', 'Realistic flickering diyas, vibrant holi gulal explosions, sparkling firecrackers, and flower showers.'],
+      ['🏷️', 'Auto-Branding Overlay', 'Your photo, shop name, mobile number, and brand logo smoothly placed without obstructing the video.'],
+      ['⚡', 'Fast 1080p HD Video Export', 'One-click high-definition export formatted for instant WhatsApp sharing with family and customers.']
+    ],
+    notifyHead: 'Be the first to know when Video Reels launch',
+    notifySub: 'Get early VIP access and free video templates as soon as the Veo AI video engine goes live.',
+    notifyBtn: 'Notify Me',
+    notifyPlaceholder: 'Enter your email or WhatsApp number',
+    activeToolsHead: 'While you wait, create free festival posts & GIFs right now:',
+    activeToolsSub: 'Our Post Maker, GIF Maker, and WhatsApp Status tools are 100% active, free, and watermark-free.',
+    btnPost: '🎨 Create Festival Post (Free)',
+    btnGif: '🎞️ Create Animated GIF Greetings',
+    btnStatus: '📱 Create WhatsApp Status (9:16)',
+    btnWishes: '💬 Browse 1,000+ Festival Wishes'
+  },
+
   notFound: {
     title: 'Page not found — Festival Studio',
     desc: 'That page does not exist. Head back to the festival post maker.',
@@ -417,11 +462,30 @@ const hi = {
     features: [
       ['🖼️', 'कैनवास एडिटर', 'टेक्स्ट, फ़ोटो, आकृतियाँ और स्टिकर — खिसकाएँ, बड़ा-छोटा करें, घुमाएँ। असली कैनवास, नकली प्रीव्यू नहीं।'],
       ['🎞️', 'असली GIF एक्सपोर्ट', 'एनिमेटेड ग्रीटिंग आपके ही डिवाइस पर बनती है। न API, न अपलोड, न इंतज़ार।'],
+      ['🎥', 'AI वीडियो रील्स (जल्द आ रहा है 🚀)', 'Google Veo AI से संचालित सिनेमाई 9:16 रील्स, मंदिर की घंटियों, भक्ति संगीत व एनिमेटेड दीयों के साथ जल्द उपलब्ध होंगे!'],
       ['🇮🇳', 'हिन्दी और अंग्रेज़ी', 'पूरा यूनिकोड देवनागरी सपोर्ट — हर त्योहार के लिए हिन्दी, English और Hinglish शुभकामनाएँ।'],
       ['🏪', 'बिज़नेस पोस्ट', 'दुकान, क्लिनिक या सर्विस बिज़नेस के लिए — नाम, लोगो, फ़ोन, वेबसाइट और ऑफ़र जोड़ें।'],
-      ['🔒', 'प्राइवेसी पहले', 'न अकाउंट, न ट्रैकिंग, न फ़ोटो अपलोड। ड्राफ़्ट आपके ब्राउज़र में ही रहते हैं।'],
-      ['⚡', 'फ़ोन के लिए बना', 'टच-फ्रेंडली कंट्रोल, हल्के प्रीव्यू और 4G पर भी तेज़ लोडिंग।']
+      ['🔒', 'प्राइवेसी पहले', 'न अकाउंट, न ट्रैकिंग, न फ़ोटो अपलोड। ड्राफ़्ट आपके ब्राउज़र में ही रहते हैं।']
     ],
+    appDownload: {
+      eyebrow: 'ऑफिशियल मोबाइल ऐप',
+      head: 'फेस्टिवल स्टूडियो ऐप डाउनलोड करें',
+      sub: 'कहीं भी, कभी भी शानदार त्योहार पोस्ट बनाएं। 100% ऑफलाइन काम करता है, कोई विज्ञापन पॉपअप नहीं और सुपरफास्ट एक्सपोर्ट।',
+      apkTitle: 'एंड्रॉयड APK डाउनलोड',
+      apkBadge: 'सुझाया गया',
+      apkDesc: 'सभी एंड्रॉयड स्मार्टफोन (5.0+) के लिए डायरेक्ट APK। तेज़, सुरक्षित और बिना इंटरनेट के भी पूरा काम करता है।',
+      apkBtn: 'Android APK डाउनलोड करें (~8.2 MB)',
+      pwaTitle: 'वेब ऐप (PWA)',
+      pwaBadge: '0 MB स्टोरेज',
+      pwaDesc: 'iPhone (iOS सफारी), एंड्रॉयड और कंप्यूटर पर बिना किसी डाउनलोड के 1-टैप में इंस्टॉल करें।',
+      pwaBtn: 'वेब ऐप खोलें / इंस्टॉल करें',
+      qrTitle: 'मोबाइल पर इंस्टॉल करने के लिए QR स्कैन करें',
+      qrDesc: 'अपने फोन के कैमरे से यह QR कोड स्कैन करके सीधे ऐप डाउनलोड करें।',
+      stepsHead: 'एंड्रॉयड पर APK इंस्टॉल करने के 3 आसान कदम:',
+      step1: ['1. APK डाउनलोड करें', 'ऊपर दिए गए बटन पर टैप करके FestivalStudio.apk फाइल डाउनलोड करें।'],
+      step2: ['2. फाइल खोलें', 'नोटिफिकेशन बार या डाउनलोड फोल्डर से डाउनलोड हुई फाइल पर टैप करें।'],
+      step3: ['3. इंस्टॉल पर टैप करें', 'अगर पूछा जाए तो "Install from this source" को अनुमति दें और पोस्ट बनाना शुरू करें!']
+    },
     stepsEyebrow: 'तीन कदम', stepsHead: 'फेस्टिवल स्टूडियो कैसे काम करता है',
     steps: [
       ['त्योहार या टेम्पलेट चुनें', 'तैयार डिज़ाइन में से कोई चुनें, या अपनी पसंद के साइज़ में खाली कैनवास खोलें।'],
@@ -615,6 +679,32 @@ const hi = {
     gifCta: 'एनिमेटेड {name} GIF बनाएँ →',
     tip: 'सुझाव: किसी भी लाइन के आगे <strong>कॉपी</strong> दबाइए और व्हाट्सऐप, इंस्टाग्राम या स्टेटस में पेस्ट कीजिए।',
     relatedHead: 'दूसरे त्योहारों की शुभकामनाएँ'
+  },
+
+  video: {
+    title: 'त्योहार वीडियो व रील्स मेकर — जल्द आ रहा है | फेस्टिवल स्टूडियो',
+    desc: 'Google Veo AI से संचालित सिनेमाई त्योहार वीडियो टेम्पलेट्स जल्द आ रहे हैं! 9:16 वर्टिकल रील्स, मंदिर की घंटियों, भक्ति संगीत और कस्टमाइज़्ड दुकान के लोगो के साथ।',
+    h1: 'त्योहार AI वीडियो व रील्स मेकर',
+    badge: '🚀 जल्द आ रहा है (COMING SOON)',
+    lead: 'हम Google के अत्याधुनिक Veo AI वीडियो इंजन को जोड़ रहे हैं। जल्द ही आप 9:16 वर्टिकल रील्स, मंदिर की घंटियों, भक्ति संगीत, एनिमेटेड दीयों और अपनी दुकान के लोगो के साथ सिनेमाई वीडियो स्टेटस बना सकेंगे!',
+    teaserHead: 'फेस्टिवल वीडियो स्टूडियो में क्या खास आ रहा है:',
+    teaserFeatures: [
+      ['🎬', '9:16 वर्टिकल HD रील्स', 'इंस्टाग्राम रील्स, यूट्यूब शॉर्ट्स और व्हाट्सऐप स्टेटस के लिए विशेष रूप से डिज़ाइन किए गए वीडियो टेम्पलेट्स।'],
+      ['🔔', 'मंदिर की घंटियाँ व भक्ति संगीत', 'आरती की घंटियाँ, शंख ध्वनि, ढोल की थाप और पारंपरिक त्योहारों का दिव्य ऑडियो।'],
+      ['✨', 'एनिमेटेड फेस्टिव इफ़ेक्ट्स', 'झिलमिलाते दीये, होली के रंगों का गुलाल, आतिशबाज़ी और फूलों की बारिश के रियलिस्टिक इफ़ेक्ट्स।'],
+      ['🏷️', 'ऑटोमैटिक दुकान ब्रांडिंग', 'आपकी फ़ोटो, दुकान का नाम, मोबाइल नंबर और लोगो वीडियो पर सुंदर रूप से प्रदर्शित होंगे।'],
+      ['⚡', 'सुपरफ़ास्ट 1080p HD वीडियो एक्सपोर्ट', 'एक टैप में फुल HD वीडियो डाउनलोड करें और सीधे व्हाट्सऐप पर अपने ग्राहकों व परिवार को भेजें।']
+    ],
+    notifyHead: 'वीडियो रील्स शुरू होते ही सबसे पहले सूचना पाएँ',
+    notifySub: 'जैसे ही Veo AI वीडियो इंजन लाइव होगा, आपको सबसे पहले मुफ़्त वीडियो टेम्पलेट्स का एक्सेस मिलेगा।',
+    notifyBtn: 'मुझे सूचित करें (Notify Me)',
+    notifyPlaceholder: 'अपना ईमेल या व्हाट्सऐप नंबर लिखें',
+    activeToolsHead: 'तब तक, हमारे चालू टूल्स से मुफ़्त पोस्ट और GIF बनाएँ:',
+    activeToolsSub: 'हमारा पोस्ट मेकर, GIF मेकर और स्टेटस मेकर अभी 100% चालू, मुफ़्त और बिना वॉटरमार्क के उपलब्ध हैं।',
+    btnPost: '🎨 त्योहार पोस्ट बनाएँ (मुफ़्त)',
+    btnGif: '🎞️ एनिमेटेड GIF शुभकामनाएँ बनाएँ',
+    btnStatus: '📱 व्हाट्सऐप स्टेटस बनाएँ (9:16)',
+    btnWishes: '💬 1,000+ तैयार शुभकामनाएँ देखें'
   },
 
   notFound: {

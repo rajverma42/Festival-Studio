@@ -6,6 +6,12 @@
 (function (global) {
   'use strict';
   var FS = (global.FS = global.FS || {});
+  var ready = (typeof FS.ready === 'function') ? FS.ready : function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
+  FS.ready = FS.ready || ready;
 
   var FESTIVAL_THEMES = {
     diwali: {
@@ -450,7 +456,7 @@
     drawFrame();
   };
 
-  FS.ready(function () {
+  ready(function () {
     if (document.getElementById('video-canvas-preview')) {
       new VideoStudio().init();
     }

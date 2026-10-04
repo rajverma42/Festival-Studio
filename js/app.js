@@ -11,7 +11,8 @@
   /* ------------------------------------------------------------------ */
   /* Utilities                                                           */
   /* ------------------------------------------------------------------ */
-  FS.ready = function (fn) {
+  FS.ready = FS.ready || function (fn) {
+    if (typeof fn !== 'function') return;
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
     else fn();
   };
@@ -902,22 +903,161 @@
   };
 
   /* ------------------------------------------------------------------ */
-  /* Permanent App Experience (Always True Native App Mode)              */
+  /* Website vs App Separation (Professional Multi-Platform Engine)      */
   /* ------------------------------------------------------------------ */
   FS.isApp = function () {
-    return true;
+    if (typeof window === 'undefined') return false;
+
+    var search = window.location.search || '';
+    if (/[?&]mode=web(&|$)/i.test(search)) return false;
+
+    // 1. Dedicated App entry page (/app.html or /hi/app.html)
+    var pathname = (window.location && window.location.pathname) || '';
+    if (pathname.indexOf('app.html') !== -1 || pathname.endsWith('/app')) {
+      return true;
+    }
+
+    // 2. Android WebView AssetLoader origin or Native Android wrapper
+    if (window.location && window.location.hostname === 'appassets.androidplatform.net') return true;
+    if (window.AndroidBridge || window.AndroidAdMob || window.isFestivalStudioApp) return true;
+    if (/FestivalStudioApp|net\.mikespub\.mywebview/i.test(navigator.userAgent)) return true;
+
+    // 3. Standalone display-mode (PWA installed on phone or desktop)
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true;
+
+    // 4. Explicit query parameter (?mode=app or ?app=1)
+    if (/[?&](app=1|app=true|mode=app|source=app)(&|$)/i.test(search)) return true;
+
+    // Standard website browsing is always website mode
+    return false;
   };
 
-  FS.setAppMode = function () {
-    return true;
+  FS.setAppMode = function (isApp) {
+    Store.pref('env_mode', isApp ? 'app' : 'web');
+    if (isApp) {
+      window.location.href = (FS.LANG === 'hi' ? 'hi/app.html' : 'app.html');
+    } else {
+      window.location.href = (FS.LANG === 'hi' ? 'hi/index.html' : 'index.html');
+    }
   };
 
-  // Unconditionally apply app mode flags to DOM
+  // Sync app mode flags to DOM
   try {
-    document.documentElement.setAttribute('data-env', 'app');
-    document.documentElement.classList.add('is-app-mode');
-    if (document.body) document.body.classList.add('is-app-mode');
+    if (FS.isApp()) {
+      document.documentElement.setAttribute('data-env', 'app');
+      document.documentElement.classList.add('is-app-mode');
+      if (document.body) document.body.classList.add('is-app-mode');
+    } else {
+      document.documentElement.removeAttribute('data-env');
+      document.documentElement.classList.remove('is-app-mode');
+      if (document.body) document.body.classList.remove('is-app-mode');
+      if (Store && Store.pref && Store.pref('env_mode') === 'app') {
+        Store.pref('env_mode', 'web');
+      }
+    }
   } catch (e) {}
+
+  /* ------------------------------------------------------------------ */
+  /* Video Coming Soon Modal                                             */
+  /* ------------------------------------------------------------------ */
+  FS.openVideoComingSoonModal = function () {
+    var isHi = FS.LANG === 'hi';
+    FS.modal(isHi ? 'वीडियो टेम्पलेट्स 🎬 (जल्द आ रहा है)' : 'Video Templates 🎬 (Coming Soon)', function (body, close) {
+      body.innerHTML =
+        '<div style="text-align:center;padding:12px 6px;">' +
+          '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(99,102,241,0.35);">' +
+            '🚀' +
+          '</div>' +
+          '<h3 style="font-size:1.35rem;margin:0 0 8px;font-weight:700;color:var(--text);">' +
+            (isHi ? 'AI वीडियो रील्स फीचर जल्द आ रहा है!' : 'AI Video Reels is Coming Soon!') +
+          '</h3>' +
+          '<p style="color:var(--muted);font-size:.92rem;line-height:1.5;margin:0 0 20px;">' +
+            (isHi ?
+              'हम Google Veo AI आधारित 9:16 वर्टिकल वीडियो रील्स, आकर्षक त्यौहार साउंडट्रैक्स, और कस्टमाइज़ेबल मोशन टेक्स्ट इफेक्ट्स पर काम कर रहे हैं। यह फीचर अगले अपडेट में लाइव होगा।' :
+              'We are building Google Veo AI-powered 9:16 vertical video templates with festive music soundtracks, animated overlays, and full reels support. Launching in the next release!') +
+          '</p>' +
+          '<div style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:left;margin-bottom:20px;">' +
+            '<div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--text);">' + (isHi ? '✨ आने वाले मुख्य फीचर्स:' : '✨ Upcoming Key Features:') + '</div>' +
+            '<div style="font-size:13px;color:var(--text);display:flex;flex-direction:column;gap:6px;">' +
+              '<div>🎬 <strong>' + (isHi ? '9:16 वर्टिकल रील्स:' : '9:16 Vertical Reels:') + '</strong> ' + (isHi ? 'Instagram Reels और WhatsApp Status के लिए' : 'For Instagram Reels & WhatsApp Status') + '</div>' +
+              '<div>🎵 <strong>' + (isHi ? 'त्यौहार संगीत व साउंड:' : 'Festive Soundtracks:') + '</strong> ' + (isHi ? 'पारंपरिक धुनें व संगीत' : 'Curated traditional festive beats') + '</div>' +
+              '<div>🪄 <strong>' + (isHi ? 'Google Veo AI:' : 'Google Veo AI Engine:') + '</strong> ' + (isHi ? 'ऑटोमैटिक हाई-डेफिनिशन वीडियो जनरेशन' : 'Cinematic high-definition festive animations') + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:10px;justify-content:center;">' +
+            '<a href="' + (FS.BASE || '') + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '" class="btn btn-primary" style="flex:1;justify-content:center;">' +
+              (isHi ? '🎨 पोस्ट मेकर खोलें' : '🎨 Open Post Maker') +
+            '</a>' +
+            '<button type="button" class="btn btn-soft" style="flex:1;" id="btn-close-coming-soon">' +
+              (isHi ? 'ठीक है (Got It)' : 'Got It') +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      var closeBtn = document.getElementById('btn-close-coming-soon');
+      if (closeBtn) closeBtn.addEventListener('click', close);
+    });
+  };
+
+  FS.showVideoComingSoonModal = FS.openVideoComingSoonModal;
+
+  FS.playTempleChime = function () {
+    try {
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      var ctx = new AudioCtx();
+      var now = ctx.currentTime;
+      var freqs = [528, 792, 1056, 1584];
+      freqs.forEach(function (f, i) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, now);
+        gain.gain.setValueAtTime(0.2 / (i + 1), now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 2.6);
+      });
+      if (FS.toast) FS.toast(FS.LANG === 'hi' ? '🔔 मंदिर की घंटियों का दिव्य ऑडियो' : '🔔 Temple Bell Sound Effect');
+    } catch (e) {}
+  };
+
+  FS.showEditorTipsModal = function () {
+    var isHi = FS.LANG === 'hi';
+    FS.modal(isHi ? '💡 फ़ोटो व लोगो लगाने की सचित्र गाइड' : '💡 Photo & Logo Visual Guide', function (body, close) {
+      body.innerHTML =
+        '<div style="padding:10px 4px;">' +
+          '<div style="text-align:center;margin-bottom:18px;">' +
+            '<h3 style="margin:0 0 6px;font-size:1.25rem;">' + (isHi ? '3 आसान कदमों में फ़ोटो और लोगो जोड़ें' : 'Add Photo & Shop Logo in 3 Easy Steps') + '</h3>' +
+            '<p style="color:var(--muted);font-size:0.88rem;margin:0;">' + (isHi ? 'बिना किसी ग्राफ़िक डिज़ाइन जानकारी के सुंदर पोस्ट तैयार करें' : 'Create professional festival posts without any graphic design skills') + '</p>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;">' +
+            '<div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center;">' +
+              '<span style="width:32px;height:32px;border-radius:50%;background:#4f46e5;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none;">1</span>' +
+              '<div><strong>' + (isHi ? 'फ़ोटो (Photo) टैब पर जाएँ' : 'Tap Photo Tab') + '</strong><br><small class="muted">' + (isHi ? 'नीचे या साइडबार में फ़ोटो टैब पर टैप करके गैलरी से अपनी फ़ोटो चुनें।' : 'Click the Photo tab and select your photo from your phone or PC.') + '</small></div>' +
+            '</div>' +
+            '<div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center;">' +
+              '<span style="width:32px;height:32px;border-radius:50%;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none;">2</span>' +
+              '<div><strong>' + (isHi ? 'ड्रैग व रिसाइज़ करें (Drag & Resize)' : 'Position & Resize') + '</strong><br><small class="muted">' + (isHi ? 'फ़ोटो को कोने से पकड़कर छोटा-बड़ा करें और फ़्रेम में सही जगह बैठाएँ।' : 'Drag the photo corners to scale and fit cleanly into the festive frame.') + '</small></div>' +
+            '</div>' +
+            '<div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:12px;align-items:center;">' +
+              '<span style="width:32px;height:32px;border-radius:50%;background:#10b981;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none;">3</span>' +
+              '<div><strong>' + (isHi ? 'दुकान का नाम व लोगो जोड़ें' : 'Add Shop Name & Logo') + '</strong><br><small class="muted">' + (isHi ? 'डिज़ाइन टैब में दुकान का नाम व मोबाइल नंबर लिखें और लोगो अपलोड करें।' : 'Type your shop name, contact number, and upload your brand logo.') + '</small></div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:10px;justify-content:center;">' +
+            '<a class="btn btn-primary" href="' + (FS.BASE || '') + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '" style="flex:1;justify-content:center;">' +
+              (isHi ? '🎨 पोस्ट मेकर में आज़माएँ' : '🎨 Try in Post Maker') +
+            '</a>' +
+            '<button type="button" class="btn btn-ghost" id="btn-close-tips" style="flex:1;">' + (isHi ? 'समझ गया (Close)' : 'Close') + '</button>' +
+          '</div>' +
+        '</div>';
+      var closeBtn = document.getElementById('btn-close-tips');
+      if (closeBtn) closeBtn.addEventListener('click', close);
+    });
+  };
 
   /* ------------------------------------------------------------------ */
   /* Google AdMob Engine (Native bridge only, zero mock HTML DOM boxes)  */
@@ -1161,7 +1301,7 @@
       { href: base + (isHi ? 'hi/index.html' : 'index.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: isHi ? 'होम' : 'Home', match: /index\.html$|^(\/hi)?\/?$/ },
       { href: base + (isHi ? 'hi/templates.html' : 'templates.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>', label: isHi ? 'टेम्पलेट्स' : 'Templates', match: /templates\.html/ },
       { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', label: isHi ? 'नया पोस्ट' : 'Create', match: /post-maker/, special: true },
-      { href: base + 'video-templates.html', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>', label: isHi ? 'वीडियो' : 'Videos', match: /video-templates/ },
+      { href: base + 'video-templates.html', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>', label: isHi ? 'वीडियो (Soon)' : 'Videos (Soon)', match: /video-templates/, comingSoon: true },
       { href: base + (isHi ? 'hi/wishes.html' : 'wishes.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>', label: isHi ? 'शुभकामनाएं' : 'Wishes', match: /wishes/ }
     ];
 
@@ -1169,7 +1309,12 @@
       var isAct = it.match && it.match.test(path);
       var a = FS.el('a', { class: 'app-nav-item' + (isAct ? ' active' : '') + (it.special ? ' app-nav-create' : ''), href: it.href });
       a.innerHTML = it.icon + '<span>' + FS.esc(it.label) + '</span>';
-      if (it.action === 'my-designs') {
+      if (it.comingSoon) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (FS.openVideoComingSoonModal) FS.openVideoComingSoonModal();
+        });
+      } else if (it.action === 'my-designs') {
         a.addEventListener('click', function(e) {
           e.preventDefault();
           if (FS.openMyDesignsModal) FS.openMyDesignsModal();
@@ -1184,6 +1329,14 @@
     });
 
     document.body.appendChild(nav);
+
+    // Global listener for any [data-video-coming-soon] elements
+    FS.$$('[data-video-coming-soon]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (FS.openVideoComingSoonModal) FS.openVideoComingSoonModal();
+      });
+    });
   }
 
   /* ------------------------------------------------------------------ */

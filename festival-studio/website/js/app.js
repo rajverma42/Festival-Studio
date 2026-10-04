@@ -11,7 +11,8 @@
   /* ------------------------------------------------------------------ */
   /* Utilities                                                           */
   /* ------------------------------------------------------------------ */
-  FS.ready = function (fn) {
+  FS.ready = FS.ready || function (fn) {
+    if (typeof fn !== 'function') return;
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
     else fn();
   };
@@ -902,21 +903,59 @@
   };
 
   /* ------------------------------------------------------------------ */
-  /* Permanent App Experience (Always True Native App Mode)              */
+  /* Website vs App Mode Engine                                          */
   /* ------------------------------------------------------------------ */
   FS.isApp = function () {
-    return true;
+    if (typeof window === 'undefined') return false;
+
+    var search = window.location.search || '';
+    if (/[?&]mode=web(&|$)/i.test(search)) return false;
+
+    // 1. Dedicated App entry page (/app.html or /hi/app.html)
+    var pathname = (window.location && window.location.pathname) || '';
+    if (pathname.indexOf('app.html') !== -1 || pathname.endsWith('/app')) {
+      return true;
+    }
+
+    // 2. Android WebView AssetLoader origin or Native Android wrapper
+    if (window.location && window.location.hostname === 'appassets.androidplatform.net') return true;
+    if (window.AndroidBridge || window.AndroidAdMob || window.isFestivalStudioApp) return true;
+    if (/FestivalStudioApp|net\.mikespub\.mywebview/i.test(navigator.userAgent)) return true;
+
+    // 3. Standalone display-mode (PWA installed on phone or desktop)
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true;
+
+    // 4. Explicit query parameter (?mode=app or ?app=1)
+    if (/[?&](app=1|app=true|mode=app|source=app)(&|$)/i.test(search)) return true;
+
+    // Standard website browsing is always website mode
+    return false;
   };
 
-  FS.setAppMode = function () {
-    return true;
+  FS.setAppMode = function (isApp) {
+    Store.pref('env_mode', isApp ? 'app' : 'web');
+    if (isApp) {
+      window.location.href = (FS.LANG === 'hi' ? 'hi/app.html' : 'app.html');
+    } else {
+      window.location.href = (FS.LANG === 'hi' ? 'hi/index.html' : 'index.html');
+    }
   };
 
-  // Unconditionally apply app mode flags to DOM
+  // Sync app mode flags to DOM
   try {
-    document.documentElement.setAttribute('data-env', 'app');
-    document.documentElement.classList.add('is-app-mode');
-    if (document.body) document.body.classList.add('is-app-mode');
+    if (FS.isApp()) {
+      document.documentElement.setAttribute('data-env', 'app');
+      document.documentElement.classList.add('is-app-mode');
+      if (document.body) document.body.classList.add('is-app-mode');
+    } else {
+      document.documentElement.removeAttribute('data-env');
+      document.documentElement.classList.remove('is-app-mode');
+      if (document.body) document.body.classList.remove('is-app-mode');
+      if (Store && Store.pref && Store.pref('env_mode') === 'app') {
+        Store.pref('env_mode', 'web');
+      }
+    }
   } catch (e) {}
 
   /* ------------------------------------------------------------------ */

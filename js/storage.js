@@ -8,6 +8,17 @@
   'use strict';
   var FS = (global.FS = global.FS || {});
   var K = 'fs:';
+
+  /* Universal ready helper so any script can safely queue initialization */
+  FS.ready = FS.ready || function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  };
+
   /* safety net: i18n.js replaces this with the real translator */
   FS.t = FS.t || function (x) { return x; };
 

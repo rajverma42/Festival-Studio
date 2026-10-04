@@ -6,6 +6,12 @@
 (function (global) {
   'use strict';
   var FS = (global.FS = global.FS || {});
+  var ready = typeof FS.ready === 'function' ? FS.ready : function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
+  FS.ready = FS.ready || ready;
   var Store = FS.Store;
   var el = FS.el;
 
@@ -400,7 +406,7 @@
 
   FS.GifMaker = GifMaker;
 
-  FS.ready(function () {
+  ready(function () {
     if (document.getElementById('gif-panel')) new GifMaker().init();
   });
 })(window);

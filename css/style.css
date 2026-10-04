@@ -812,52 +812,102 @@ input[type="color"] { width: 100%; height: 40px; padding: 2px; border: 1px solid
 .wish-item button { flex: none; }
 
 /* ============================================================================
-   PERMANENT NATIVE APP MODE STYLES & LAYOUT
+   PROFESSIONAL WEBSITE & APP SEPARATION
    ========================================================================== */
 
-/* 1. Website marketing & clutter elements are permanently hidden */
-.site-footer,
-.breadcrumb,
-.skip-link,
+/* 1. Unnecessary clutter / fake ad boxes permanently removed */
 .ad-slot,
-.consent,
-.web-only,
-.footer-app-cta,
-.btn-download-app,
-[data-download-apk],
-[data-download-app],
-.download-app-banner,
-.download-app-actions,
 .admob-banner-wrap,
 .admob-fixed-banner,
 .admob-interstitial-back {
   display: none !important;
 }
 
-/* 2. Hide traditional website horizontal nav in header */
-.site-header .nav {
-  display: none !important;
-}
-
-/* 3. Sleek, solid, sticky top App Bar */
+/* 2. Professional Header */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 120;
-  padding: 8px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
   background: var(--bg) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
 }
 
-body {
+/* Desktop Navigation (Website Mode) */
+.site-header .nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+@media (max-width: 960px) {
+  .site-header .nav {
+    display: none !important;
+  }
+}
+
+/* Header Download App Pill Button (Website Mode) */
+.btn-download-app {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: var(--r-full);
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: .82rem;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, .35);
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.btn-download-app:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, .45);
+}
+.btn-download-app svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+/* Website Footer */
+.site-footer {
+  display: block;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 48px 0 24px;
+  margin-top: 50px;
+}
+
+/* App Bottom Navigation Bar (Hidden on Website, Visible in App Mode) */
+.app-bottom-nav {
+  display: none;
+}
+
+/* 3. In App Mode: Hide website-only chrome and show mobile app navigation */
+html[data-env="app"] .site-footer,
+body.is-app-mode .site-footer,
+html[data-env="app"] .site-header .nav,
+body.is-app-mode .site-header .nav,
+html[data-env="app"] .btn-download-app,
+body.is-app-mode .btn-download-app,
+html[data-env="app"] .download-app-banner,
+body.is-app-mode .download-app-banner,
+html[data-env="app"] .web-only,
+body.is-app-mode .web-only {
+  display: none !important;
+}
+
+html[data-env="app"] body,
+body.is-app-mode {
   padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
 }
 
-/* 4. App Bottom Navigation Bar (Always Visible) */
-.app-bottom-nav {
+html[data-env="app"] .app-bottom-nav,
+body.is-app-mode .app-bottom-nav {
   display: flex !important;
   position: fixed;
   bottom: 0;
@@ -1499,3 +1549,398 @@ body.is-app-mode .drawer {
   opacity: 1 !important;
   transform: none !important;
 }
+
+/* ============================================================================
+   WEBSITE HERO & APP DOWNLOAD HUB STYLES (Professional Product Website)
+   ========================================================================== */
+.hero-section {
+  padding: 48px 0 32px;
+  background: radial-gradient(circle at top right, rgba(255, 107, 53, 0.08), transparent 50%),
+              radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.08), transparent 50%);
+  border-bottom: 1px solid var(--border);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 36px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+.hero-copy h1 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  margin: 14px 0 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.hero-lead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 58ch;
+  margin-bottom: 24px;
+}
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.hero-trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Launch App Button */
+.btn-open-app {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff !important;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 99px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  transition: all 0.2s ease;
+}
+.btn-open-app:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+/* Hero Live Preview Mockup Card */
+.hero-mockup-wrapper {
+  position: relative;
+}
+.hero-card-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+.hero-card-preview:hover {
+  transform: translateY(-4px);
+}
+.mockup-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.mockup-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.mockup-dot.red { background: #ef4444; }
+.mockup-dot.yellow { background: #f59e0b; }
+.mockup-dot.green { background: #10b981; }
+.mockup-title {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 6px;
+}
+.mockup-inner-canvas {
+  padding: 16px;
+  background: #18181b;
+}
+.canvas-festive-bg {
+  aspect-ratio: 1/1;
+  background: linear-gradient(135deg, #7c2d12, #991b1b, #450a0a);
+  border-radius: 14px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+.canvas-fest-badge {
+  align-self: flex-start;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ffe082;
+}
+.canvas-fest-headline {
+  font-family: 'Tiro Devanagari Hindi', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  color: #ffe082;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
+  margin: 0;
+  text-align: center;
+}
+.canvas-fest-wish {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  margin: 0;
+  opacity: 0.95;
+}
+.canvas-brand-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.canvas-brand-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: #1e1b4b;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.canvas-brand-text {
+  flex: 1;
+}
+.canvas-brand-text strong {
+  display: block;
+  font-size: 0.82rem;
+  color: #ffffff;
+}
+.canvas-brand-text small {
+  font-size: 0.7rem;
+  color: #cbd5e1;
+}
+.canvas-free-pill {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.mockup-controls-bar {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface);
+}
+
+/* ============================================================================
+   OFFICIAL APP DOWNLOAD HUB SECTION
+   ========================================================================== */
+.app-download-hub-section {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.app-download-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+.download-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.download-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand);
+}
+.download-card.highlight-card {
+  border-color: #6366f1;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
+}
+.download-card-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+.download-icon-box {
+  color: #10b981;
+  margin-bottom: 16px;
+}
+.download-card h3 {
+  font-size: 1.2rem;
+  margin: 0 0 8px;
+}
+.download-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.download-perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.download-perks li {
+  margin-bottom: 6px;
+}
+.qr-code-box {
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px dashed var(--border);
+}
+
+/* 3-Step Install Guide */
+.install-steps-hub {
+  margin-top: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.step-card {
+  position: relative;
+  padding-left: 48px;
+}
+.step-num {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-card strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.step-card p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ============================================================================
+   PROPER APP HEADER & CONTAINER STYLES (App Mode)
+   ========================================================================== */
+.app-standalone-container {
+  padding-bottom: 30px;
+}
+.app-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 990;
+  backdrop-filter: blur(12px);
+}
+.app-top-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.app-brand-icon {
+  border-radius: 8px;
+}
+.app-brand-title {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.app-pro-pill {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+.app-brand-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  display: block;
+}
+.app-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.web-return-btn {
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  color: var(--brand) !important;
+  border: 1px solid var(--border);
+}
+
+/* Coming Soon Tool Card & Badges */
+.app-badge-coming-soon {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #f87171 !important;
+  font-size: 0.68rem !important;
+}
+.feature-coming-soon {
+  border: 1px dashed #f87171;
+  background: rgba(254, 226, 226, 0.08);
+}
+

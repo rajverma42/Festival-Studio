@@ -1,10 +1,16 @@
 /* Festival Studio — templates.html controller */
 (function (global) {
   'use strict';
-  var FS = global.FS;
+  var FS = (global.FS = global.FS || {});
+  var ready = typeof FS.ready === 'function' ? FS.ready : function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
+  FS.ready = FS.ready || ready;
   var PAGE = 24;
 
-  FS.ready(function () {
+  ready(function () {
     var grid = document.getElementById('tpl-grid');
     if (!grid) return;
     var search = document.getElementById('tpl-search');

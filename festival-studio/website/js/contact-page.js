@@ -1,8 +1,15 @@
 /* Festival Studio — contact.html controller (mailto, no backend) */
 (function (global) {
   'use strict';
-  var FS = global.FS;
-  FS.ready(function () {
+  var FS = (global.FS = global.FS || {});
+  var ready = typeof FS.ready === 'function' ? FS.ready : function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
+  FS.ready = FS.ready || ready;
+
+  ready(function () {
     var form = document.getElementById('contact-form');
     if (!form) return;
     var err = document.getElementById('c-error');

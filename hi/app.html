@@ -38,7 +38,21 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <script>
-    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-env','app');document.documentElement.classList.add('is-app-mode');}catch(e){}})();
+    (function(){try{
+      var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');
+      var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+      document.documentElement.setAttribute('data-theme',t);
+      var isApp = window.location.search.indexOf('mode=app')!==-1 ||
+                  window.location.pathname.indexOf('app.html')!==-1 ||
+                  (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+      if(isApp){
+        document.documentElement.setAttribute('data-env','app');
+        document.documentElement.classList.add('is-app-mode');
+      } else {
+        document.documentElement.removeAttribute('data-env');
+        document.documentElement.classList.remove('is-app-mode');
+      }
+    }catch(e){}})();
   </script>
   
 </head>
@@ -51,7 +65,24 @@
   <img class="logo-mark" src="../assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
   <span>Festival <b>Studio</b><small>मुफ़्त त्योहार पोस्ट मेकर</small></span>
 </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">होम</a>
+      <a href="templates.html">टेम्पलेट</a>
+      <a href="post-maker.html">पोस्ट मेकर</a>
+      <a href="status-maker.html">स्टेटस मेकर</a>
+      <a href="gif-maker.html">GIF मेकर</a>
+      <a href="video-templates.html">वीडियो 🎥 (जल्द आ रहा है)</a>
+      <a href="wishes.html">शुभकामनाएँ</a>
+      <a href="calendar.html">त्योहार कैलेंडर</a>
+    </nav>
     <div class="header-actions">
+      <a class="btn-open-app web-only" href="app.html" aria-label="वेब ऐप खोलें">
+        <span>✨ ऐप खोलें</span>
+      </a>
+      <a class="btn-download-app web-only" href="../downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk" aria-label="ऐप डाउनलोड करें">
+        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+        <span>📱 डाउनलोड ऐप</span>
+      </a>
       <a class="lang-pill" data-lang-switch href="../app.html" hreflang="en" lang="en">English</a>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="थीम बदलें">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -66,124 +97,320 @@
   <a href="index.html">होम</a>
   <a href="templates.html">टेम्पलेट</a>
   <a href="post-maker.html">पोस्ट मेकर</a>
-  <a href="gif-maker.html">GIF मेकर</a>
   <a href="status-maker.html">स्टेटस मेकर</a>
+  <a href="gif-maker.html">GIF मेकर</a>
+  <a href="video-templates.html">वीडियो 🎥 (जल्द आ रहा है)</a>
   <a href="wishes.html">शुभकामनाएँ</a>
-  <a href="how-it-works.html">कैसे काम करता है</a>
-  <a href="video-templates.html">वीडियो टेम्पलेट्स 🎥</a>
   <a href="calendar.html">त्योहार कैलेंडर</a>
+  <a href="app.html">📱 मोबाइल ऐप</a>
   <a href="about.html">हमारे बारे में</a>
   <a href="contact.html">संपर्क</a>
 </nav>
 <main id="main">
 
-<section class="section">
-  <div class="wrap prose">
-    <p class="breadcrumb"><a href="index.html">होम</a> / ऐप</p>
-    <h1>फेस्टिवल स्टूडियो ऐप पाइए</h1>
-    <p>फेस्टिवल स्टूडियो इसी पेज से इंस्टॉल हो जाता है। न कोई ऐप स्टोर, न डाउनलोड का इंतज़ार, न अकाउंट — यही साइट एक ऐप बन जाती है, होम स्क्रीन पर आइकन के साथ, फ़ुल स्क्रीन में, और ऑफ़लाइन भी पूरा चलता हुआ।</p>
+<div class="app-standalone-container">
+  <!-- 1. Top App Header Bar -->
+  <div class="app-top-bar">
+    <div class="app-top-brand">
+      <img src="../assets/icons/logo-96.png" width="36" height="36" alt="App Logo" class="app-brand-icon">
+      <div>
+        <span class="app-brand-title">Festival Studio <span class="app-pro-pill">PRO APP</span></span>
+        <small class="app-brand-sub">मुफ़्त त्योहार पोस्ट व स्टेटस मेकर</small>
+      </div>
+    </div>
+    <div class="app-top-actions">
+      <button class="btn btn-soft btn-xs" type="button" onclick="if(window.FS&&FS.showEditorTipsModal){FS.showEditorTipsModal();}else{window.location.href='post-maker.html';}" title="एडिटर टिप्स व गाइड">
+        💡 टिप्स
+      </button>
+      <a class="btn btn-ghost btn-xs web-return-btn" href="index.html" title="वेबसाइट पर जाएँ">
+        🌐 वेबसाइट
+      </a>
+      <a class="lang-pill" data-lang-switch href="app.html" hreflang="en">English</a>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle Theme">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      </button>
+    </div>
+  </div>
 
-    <!-- Download & Install Action Hub -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin:24px 0">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <span style="font-size:2rem">📱</span>
+  <div class="wrap app-inner-content" style="padding-top:10px;">
+    <!-- 2. Search Toolbar -->
+    <div class="app-search-toolbar">
+      <label class="search" style="flex:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="search" id="festival-search" placeholder="त्योहार खोजें (दिवाली, होली, ईद...)" aria-label="Search">
+      </label>
+    </div>
+
+    <!-- 3. Festival Stories Carousel -->
+    <div class="stories-carousel" role="region" aria-label="त्योहार स्टोरीज़" style="margin-top:14px;">
+      
+      <a class="story-circle-item" href="post-maker.html?festival=diwali">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪔</div>
+        </div>
+        <span class="story-circle-label">दीपावली</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=holi">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎨</div>
+        </div>
+        <span class="story-circle-label">होली</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=eid">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌙</div>
+        </div>
+        <span class="story-circle-label">ईद</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=raksha-bandhan">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪢</div>
+        </div>
+        <span class="story-circle-label">रक्षाबंधन</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=janmashtami">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🦚</div>
+        </div>
+        <span class="story-circle-label">जन्माष्टमी</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=ganesh-chaturthi">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🐘</div>
+        </div>
+        <span class="story-circle-label">गणेश चतुर्थी</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=navratri">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪷</div>
+        </div>
+        <span class="story-circle-label">नवरात्रि</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=dussehra">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🏹</div>
+        </div>
+        <span class="story-circle-label">दशहरा</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=durga-puja">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🛕</div>
+        </div>
+        <span class="story-circle-label">दुर्गा पूजा</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=chhath-puja">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌅</div>
+        </div>
+        <span class="story-circle-label">छठ पूजा</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=makar-sankranti">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪁</div>
+        </div>
+        <span class="story-circle-label">मकर संक्रांति</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=pongal">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🍚</div>
+        </div>
+        <span class="story-circle-label">पोंगल</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=onam">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌸</div>
+        </div>
+        <span class="story-circle-label">ओणम</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=maha-shivratri">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🔱</div>
+        </div>
+        <span class="story-circle-label">महाशिवरात्रि</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=christmas">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎄</div>
+        </div>
+        <span class="story-circle-label">क्रिसमस</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=new-year">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎆</div>
+        </div>
+        <span class="story-circle-label">नव वर्ष</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=independence-day">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🇮🇳</div>
+        </div>
+        <span class="story-circle-label">स्वतंत्रता दिवस</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=republic-day">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎖️</div>
+        </div>
+        <span class="story-circle-label">गणतंत्र दिवस</span>
+      </a>
+    </div>
+
+    <!-- 4. Creation Tools Deck (with Video Clearly Coming Soon) -->
+    <div class="app-tools-grid" style="margin-top:16px;">
+      <a class="app-tool-card" href="post-maker.html">
+        <span class="app-tool-badge">50+ Frames</span>
+        <div class="app-tool-icon">🎨</div>
         <div>
-          <strong style="display:block;font-size:1.15rem">Festival Studio Mobile (v2.4.0)</strong>
-          <small class="muted">एंड्रॉइड APK व PWA · ~6.8 MB · कोई साइनअप नहीं</small>
+          <h3 class="app-tool-title">पोस्ट मेकर</h3>
+          <p class="app-tool-desc">फ़ोटो, नाम व दुकान लोगो</p>
+        </div>
+      </a>
+
+      <!-- Video Option Marked as COMING SOON -->
+      <a class="app-tool-card app-tool-video" href="../video-templates.html" onclick="if(window.FS&&FS.showVideoComingSoonModal){FS.showVideoComingSoonModal();return false;}">
+        <span class="app-tool-badge app-badge-coming-soon" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;">🚀 जल्द आ रहा है</span>
+        <div class="app-tool-icon">🎥</div>
+        <div>
+          <h3 class="app-tool-title">AI वीडियो रील्स</h3>
+          <p class="app-tool-desc">Veo AI वीडियो इंजन (आगामी)</p>
+        </div>
+      </a>
+
+      <a class="app-tool-card" href="status-maker.html">
+        <span class="app-tool-badge" style="background:#d1fae5;color:#065f46;">9:16 HD</span>
+        <div class="app-tool-icon">📱</div>
+        <div>
+          <h3 class="app-tool-title">स्टेटस मेकर</h3>
+          <p class="app-tool-desc">व्हाट्सऐप व इंस्टा स्टोरी</p>
+        </div>
+      </a>
+
+      <a class="app-tool-card" href="gif-maker.html">
+        <span class="app-tool-badge" style="background:#e0e7ff;color:#3730a3;">Animated</span>
+        <div class="app-tool-icon">🎞️</div>
+        <div>
+          <h3 class="app-tool-title">GIF मेकर</h3>
+          <p class="app-tool-desc">एनिमेटेड ग्रीटिंग्स व दीये</p>
+        </div>
+      </a>
+
+      <a class="app-tool-card" href="calendar.html">
+        <span class="app-tool-badge" style="background:#fef3c7;color:#92400e;">2026</span>
+        <div class="app-tool-icon">📅</div>
+        <div>
+          <h3 class="app-tool-title">त्योहार कैलेंडर</h3>
+          <p class="app-tool-desc">सभी तिथियाँ व तारीख़ें</p>
+        </div>
+      </a>
+
+      <a class="app-tool-card" href="wishes.html">
+        <span class="app-tool-badge" style="background:#fce7f3;color:#831843;">1000+</span>
+        <div class="app-tool-icon">💬</div>
+        <div>
+          <h3 class="app-tool-title">शुभकामनाएँ</h3>
+          <p class="app-tool-desc">1-क्लिक कॉपी व शेयर</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- 5. Visual Editor Tips Guide Banner -->
+    <div class="tips-banner-card" style="margin-top:18px;cursor:pointer;" onclick="if(window.FS&&FS.showEditorTipsModal){FS.showEditorTipsModal();}else{window.location.href='post-maker.html';}">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:32px;">💡</span>
+        <div>
+          <strong style="font-size:0.95rem;display:block;">एडिटर टिप्स: फ़ोटो और दुकान का लोगो लगाना सीखें</strong>
+          <span style="font-size:0.78rem;color:var(--muted);">कैनवास पर फ़ोटो रिसाइज़, ड्रैग और बॉर्डर लगाने की सचित्र गाइड</span>
         </div>
       </div>
-      <div class="download-app-actions" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
-        <a class="btn btn-primary btn-lg" href="../downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-          Android APK डाउनलोड करें
-        </a>
-        <a class="btn btn-ghost btn-lg" href="index.html?mode=app">
-          📱 ऐप मोड खोलें
-        </a>
+      <button class="btn btn-soft btn-sm" type="button" style="flex:none;">गाइड देखें →</button>
+    </div>
+
+    <!-- 6. Trending Ready Templates Section -->
+    <div style="margin-top:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:1.15rem;">🔥 लोकप्रिय त्योहार टेम्पलेट्स</h3>
+        <a class="btn btn-ghost btn-sm" href="templates.html">सभी देखें →</a>
       </div>
-      <p class="hint" style="margin-top:12px">
-        💡 <strong>सुझाव:</strong> एंड्रॉइड यूज़र सीधे APK डाउनलोड कर सकते हैं, या ब्राउज़र मेन्यू से "Install App" चुन सकते हैं।
-      </p>
+      <div class="grid festivals" id="festival-grid"></div>
     </div>
 
-    <!-- Website vs App Differences Table -->
-    <h2>वेबसाइट और ऐप में अंतर</h2>
-    <div style="overflow-x:auto;margin:16px 0">
-      <table style="width:100%;border-collapse:collapse;font-size:.9rem;background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)">
-        <thead>
-          <tr style="background:var(--surface-2);text-align:left;border-bottom:1px solid var(--border)">
-            <th style="padding:12px 14px">फ़ीचर</th>
-            <th style="padding:12px 14px">वेबसाइट (Website)</th>
-            <th style="padding:12px 14px">ऐप (Festival Studio App)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>वेबसाइट ऐड्स (Website Ads)</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">हाँ (वेब ऐड्स दिखते हैं)</td>
-            <td style="padding:10px 14px"><strong style="color:#10B981">❌ बंद (ऐप में वेबसाइट ऐड्स नहीं दिखेंगे)</strong></td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>ऐप ऐड्स (App Ads)</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">नहीं</td>
-            <td style="padding:10px 14px"><strong style="color:#3B82F6">✅ Google AdMob ऐड्स (बैनर व इंटरस्टिशियल)</strong></td>
-          </tr>
-          <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:10px 14px"><strong>इंटरफ़ेस व नेविगेशन</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">ब्राउज़र एड्रेस बार व हेडर</td>
-            <td style="padding:10px 14px">फ़ुल स्क्रीन + मोबाइल बॉटम नेविगेशन बार</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 14px"><strong>ऑफ़लाइन काम</strong></td>
-            <td style="padding:10px 14px;color:var(--muted)">पहली बार इंटरनेट चाहिए</td>
-            <td style="padding:10px 14px"><strong style="color:#10B981">100% ऑफ़लाइन (बिना इंटरनेट तैयार)</strong></td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- 7. App Info, Offline Status & Backup Download Card -->
+    <div class="app-status-box" id="settings" style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.8rem;">⚡</span>
+          <div>
+            <strong>फेस्टिवल स्टूडियो ऐप (v2.4.0)</strong>
+            <small class="muted" style="display:block;">ऑफ़लाइन रेडी · 100% प्राइवेट · कोई विज्ञापन पॉपअप नहीं</small>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a class="btn btn-primary btn-sm" href="../downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            APK डाउनलोड बैकअप
+          </a>
+          <a class="btn btn-soft btn-sm" href="index.html">
+            🌐 वेबसाइट देखें
+          </a>
+        </div>
+      </div>
     </div>
-
-    
-
-    <h2>इंस्टॉल क्यों करें</h2>
-    <div class="steps">
-      <div class="step"><h3>ऑफ़लाइन चलता है</h3><p>पहली बार खोलने के बाद एडिटर, टेम्पलेट, स्टिकर और शुभकामनाएँ आपके डिवाइस पर सेव हो जाती हैं — बिना नेटवर्क के भी पोस्ट बन जाएगी।</p></div>
-      <div class="step"><h3>ऐप जैसा खुलता है</h3><p>होम स्क्रीन पर आइकन और फ़ुल स्क्रीन विंडो — छोटे फ़ोन पर एड्रेस बार की जगह नहीं घेरती।</p></div>
-      <div class="step"><h3>साइनअप कुछ नहीं</h3><p>न अकाउंट, न ईमेल, न कोई परमिशन। आपकी फ़ोटो कभी डिवाइस से बाहर नहीं जाती।</p></div>
-      <div class="step"><h3>जगह ना के बराबर</h3><p>पूरा ऐप कुछ ही मेगाबाइट का है — आम स्टोर डाउनलोड से कहीं कम।</p></div>
-    </div>
-
-    <h2>एंड्रॉइड — Chrome, Edge या Brave</h2>
-    <div class="steps">
-      <div class="step"><h3>ऊपर Install दबाइए</h3><p>ब्राउज़र “ऐप इंस्टॉल करें” या “होम स्क्रीन पर जोड़ें” दिखाएगा। उसे कन्फ़र्म कीजिए।</p></div>
-      <div class="step"><h3>या ब्राउज़र मेन्यू से</h3><p>ऊपर दाएँ कोने में तीन बिंदु दबाइए, फिर “होम स्क्रीन पर जोड़ें” या “ऐप इंस्टॉल करें”।</p></div>
-      <div class="step"><h3>होम स्क्रीन से खोलिए</h3><p>फेस्टिवल स्टूडियो का आइकन अब बाकी ऐप्स के साथ रहेगा और फ़ुल स्क्रीन खुलेगा।</p></div>
-    </div>
-
-    <h2>आईफ़ोन और आईपैड — Safari</h2>
-    <div class="steps">
-      <div class="step"><h3>यह पेज Safari में खोलिए</h3><p>iOS पर इंस्टॉल सिर्फ़ Safari से होता है। Chrome या दूसरे ब्राउज़र यह नहीं कर सकते।</p></div>
-      <div class="step"><h3>शेयर बटन दबाइए</h3><p>स्क्रीन के नीचे वाला चौकोर आइकन जिसमें ऊपर की ओर तीर है।</p></div>
-      <div class="step"><h3>“Add to Home Screen” चुनिए</h3><p>शेयर शीट को स्क्रॉल कीजिए, फिर Add दबाइए। आइकन होम स्क्रीन पर आ जाएगा।</p></div>
-    </div>
-
-    <h2>विंडोज़, मैक और लिनक्स</h2>
-    <div class="steps">
-      <div class="step"><h3>Chrome या Edge इस्तेमाल कीजिए</h3><p>एड्रेस बार के दाएँ सिरे पर छोटा इंस्टॉल आइकन दिखेगा।</p></div>
-      <div class="step"><h3>या ब्राउज़र मेन्यू से</h3><p>तीन बिंदु वाला मेन्यू खोलकर “Install Festival Studio” चुनिए।</p></div>
-      <div class="step"><h3>अपनी अलग विंडो में खुलेगा</h3><p>न टैब, न एड्रेस बार — और ऑफ़लाइन भी चलता रहेगा।</p></div>
-    </div>
-
-    <h2>क्या यह प्ले स्टोर या ऐप स्टोर पर है?</h2>
-    <p>नहीं, और ज़रूरत भी नहीं। फेस्टिवल स्टूडियो एक Progressive Web App है, इसलिए यह सीधे इसी पेज से इंस्टॉल होता है। मतलब न स्टोर रिव्यू, न APK साइडलोड करना, न “unknown sources” की चेतावनी — और अपडेट अपने आप आते हैं, आपको नया वर्ज़न कभी हाथ से डाउनलोड नहीं करना पड़ेगा।</p>
-
-    <h2>ऑफ़लाइन क्या-क्या चलता है</h2>
-    <p>पोस्ट मेकर, GIF मेकर, स्टेटस मेकर, हर टेम्पलेट, सारे स्टिकर और पूरा शुभकामना संग्रह बिना नेटवर्क के चलते हैं। सिर्फ़ त्योहार कैलेंडर को पहली बार लोड होने के लिए इंटरनेट चाहिए।</p>
-    
   </div>
-</section>
+</div>
+
 </main>
 
-<footer class="site-footer" style="display:none !important">
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        
+<a class="logo" href="index.html" aria-label="Festival Studio">
+  <img class="logo-mark" src="../assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
+  <span>Festival <b>Studio</b><small>मुफ़्त त्योहार पोस्ट मेकर</small></span>
+</a>
+        <p style="margin-top:12px">मुफ़्त भारतीय त्योहार पोस्ट, GIF और स्टेटस मेकर। न साइनअप, न वॉटरमार्क, न AI — सब कुछ आपके ब्राउज़र में ही बनता है।</p>
+        <div class="footer-app-cta" style="margin-top:16px">
+          <a class="btn btn-primary btn-sm" href="../downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk" style="gap:7px;display:inline-flex;align-items:center">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+            <span>एंड्रॉइड APK डाउनलोड (v2.4.0)</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>फेस्टिवल स्टूडियो</h4>
+        <ul>
+          <li><a href="app.html">ऐप</a></li>
+          <li><a href="about.html">हमारे बारे में</a></li>
+          <li><a href="contact.html">संपर्क</a></li>
+          <li><a href="how-it-works.html">कैसे काम करता है</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>टूल्स</h4>
+        <ul>
+          <li><a href="post-maker.html">पोस्ट मेकर</a></li>
+          <li><a href="gif-maker.html">GIF मेकर</a></li>
+          <li><a href="status-maker.html">स्टेटस मेकर</a></li>
+          <li><a href="templates.html">टेम्पलेट</a></li>
+          <li><a href="wishes.html">शुभकामनाएँ</a></li>
+          <li><a href="calendar.html">त्योहार कैलेंडर</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>कानूनी</h4>
+        <ul>
+          <li><a href="../privacy.html">प्राइवेसी पॉलिसी</a></li>
+          <li><a href="../cookies.html">कुकी पॉलिसी</a></li>
+          <li><a href="../terms.html">नियम व शर्तें</a></li>
+          <li><a href="../disclaimer.html">अस्वीकरण</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Festival Studio. सर्वाधिकार सुरक्षित।</span>
+      <span>भारत में बना · पहली बार खुलने के बाद ऑफ़लाइन भी चलता है</span>
+    </div>
+  </div>
 </footer>
   <script src="../js/config.js" defer></script>
   <script src="../js/storage.js" defer></script>

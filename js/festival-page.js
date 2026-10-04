@@ -1,8 +1,15 @@
 /* Festival Studio — per-festival SEO landing page controller */
 (function (global) {
   'use strict';
-  var FS = global.FS;
-  FS.ready(function () {
+  var FS = (global.FS = global.FS || {});
+  var ready = typeof FS.ready === 'function' ? FS.ready : function (fn) {
+    if (typeof fn !== 'function') return;
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
+  FS.ready = FS.ready || ready;
+
+  ready(function () {
     var host = document.querySelector('[data-festival]');
     var grid = document.getElementById('fest-templates');
     if (!host || !grid) return;

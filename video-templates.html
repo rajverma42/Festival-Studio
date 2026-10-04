@@ -3,144 +3,87 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Video Templates — Create AI Festive Videos with Veo | Festival Studio</title>
-  <meta name="description" content="Design and customize cinematic Indian festival video templates using Google Veo AI. Add overlays, wishes, animated frames, and festive music sounds.">
+  <title>Festival Video &amp; Reels Maker — Coming Soon | Festival Studio</title>
+  <meta name="description" content="Cinematic AI festival video templates powered by Google Veo AI are arriving soon! Vertical reels with devotional chants, temple bells, and personalized business branding.">
   <meta name="theme-color" content="#FBF7F4">
   <link rel="canonical" href="https://festival-studio.work.gd/video-templates.html">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <link rel="alternate" hreflang="en" href="https://festival-studio.work.gd/video-templates.html">
+  <link rel="alternate" hreflang="hi" href="https://festival-studio.work.gd/hi/video-templates.html">
+  <link rel="alternate" hreflang="x-default" href="https://festival-studio.work.gd/video-templates.html">
+
+
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Festival Studio">
-  <meta property="og:title" content="Festival Video Templates with Veo AI | Festival Studio">
-  <meta property="og:description" content="Choose from 50+ cinematic video templates for Diwali, Holi, Navratri, Eid, and more. Customize text overlays, animation motions, and festival sound effects.">
+  <meta property="og:title" content="Festival Video &amp; Reels Maker — Coming Soon | Festival Studio">
+  <meta property="og:description" content="Cinematic AI festival video templates powered by Google Veo AI are arriving soon! Vertical reels with devotional chants, temple bells, and personalized business branding.">
   <meta property="og:url" content="https://festival-studio.work.gd/video-templates.html">
   <meta property="og:image" content="https://festival-studio.work.gd/assets/icons/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Festival Video &amp; Reels Maker — Coming Soon | Festival Studio">
+  <meta name="twitter:description" content="Cinematic AI festival video templates powered by Google Veo AI are arriving soon! Vertical reels with devotional chants, temple bells, and personalized business branding.">
+  <meta name="twitter:image" content="https://festival-studio.work.gd/assets/icons/og-image.png">
   <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Festival Studio">
+  <meta name="application-name" content="Festival Studio">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    .video-studio-grid {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 24px;
-      align-items: start;
-    }
-    @media (max-width: 960px) {
-      .video-studio-grid {
-        grid-template-columns: 1fr;
+  <script>
+    (function(){try{
+      var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');
+      var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+      document.documentElement.setAttribute('data-theme',t);
+      var isApp = window.location.search.indexOf('mode=app')!==-1 ||
+                  window.location.pathname.indexOf('app.html')!==-1 ||
+                  (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+      if(isApp){
+        document.documentElement.setAttribute('data-env','app');
+        document.documentElement.classList.add('is-app-mode');
+      } else {
+        document.documentElement.removeAttribute('data-env');
+        document.documentElement.classList.remove('is-app-mode');
       }
-    }
-    .video-viewport {
-      background: #0D0F14;
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
-    .video-canvas-box {
-      width: 100%;
-      max-width: 340px;
-      aspect-ratio: 9/16;
-      background: linear-gradient(145deg, #1e1b4b, #312e81, #4c1d95);
-      border-radius: 18px;
-      position: relative;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.4);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 22px 18px;
-      color: #fff;
-      overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.15);
-    }
-    .video-canvas-box video {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: 1;
-    }
-    .video-overlay-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      justify-content: space-between;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-    }
-    .veo-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: linear-gradient(90deg, #6366f1, #a855f7);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 99px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(168,85,247,0.3);
-    }
-    .sound-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
-      padding: 4px 10px;
-      border-radius: 99px;
-      font-size: 11px;
-      color: #FFE082;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .video-card-tile {
-      background: var(--bg-card, #fff);
-      border: 1px solid var(--border, #e5e7eb);
-      border-radius: 12px;
-      padding: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
-    }
-    .video-card-tile:hover, .video-card-tile.active {
-      border-color: #6366f1;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px rgba(99,102,241,0.2);
-    }
-  </style>
+    }catch(e){}})();
+  </script>
+  
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="logo" href="index.html" aria-label="Festival Studio">
-      <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
-      <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
-    </a>
+    
+<a class="logo" href="index.html" aria-label="Festival Studio">
+  <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
+  <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
+</a>
     <nav class="nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="templates.html">Festival Templates</a>
-      <a href="video-templates.html" class="active">Video Templates 🎥</a>
       <a href="post-maker.html">Post Maker</a>
-      <a href="gif-maker.html">GIF & Video</a>
       <a href="status-maker.html">Status Maker</a>
+      <a href="gif-maker.html">GIF Maker</a>
+      <a href="video-templates.html">Video 🎥 (Coming Soon)</a>
       <a href="wishes.html">Wishes</a>
+      <a href="calendar.html">Festival Calendar</a>
     </nav>
     <div class="header-actions">
-      <a class="btn-download-app web-only" href="app.html" data-download-app="1" aria-label="Download Festival Studio App">
-        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-        <span>Download App</span>
+      <a class="btn-open-app web-only" href="app.html" aria-label="Open Web App">
+        <span>✨ Launch App</span>
       </a>
-      <a class="lang-pill" data-lang-switch href="hi/" hreflang="hi" lang="hi">हिन्दी</a>
+      <a class="btn-download-app web-only" href="downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk" aria-label="Download Festival Studio App">
+        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+        <span>📱 Download App</span>
+      </a>
+      <a class="lang-pill" data-lang-switch href="hi/video-templates.html" hreflang="hi" lang="hi">हिन्दी</a>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
       </button>
@@ -150,150 +93,181 @@
     </div>
   </div>
 </header>
-
 <nav class="drawer" id="drawer" data-open="false" aria-label="Mobile">
   <a href="index.html">Home</a>
   <a href="templates.html">Festival Templates</a>
-  <a href="video-templates.html">Video Templates 🎥</a>
   <a href="post-maker.html">Post Maker</a>
-  <a href="gif-maker.html">GIF & Video</a>
   <a href="status-maker.html">Status Maker</a>
+  <a href="gif-maker.html">GIF Maker</a>
+  <a href="video-templates.html">Video 🎥 (Coming Soon)</a>
   <a href="wishes.html">Wishes</a>
-  <a href="app.html">App</a>
+  <a href="calendar.html">Festival Calendar</a>
+  <a href="app.html">📱 Mobile App</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
 </nav>
-
 <main id="main">
+
 <section class="section">
   <div class="wrap">
     <p class="breadcrumb"><a href="index.html">Home</a> / Video Templates</p>
-    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px">
-      <div>
-        <span class="veo-badge" style="margin-bottom:8px">⚡ Powered by Veo AI Video Engine</span>
-        <h1>Festival Video Templates & Reel Maker</h1>
-        <p class="muted" style="max-width:70ch">Choose from 50+ video templates for Diwali, Holi, Eid, and more. Customize video overlays, animation motion, background audio, and export cinematic 9:16 reels for WhatsApp & Instagram.</p>
-      </div>
-    </div>
 
-    <!-- Festival Filter Toolbar -->
-    <div class="toolbar" style="margin-top:20px">
-      <label class="flabel" style="margin-bottom:0">Filter by Festival:</label>
-      <select class="input" id="video-fest-filter" style="max-width:240px">
-        <option value="diwali">🪔 Diwali (Deepawali)</option>
-        <option value="holi">🎨 Holi (Rangotsav)</option>
-        <option value="navratri">✨ Navratri (Maa Durga)</option>
-        <option value="eid">🌙 Eid Mubarak</option>
-        <option value="raksha-bandhan">🧵 Raksha Bandhan</option>
-        <option value="ganesh-chaturthi">🕉️ Ganesh Chaturthi</option>
-        <option value="new-year">🎆 Happy New Year</option>
-        <option value="maha-shivratri">🔱 Maha Shivratri</option>
-        <option value="janmashtami">🪈 Janmashtami</option>
-        <option value="makar-sankranti">🪁 Makar Sankranti</option>
-      </select>
-    </div>
+    <!-- Coming Soon Banner -->
+    <div class="video-coming-soon-hero" style="text-align:center;padding:24px 0 36px;">
+      <span class="badge" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;font-size:0.85rem;padding:6px 14px;border-radius:99px;font-weight:700;">🚀 COMING SOON</span>
+      <h1 style="margin:16px 0 10px;font-size:2.2rem;">AI Festival Video &amp; Reels Maker</h1>
+      <p class="hero-lead" style="max-width:70ch;margin:12px auto 0;font-size:1.05rem;line-height:1.6;color:var(--muted);">We are integrating Google’s cutting-edge Veo AI video engine. Soon you will be able to generate 9:16 vertical festive reels with temple bells, devotional music, animated diya sparks, and your own shop logo!</p>
 
-    <!-- Video Studio Main Area -->
-    <div class="video-studio-grid" style="margin-top:24px">
-      <!-- Live Video Canvas & Preview -->
-      <div class="video-viewport">
-        <div class="video-canvas-box" id="video-canvas-preview">
-          <video id="veo-bg-video" autoplay loop muted playsinline style="display:none"></video>
-          <div class="video-overlay-content">
-            <div style="display:flex; justify-content:space-between; align-items:center">
-              <span class="veo-badge" id="preview-badge">Veo Reel</span>
-              <span class="sound-badge" id="preview-sound">🔔 Temple Bells</span>
-            </div>
+      <!-- Interactive 9:16 Video Simulation Mockup -->
+      <div class="video-preview-showcase" style="margin:32px auto;max-width:340px;background:#0d0f14;border-radius:24px;padding:20px;box-shadow:0 16px 40px rgba(0,0,0,0.3);border:2px solid rgba(255,255,255,0.1);">
+        <div style="aspect-ratio:9/16;background:linear-gradient(145deg, #1e1b4b, #312e81, #4c1d95);border-radius:18px;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:20px;color:#fff;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,0.5);">
+          <!-- Top Badges -->
+          <div style="display:flex;justify-content:space-between;align-items:center;z-index:2;">
+            <span style="background:linear-gradient(90deg,#6366f1,#a855f7);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;">⚡ Veo AI Video Engine</span>
+            <button type="button" onclick="if(window.FS&&FS.playTempleChime){FS.playTempleChime();}else if(window.FS&&FS.toast){FS.toast('🔔 Temple Chime & Bell Sound');}" style="background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.3);color:#FFE082;border-radius:99px;font-size:11px;padding:4px 10px;cursor:pointer;">
+              🔔 Audio
+            </button>
+          </div>
 
-            <div style="text-align:center; padding:12px 0">
-              <h2 id="preview-headline" style="font-family:'Tiro Devanagari Hindi',serif; font-size:1.6rem; color:#FFE082; margin:0 0 8px 0; text-shadow:0 3px 12px rgba(0,0,0,0.8)">शुभ दीपावली</h2>
-              <p id="preview-subtext" style="font-size:0.95rem; line-height:1.4; margin:0; opacity:0.95">सुख, समृद्धि और खुशियों का पावन प्रकाश आपके जीवन को सदैव आलोकित करे।</p>
-            </div>
+          <!-- Animated Sparks/Diya -->
+          <div style="text-align:center;padding:30px 0;z-index:2;">
+            <div style="font-size:3.5rem;animation:pulse 2s infinite ease-in-out;filter:drop-shadow(0 0 16px #f59e0b);margin-bottom:8px;">🪔</div>
+            <h2 style="font-family:'Tiro Devanagari Hindi',serif;color:#FFE082;font-size:1.8rem;text-shadow:0 3px 12px rgba(0,0,0,0.8);margin:0 0 8px;">शुभ दीपावली</h2>
+            <p style="font-size:0.92rem;line-height:1.4;text-shadow:0 2px 8px rgba(0,0,0,0.8);margin:0;opacity:0.95;">सुख, समृद्धि और खुशियों का पावन प्रकाश आपके जीवन को सदैव आलोकित करे।</p>
+          </div>
 
-            <div style="text-align:center; background:rgba(0,0,0,0.45); backdrop-filter:blur(6px); border-radius:12px; padding:6px 12px; border:1px solid rgba(255,255,255,0.15)">
-              <span id="preview-sender" style="font-weight:600; font-size:0.88rem; color:#fff">— प्रेषक: वर्मा परिवार —</span>
-            </div>
+          <!-- Bottom Sender -->
+          <div style="text-align:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);border-radius:12px;padding:8px 12px;border:1px solid rgba(255,255,255,0.2);z-index:2;">
+            <span style="font-weight:600;font-size:0.88rem;color:#fff;">— From: Your Name & Shop —</span>
           </div>
         </div>
-
-        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center">
-          <button class="btn btn-primary btn-sm" id="btn-play-sound" type="button">🔊 Play Sound Effect</button>
-          <button class="btn btn-dark btn-sm" id="btn-export-veo" type="button">🎥 Render Veo Video</button>
-          <button class="btn btn-soft btn-sm" id="btn-fast-webm" type="button">⚡ Instant Video Download</button>
-        </div>
-        <p class="hint" id="video-status-msg" style="margin-top:10px; text-align:center"></p>
+        <small class="muted" style="display:block;text-align:center;margin-top:10px;color:#94a3b8;">
+          💡 9:16 Vertical Reel Simulation Preview
+        </small>
       </div>
 
-      <!-- Customization Panel -->
-      <div class="card" style="padding:20px">
-        <h3 style="margin-top:0">Customize Video Template</h3>
-
-        <div class="field" style="margin-top:12px">
-          <label class="flabel" for="input-headline">Video Headline / Blessing</label>
-          <input class="input" type="text" id="input-headline" value="शुभ दीपावली">
-        </div>
-
-        <div class="field">
-          <label class="flabel" for="input-subtext">Wish / Subtext</label>
-          <textarea class="input" id="input-subtext" rows="2">सुख, समृद्धि और खुशियों का पावन प्रकाश आपके जीवन को सदैव आलोकित करे।</textarea>
-        </div>
-
-        <div class="field">
-          <label class="flabel" for="input-sender">Sender / Business Signature</label>
-          <input class="input" type="text" id="input-sender" value="वर्मा परिवार">
-        </div>
-
-        <div class="field">
-          <label class="flabel" for="select-animation">Motion & Overlay Animation</label>
-          <select class="input" id="select-animation">
-            <option value="sparkle">✨ Golden Sparkles & Floating Diyas</option>
-            <option value="glow">🌟 Radiant Aura & Pulse Zoom</option>
-            <option value="confetti">🎉 Festive Confetti & Colors</option>
-            <option value="cinematic">🎬 Cinematic Shimmer & Slow Pan</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label class="flabel" for="select-sound">Festive Sound & Music Overlay</label>
-          <select class="input" id="select-sound">
-            <option value="bells">🔔 Temple Bells & Sacred Conch (शंख)</option>
-            <option value="dhol">🥁 Festive Dhol & Celebration Beats</option>
-            <option value="flute">🪈 Melodious Divine Flute Tune</option>
-            <option value="crackers">🎆 Sparkler Fireworks & Crackles</option>
-            <option value="ambient">🕊️ Calming Sitar & Tanpura Drone</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label class="flabel" for="select-veo-prompt">Veo AI Scene Style</label>
-          <select class="input" id="select-veo-prompt">
-            <option value="diyas">Cinematic 4K glowing clay diyas in sacred temple courtyard with soft smoke</option>
-            <option value="rangoli">Intricate glowing golden rangoli with floating flower petals in slow-motion</option>
-            <option value="fireworks">Glorious festive fireworks illuminating a royal Indian palace night sky</option>
-            <option value="colors">Vibrant organic gulal color clouds exploding in ultra-detailed sunshine</option>
-          </select>
+      <!-- Feature Teasers -->
+      <div class="video-features-grid" style="margin-top:36px;text-align:left;">
+        <h3 style="text-align:center;margin-bottom:20px;">What is coming in Festival Video Studio:</h3>
+        <div class="grid cols-3" style="gap:16px;">
+          
+          <div class="feature-card-clean" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;">
+            <div style="font-size:2rem;margin-bottom:8px;">🎬</div>
+            <h4 style="margin:0 0 6px;">9:16 Vertical HD Reels</h4>
+            <p style="font-size:0.88rem;color:var(--muted);margin:0;">Designed specifically for Instagram Reels, YouTube Shorts, and WhatsApp Status with smooth transitions.</p>
+          </div>
+          <div class="feature-card-clean" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;">
+            <div style="font-size:2rem;margin-bottom:8px;">🔔</div>
+            <h4 style="margin:0 0 6px;">Divine Chants &amp; Temple Bells</h4>
+            <p style="font-size:0.88rem;color:var(--muted);margin:0;">Authentic Indian festival audio themes, aarti chimes, dhol beats, and ambient festival sounds.</p>
+          </div>
+          <div class="feature-card-clean" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;">
+            <div style="font-size:2rem;margin-bottom:8px;">✨</div>
+            <h4 style="margin:0 0 6px;">Animated Festive Overlays</h4>
+            <p style="font-size:0.88rem;color:var(--muted);margin:0;">Realistic flickering diyas, vibrant holi gulal explosions, sparkling firecrackers, and flower showers.</p>
+          </div>
+          <div class="feature-card-clean" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;">
+            <div style="font-size:2rem;margin-bottom:8px;">🏷️</div>
+            <h4 style="margin:0 0 6px;">Auto-Branding Overlay</h4>
+            <p style="font-size:0.88rem;color:var(--muted);margin:0;">Your photo, shop name, mobile number, and brand logo smoothly placed without obstructing the video.</p>
+          </div>
+          <div class="feature-card-clean" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;">
+            <div style="font-size:2rem;margin-bottom:8px;">⚡</div>
+            <h4 style="margin:0 0 6px;">Fast 1080p HD Video Export</h4>
+            <p style="font-size:0.88rem;color:var(--muted);margin:0;">One-click high-definition export formatted for instant WhatsApp sharing with family and customers.</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 50 Video Templates Showcase for chosen festival -->
-    <div style="margin-top:40px">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
-        <h2>Curated 50 Video Templates (<span id="fest-template-count">50</span> Available)</h2>
+      <!-- Interactive Notify Box -->
+      <div class="notify-box" style="margin:36px auto 0;max-width:540px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;text-align:center;">
+        <h3 style="margin-top:0;">Be the first to know when Video Reels launch</h3>
+        <p class="muted" style="margin:4px 0 16px;">Get early VIP access and free video templates as soon as the Veo AI video engine goes live.</p>
+        <form class="notify-form" onsubmit="event.preventDefault();var val=document.getElementById('notify-input').value;if(val){localStorage.setItem('fs_video_notify',val);if(window.FS&&FS.toast){FS.toast('🎉 Thank you! You will be notified when AI Video Reels launch!');}else{alert('Thank you! You will be notified.');}this.reset();}return false;" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <input type="text" id="notify-input" class="input" placeholder="Enter your email or WhatsApp number" required style="flex:1;min-width:220px;">
+          <button type="submit" class="btn btn-primary">Notify Me</button>
+        </form>
       </div>
-      <div id="video-templates-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:14px"></div>
+
+      <!-- Live Active Tools CTAs -->
+      <div class="active-tools-callout" style="margin-top:40px;background:var(--surface-2);border-radius:var(--r-lg);padding:24px;text-align:center;">
+        <h3 style="margin-top:0;">While you wait, create free festival posts &amp; GIFs right now:</h3>
+        <p class="muted">Our Post Maker, GIF Maker, and WhatsApp Status tools are 100% active, free, and watermark-free.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px;">
+          <a class="btn btn-primary" href="post-maker.html">🎨 Create Festival Post (Free)</a>
+          <a class="btn btn-soft" href="gif-maker.html">🎞️ Create Animated GIF Greetings</a>
+          <a class="btn btn-soft" href="status-maker.html">📱 Create WhatsApp Status (9:16)</a>
+          <a class="btn btn-ghost" href="wishes.html">💬 Browse 1,000+ Festival Wishes</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 </main>
 
 <footer class="site-footer">
-  <div class="wrap footer-bottom">
-    <span>© 2026 Festival Studio. All rights reserved. Powered by Google Veo AI Video Engine.</span>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        
+<a class="logo" href="index.html" aria-label="Festival Studio">
+  <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
+  <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
+</a>
+        <p style="margin-top:12px">Free Indian festival post, GIF and status maker. No signup, no watermark, no AI — everything is created right inside your browser.</p>
+        <div class="footer-app-cta" style="margin-top:16px">
+          <a class="btn btn-primary btn-sm" href="downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk" style="gap:7px;display:inline-flex;align-items:center">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
+            <span>Download Android APK (v2.4.0)</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Festival Studio</h4>
+        <ul>
+          <li><a href="app.html">App</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="post-maker.html">Post Maker</a></li>
+          <li><a href="gif-maker.html">GIF Maker</a></li>
+          <li><a href="status-maker.html">Status Maker</a></li>
+          <li><a href="templates.html">Festival Templates</a></li>
+          <li><a href="wishes.html">Wishes</a></li>
+          <li><a href="calendar.html">Festival Calendar</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Festival Studio. All rights reserved.</span>
+      <span>Made in India · Works offline after first load</span>
+    </div>
   </div>
 </footer>
-
-<script src="js/config.js" defer></script>
-<script src="js/storage.js" defer></script>
-<script src="js/festivals.js" defer></script>
-<script src="js/video-templates-page.js" defer></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/festivals.js" defer></script>
+  <script src="js/wishes.js" defer></script>
+  <script src="js/stickers.js" defer></script>
+  <script src="js/engine.js" defer></script>
+  <script src="js/templates.js" defer></script>
+  <script src="js/app.js" defer></script>
+  
 </body>
 </html>
