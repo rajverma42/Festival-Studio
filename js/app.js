@@ -53,7 +53,8 @@
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
     menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
-    shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>'
+    shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+    tips: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'
   };
   FS.icon = function (name, size) {
     return '<svg viewBox="0 0 24 24" width="' + (size || 20) + '" height="' + (size || 20) + '" fill="none" stroke="currentColor" ' +
@@ -379,33 +380,19 @@
 
   FS.promptInstall = function () {
     var isHi = FS.LANG === 'hi';
-    // 1. If native PWA install prompt is ready, trigger it
+    // 1. If native PWA install prompt is ready, trigger it (never causes package parse errors)
     if (deferredInstallPrompt) {
       deferredInstallPrompt.prompt();
       deferredInstallPrompt.userChoice.then(function (choice) {
         if (choice.outcome === 'accepted') {
-          FS.toast(isHi ? 'ऐप इंस्टॉल हो रहा है...' : 'Installing app...', 'ok', 2500);
+          FS.toast(isHi ? 'ऐप इंस्टॉल हो रहा है...' : 'Installing app to Home Screen...', 'ok', 2500);
         }
         deferredInstallPrompt = null;
       });
       return;
     }
 
-    // 2. If Android mobile browser, trigger direct APK download immediately so user gets the app instantly!
-    var isAndroid = /Android/i.test(navigator.userAgent);
-    if (isAndroid) {
-      var apkUrl = (CFG.app && CFG.app.apkDownloadUrl) || '/downloads/FestivalStudio.apk';
-      FS.toast(isHi ? 'Festival Studio Android APK डाउनलोड हो रहा है...' : 'Downloading Festival Studio APK...', 'ok', 4000);
-      var a = document.createElement('a');
-      a.href = apkUrl;
-      a.download = 'FestivalStudio.apk';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () { a.remove(); }, 100);
-      return;
-    }
-
-    // 3. For all other browsers (Desktop Chrome, iOS Safari, etc.), open the full Install Modal
+    // 2. Open the comprehensive, friendly Install Modal
     FS.openInstallModal();
   };
 
@@ -915,38 +902,22 @@
   };
 
   /* ------------------------------------------------------------------ */
-  /* Website vs App Separation                                           */
+  /* Permanent App Experience (Always True Native App Mode)              */
   /* ------------------------------------------------------------------ */
   FS.isApp = function () {
-    if (typeof window === 'undefined') return false;
-    // 0. Android WebView AssetLoader origin
-    if (window.location && window.location.hostname === 'appassets.androidplatform.net') return true;
-
-    // 1. Explicit query parameter (?app=1 or ?mode=app or ?source=app)
-    var search = window.location.search || '';
-    if (/[?&](app=1|app=true|mode=app|source=app)(&|$)/i.test(search)) return true;
-    if (/[?&]mode=web(&|$)/i.test(search)) return false;
-
-    // 2. Explicit manual switch if set
-    var savedMode = Store.pref('env_mode');
-    if (savedMode === 'web') return false;
-
-    // 3. Android WebView / Hybrid wrapper / Native interface
-    if (window.AndroidBridge || window.AndroidAdMob || window.isFestivalStudioApp) return true;
-    if (/FestivalStudioApp|net\.mikespub\.mywebview/i.test(navigator.userAgent)) return true;
-
-    // 4. Standalone display-mode (PWA installed app)
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
-    if (window.navigator.standalone === true) return true;
-    return false;
+    return true;
   };
 
-  FS.setAppMode = function (isApp) {
-    Store.pref('env_mode', isApp ? 'app' : 'web');
-    var url = new URL(window.location.href);
-    url.searchParams.set('mode', isApp ? 'app' : 'web');
-    window.location.href = url.toString();
+  FS.setAppMode = function () {
+    return true;
   };
+
+  // Unconditionally apply app mode flags to DOM
+  try {
+    document.documentElement.setAttribute('data-env', 'app');
+    document.documentElement.classList.add('is-app-mode');
+    if (document.body) document.body.classList.add('is-app-mode');
+  } catch (e) {}
 
   /* ------------------------------------------------------------------ */
   /* Google AdMob Engine (Native bridge only, zero mock HTML DOM boxes)  */
@@ -1187,11 +1158,11 @@
     var path = location.pathname;
 
     var items = [
-      { href: base + (isHi ? 'hi/index.html' : 'index.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: isHi ? 'होम' : 'Home', match: /index\.html$|^(\/hi)?\/$/ },
-      { href: base + (isHi ? 'hi/templates.html' : 'templates.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: isHi ? 'टेम्पलेट्स' : 'Templates', match: /templates/ },
-      { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html') + '?mode=app', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', label: isHi ? 'क्रिएट' : 'Create', match: /post-maker|status-maker|gif-maker/, special: true },
-      { href: '#my-designs', action: 'my-designs', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>', label: isHi ? 'माई डिज़ाइन्स' : 'My Designs', match: /my-designs/ },
-      { href: '#more', action: 'more', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>', label: isHi ? 'अधिक' : 'More', match: /more/ }
+      { href: base + (isHi ? 'hi/index.html' : 'index.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: isHi ? 'होम' : 'Home', match: /index\.html$|^(\/hi)?\/?$/ },
+      { href: base + (isHi ? 'hi/templates.html' : 'templates.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>', label: isHi ? 'टेम्पलेट्स' : 'Templates', match: /templates\.html/ },
+      { href: base + (isHi ? 'hi/post-maker.html' : 'post-maker.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', label: isHi ? 'नया पोस्ट' : 'Create', match: /post-maker/, special: true },
+      { href: base + 'video-templates.html', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>', label: isHi ? 'वीडियो' : 'Videos', match: /video-templates/ },
+      { href: base + (isHi ? 'hi/wishes.html' : 'wishes.html'), icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>', label: isHi ? 'शुभकामनाएं' : 'Wishes', match: /wishes/ }
     ];
 
     items.forEach(function (it) {

@@ -10,6 +10,7 @@
     "lint": "node -c server.js js/config.js js/app.js js/editor.js js/gif-maker.js"
   },
   "dependencies": {
+    "@google/genai": "^2.26.0",
     "express": "^4.21.2"
   }
 }

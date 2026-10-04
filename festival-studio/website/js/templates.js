@@ -607,23 +607,38 @@
     return FS.SIZES[0];
   }
 
+  var VARIANT_THEMES = [
+    { suffix: '', label: '', cat: null, gradIdx: 0 },
+    { suffix: '-gold', label: ' (Royal Gold)', cat: 'Festival Wishes', gradIdx: 1 },
+    { suffix: '-modern', label: ' (Minimalist Aura)', cat: 'Social Media Posts', gradIdx: 2 },
+    { suffix: '-bhakti', label: ' (Darshan Special)', cat: 'Temple & Darshan', gradIdx: 0 },
+    { suffix: '-corporate', label: ' (Business Edition)', cat: 'Business Greetings', gradIdx: 1 }
+  ];
+
   FS.TEMPLATES = [];
   FS.FESTIVALS.forEach(function (f) {
-    LAYOUTS.forEach(function (L, li) {
-      var sz = sizeOf(L.size);
-      FS.TEMPLATES.push({
-        id: f.slug + '--' + L.id,
-        festival: f.slug,
-        festivalName: f.name,
-        layout: L.id,
-        name: f.name + ' — ' + L.label,
-        category: L.category,
-        sizeId: L.size,
-        w: sz.w,
-        h: sz.h,
-        previewH: sz.h / sz.w,
-        lang: L.lang,
-        order: li
+    var count = 0;
+    VARIANT_THEMES.forEach(function (theme, ti) {
+      LAYOUTS.forEach(function (L, li) {
+        if (count >= 50) return;
+        count++;
+        var sz = sizeOf(L.size);
+        var tId = count === 1 ? (f.slug + '--' + L.id) : (f.slug + '--' + L.id + (theme.suffix || ('-v' + count)));
+        FS.TEMPLATES.push({
+          id: tId,
+          festival: f.slug,
+          festivalName: f.name,
+          layout: L.id,
+          variantIndex: ti,
+          name: f.name + ' — ' + L.label + (theme.label || (' #' + count)),
+          category: theme.cat || L.category,
+          sizeId: L.size,
+          w: sz.w,
+          h: sz.h,
+          previewH: sz.h / sz.w,
+          lang: L.lang,
+          order: count - 1
+        });
       });
     });
   });

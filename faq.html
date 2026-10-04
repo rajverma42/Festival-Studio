@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-IN">
+<html lang="en-IN" data-env="app" class="is-app-mode">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -37,13 +37,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
   <link rel="stylesheet" href="css/style.css">
   <script>
-    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-env','app');document.documentElement.classList.add('is-app-mode');}catch(e){}})();
   </script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Festival Studio really free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. There is no paid plan, no credit limit and no premium template. The site is funded by the clearly-marked advertising slots placed outside the editor."}},{"@type":"Question","name":"Do I need to create an account?","acceptedAnswer":{"@type":"Answer","text":"No. There is no signup, no login and no email verification anywhere on the site — and there never will be."}},{"@type":"Question","name":"Will my download have a watermark?","acceptedAnswer":{"@type":"Answer","text":"No. PNG, JPG and GIF exports are clean."}},{"@type":"Question","name":"Where do my photos go?","acceptedAnswer":{"@type":"Answer","text":"Nowhere. Your browser reads the file from your device and draws it onto a canvas locally. There is no server that could receive it."}},{"@type":"Question","name":"Can I use the designs commercially?","acceptedAnswer":{"@type":"Answer","text":"Yes — you can use designs you create for your shop, clinic or business page. You may not redistribute our templates or stickers as a standalone asset pack."}},{"@type":"Question","name":"Does it work on a slow phone?","acceptedAnswer":{"@type":"Answer","text":"Yes. Previews are pre-rendered images, GIF encoding runs in a background worker, and the whole site is under a megabyte of code. On an older phone, use the 260 px GIF size."}},{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"After your first visit, yes — the editor, templates and stickers are cached by a service worker."}},{"@type":"Question","name":"Why is a festival date marked “approx”?","acceptedAnswer":{"@type":"Answer","text":"Festivals like Eid, Onam, Durga Puja and Pongal depend on moon sighting or regional panchang, so the exact date can differ by a day or by region. Always confirm locally."}},{"@type":"Question","name":"Can I get a size that is not listed?","acceptedAnswer":{"@type":"Answer","text":"Yes — choose “Custom size…” in the Design tab and enter any width and height between 200 and 4000 pixels."}},{"@type":"Question","name":"How do I report a problem or request a festival?","acceptedAnswer":{"@type":"Answer","text":"Use the contact page. Adding a festival takes only a few minutes because everything lives in one configuration file."}}]}</script>
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
     
@@ -51,20 +50,7 @@
   <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
   <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
 </a>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="templates.html">Festival Templates</a>
-      <a href="post-maker.html">Post Maker</a>
-      <a href="gif-maker.html">GIF Maker</a>
-      <a href="status-maker.html">Status Maker</a>
-      <a href="wishes.html">Wishes</a>
-      <a href="how-it-works.html">How It Works</a>
-    </nav>
     <div class="header-actions">
-      <a class="btn-download-app web-only" href="app.html" data-download-app="1" aria-label="Download Festival Studio App">
-        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-        <span>Download App</span>
-      </a>
       
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -83,11 +69,10 @@
   <a href="status-maker.html">Status Maker</a>
   <a href="wishes.html">Wishes</a>
   <a href="how-it-works.html">How It Works</a>
+  <a href="video-templates.html">Video Templates 🎥</a>
   <a href="calendar.html">Festival Calendar</a>
-  <a href="app.html">App</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
-  <a href="faq.html">FAQ</a>
 </nav>
 <main id="main">
 
@@ -96,11 +81,6 @@
     <p class="breadcrumb"><a href="index.html">Home</a> / FAQ</p>
     <h1>Frequently asked questions</h1>
     
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="faq-top" aria-label="Advertisement area">
-  AD SLOT<small>faq-top</small>
-</div>
     <details class="faq"><summary>Is Festival Studio really free?</summary><div class="faq-body">Yes, completely. There is no paid plan, no credit limit and no premium template. The site is funded by the clearly-marked advertising slots placed outside the editor.</div></details>
     <details class="faq"><summary>Do I need to create an account?</summary><div class="faq-body">No. There is no signup, no login and no email verification anywhere on the site — and there never will be.</div></details>
     <details class="faq"><summary>Will my download have a watermark?</summary><div class="faq-body">No. PNG, JPG and GIF exports are clean.</div></details>
@@ -112,68 +92,11 @@
     <details class="faq"><summary>Can I get a size that is not listed?</summary><div class="faq-body">Yes — choose “Custom size…” in the Design tab and enter any width and height between 200 and 4000 pixels.</div></details>
     <details class="faq"><summary>How do I report a problem or request a festival?</summary><div class="faq-body">Use the contact page. Adding a festival takes only a few minutes because everything lives in one configuration file.</div></details>
     
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="faq-bottom" aria-label="Advertisement area">
-  AD SLOT<small>faq-bottom</small>
-</div>
   </div>
 </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div class="footer-about">
-        
-<a class="logo" href="index.html" aria-label="Festival Studio">
-  <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
-  <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
-</a>
-        <p style="margin-top:12px">Free Indian festival post, GIF and status maker. No signup, no watermark, no AI — everything is created right inside your browser.</p>
-        <div class="footer-app-cta" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="app.html" style="gap:7px;display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg><span>Download Android App</span></a></div>
-      </div>
-      <div>
-        <h4>Festival Studio</h4>
-        <ul>
-          <li><a href="app.html">App</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="how-it-works.html">How It Works</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="advertise.html">Advertise</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Tools</h4>
-        <ul>
-          <li><a href="post-maker.html">Post Maker</a></li>
-          <li><a href="gif-maker.html">GIF Maker</a></li>
-          <li><a href="status-maker.html">Status Maker</a></li>
-          <li><a href="templates.html">Festival Templates</a></li>
-          <li><a href="wishes.html">Wishes</a></li>
-          <li><a href="calendar.html">Festival Calendar</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms &amp; Conditions</a></li>
-          <li><a href="disclaimer.html">Disclaimer</a></li>
-          <li><a href="dmca.html">Copyright / DMCA</a></li>
-          <li><a href="accessibility.html">Accessibility</a></li>
-          <li><a href="licences.html">Licences &amp; Credits</a></li>
-          <li><a href="sitemap.html">Sitemap</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Festival Studio. All rights reserved.</span>
-      <span>Made in India · Works offline after first load</span>
-    </div>
-  </div>
+<footer class="site-footer" style="display:none !important">
 </footer>
   <script src="js/config.js" defer></script>
   <script src="js/storage.js" defer></script>

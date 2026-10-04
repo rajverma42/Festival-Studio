@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-IN">
+<html lang="en-IN" data-env="app" class="is-app-mode">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
   <link rel="stylesheet" href="css/style.css">
   <script>
-    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-env','app');document.documentElement.classList.add('is-app-mode');}catch(e){}})();
   </script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Festival Studio","url":"https://festival-studio.work.gd/","inLanguage":"en","applicationCategory":"DesignApplication","operatingSystem":"Any (web browser)","description":"Create beautiful Indian festival posts, animated GIFs and WhatsApp statuses free. Diwali, Holi, Eid, Raksha Bandhan and more. No signup, no watermark, works on mobile.","image":"https://festival-studio.work.gd/assets/icons/og-image.png","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"featureList":["Festival post maker","Animated GIF maker","WhatsApp status maker","Hindi and English templates","No signup required"]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Festival Studio","url":"https://festival-studio.work.gd/","logo":{"@type":"ImageObject","url":"https://festival-studio.work.gd/assets/icons/icon-512.png","width":512,"height":512}}</script>
@@ -46,7 +46,6 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap header-inner">
     
@@ -54,20 +53,7 @@
   <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
   <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
 </a>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="templates.html">Festival Templates</a>
-      <a href="post-maker.html">Post Maker</a>
-      <a href="gif-maker.html">GIF Maker</a>
-      <a href="status-maker.html">Status Maker</a>
-      <a href="wishes.html">Wishes</a>
-      <a href="how-it-works.html">How It Works</a>
-    </nav>
     <div class="header-actions">
-      <a class="btn-download-app web-only" href="app.html" data-download-app="1" aria-label="Download Festival Studio App">
-        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-        <span>Download App</span>
-      </a>
       <a class="lang-pill" data-lang-switch href="hi/" hreflang="hi" lang="hi">हिन्दी</a>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch colour theme">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -86,62 +72,177 @@
   <a href="status-maker.html">Status Maker</a>
   <a href="wishes.html">Wishes</a>
   <a href="how-it-works.html">How It Works</a>
+  <a href="video-templates.html">Video Templates 🎥</a>
   <a href="calendar.html">Festival Calendar</a>
-  <a href="app.html">App</a>
   <a href="about.html">About</a>
   <a href="contact.html">Contact</a>
-  <a href="faq.html">FAQ</a>
 </nav>
 <main id="main">
 
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="badge-row"><span class="badge">✨ <b>100% Free</b></span><span class="badge">🚫 No Signup</span><span class="badge">💧 No Watermark</span><span class="badge">📱 Works on mobile</span></div>
-      <h1>Create Stunning <span class="grad">Festival Posts</span> in Seconds</h1>
-      <p class="hero-sub">Free Indian Festival Post, GIF and Status Maker. No Signup. No AI. No Watermark. Your photos never leave your phone.</p>
-      <div class="btn-row">
-        <a class="btn btn-primary btn-lg" href="post-maker.html">Create Festival Post</a>
-        <a class="btn btn-dark btn-lg" href="gif-maker.html">Create GIF</a>
-        <a class="btn btn-ghost btn-lg" href="status-maker.html">Create Status</a>
-      </div>
-      <div class="privacy-note" style="max-width:540px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
-        <span>Your uploaded photos are processed in your browser and are not uploaded to our server.</span>
-      </div>
+<section class="section" style="padding-top:14px;padding-bottom:10px;">
+  <div class="wrap">
+    <!-- Festival Stories Carousel -->
+    <div class="stories-carousel" role="region" aria-label="Festival Stories">
+      
+      <a class="story-circle-item" href="post-maker.html?festival=diwali">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪔</div>
+        </div>
+        <span class="story-circle-label">Diwali</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=holi">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎨</div>
+        </div>
+        <span class="story-circle-label">Holi</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=eid">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌙</div>
+        </div>
+        <span class="story-circle-label">Eid</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=raksha-bandhan">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪢</div>
+        </div>
+        <span class="story-circle-label">Raksha Bandhan</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=janmashtami">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🦚</div>
+        </div>
+        <span class="story-circle-label">Janmashtami</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=ganesh-chaturthi">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🐘</div>
+        </div>
+        <span class="story-circle-label">Ganesh Chaturthi</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=navratri">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪷</div>
+        </div>
+        <span class="story-circle-label">Navratri</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=dussehra">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🏹</div>
+        </div>
+        <span class="story-circle-label">Dussehra</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=durga-puja">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🛕</div>
+        </div>
+        <span class="story-circle-label">Durga Puja</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=chhath-puja">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌅</div>
+        </div>
+        <span class="story-circle-label">Chhath Puja</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=makar-sankranti">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🪁</div>
+        </div>
+        <span class="story-circle-label">Makar Sankranti</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=pongal">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🍚</div>
+        </div>
+        <span class="story-circle-label">Pongal</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=onam">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🌸</div>
+        </div>
+        <span class="story-circle-label">Onam</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=maha-shivratri">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🔱</div>
+        </div>
+        <span class="story-circle-label">Maha Shivratri</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=christmas">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎄</div>
+        </div>
+        <span class="story-circle-label">Christmas</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=new-year">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎆</div>
+        </div>
+        <span class="story-circle-label">New Year</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=independence-day">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🇮🇳</div>
+        </div>
+        <span class="story-circle-label">Independence Day</span>
+      </a>
+      <a class="story-circle-item" href="post-maker.html?festival=republic-day">
+        <div class="story-circle-ring">
+          <div class="story-circle-inner">🎖️</div>
+        </div>
+        <span class="story-circle-label">Republic Day</span>
+      </a>
     </div>
-    <div class="hero-art">
-      <div class="frame" id="hero-art"></div>
-      <span class="float-chip a">🪔 18 festivals</span>
-      <span class="float-chip b">🎞️ Animated GIFs</span>
+
+    <!-- 4-Card Creation Deck -->
+    <div class="app-tools-grid">
+      <a class="app-tool-card" href="post-maker.html">
+        <span class="app-tool-badge">50+ Frames</span>
+        <div class="app-tool-icon">🎨</div>
+        <div>
+          <h3 class="app-tool-title">Post Maker</h3>
+          <p class="app-tool-desc">Custom photo, name & logo</p>
+        </div>
+      </a>
+      <a class="app-tool-card" href="video-templates.html">
+        <span class="app-tool-badge" style="background:#fef3c7;color:#92400e;">🎥 Veo AI</span>
+        <div class="app-tool-icon">🎬</div>
+        <div>
+          <h3 class="app-tool-title">Video Stories</h3>
+          <p class="app-tool-desc">Motion animations & audio</p>
+        </div>
+      </a>
+      <a class="app-tool-card" href="gif-maker.html">
+        <span class="app-tool-badge" style="background:#e0e7ff;color:#3730a3;">Animated</span>
+        <div class="app-tool-icon">🎞️</div>
+        <div>
+          <h3 class="app-tool-title">GIF Maker</h3>
+          <p class="app-tool-desc">WhatsApp animated greetings</p>
+        </div>
+      </a>
+      <a class="app-tool-card" href="status-maker.html">
+        <span class="app-tool-badge" style="background:#d1fae5;color:#065f46;">9:16 HD</span>
+        <div class="app-tool-icon">📱</div>
+        <div>
+          <h3 class="app-tool-title">Status Maker</h3>
+          <p class="app-tool-desc">Fullscreen vertical story</p>
+        </div>
+      </a>
     </div>
+
+    <!-- Editor Tips Promo Banner Card -->
+    <a class="tips-banner-card" href="post-maker.html">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:32px;">💡</span>
+        <div>
+          <strong style="font-size:0.95rem;display:block;">Editor Tips & Visual Animation Guide</strong>
+          <span style="font-size:0.78rem;color:var(--muted);">Learn how to insert photos, crop and add brand logos step-by-step</span>
+        </div>
+      </div>
+      <span class="btn btn-soft btn-sm" style="flex:none;">View Tips →</span>
+    </a>
   </div>
 </section>
-
-<div class="wrap web-only">
-  <div class="download-app-banner">
-    <div class="download-app-content">
-      <span class="badge" style="margin-bottom:8px">📱 Android App Available</span>
-      <h3>Get Festival Studio Mobile App</h3>
-      <p>Download the free Android APK — zero website banner ads, 100% offline support, and a clean fullscreen experience.</p>
-    </div>
-    <div class="download-app-actions">
-      <a class="btn btn-primary" href="downloads/FestivalStudio.apk" data-download-apk download="FestivalStudio.apk">
-        📥 Download APK (v2.4.0)
-      </a>
-      <a class="btn btn-soft" href="app.html">
-        App Details & PWA →
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="home-top" aria-label="Advertisement area">
-  AD SLOT<small>home-top</small>
-</div></div>
 
 <section class="section" id="festivals">
   <div class="wrap">
@@ -171,12 +272,7 @@
   </div>
 </section>
 
-<div class="wrap">
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="rect" data-ad-slot="home-middle" aria-label="Advertisement area">
-  AD SLOT<small>home-middle</small>
-</div></div>
+<div class="wrap"></div>
 
 <section class="section">
   <div class="wrap">
@@ -219,84 +315,10 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap">
-    <div class="section-head"><div><p class="eyebrow">Three steps</p><h2>How Festival Studio works</h2></div></div>
-    <div class="steps">
-      <div class="step"><h3>Choose a festival or template</h3><p>Start from any of the ready-made designs, or open a blank canvas in the size you need.</p></div>
-      <div class="step"><h3>Add your name, photo and message</h3><p>Type your details once — templates fill themselves in. Upload a photo or logo straight from your gallery.</p></div>
-      <div class="step"><h3>Download or share</h3><p>Export a clean PNG, JPG or animated GIF with no watermark, then share it on WhatsApp, Instagram or Facebook.</p></div>
-    </div>
-    <div class="btn-row" style="margin-top:20px">
-      <a class="btn btn-primary" href="post-maker.html">Start designing free</a>
-      <a class="btn btn-soft" href="post-maker.html?quick=1">⚡ Photo → Post in 4 taps</a>
-      <a class="btn btn-ghost" href="how-it-works.html">Read the full guide</a>
-    </div>
-  </div>
-</section>
-
-<div class="wrap">
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="home-bottom" aria-label="Advertisement area">
-  AD SLOT<small>home-bottom</small>
-</div></div>
 
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div class="footer-about">
-        
-<a class="logo" href="index.html" aria-label="Festival Studio">
-  <img class="logo-mark" src="assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
-  <span>Festival <b>Studio</b><small>Free festival post maker</small></span>
-</a>
-        <p style="margin-top:12px">Free Indian festival post, GIF and status maker. No signup, no watermark, no AI — everything is created right inside your browser.</p>
-        <div class="footer-app-cta" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="app.html" style="gap:7px;display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg><span>Download Android App</span></a></div>
-      </div>
-      <div>
-        <h4>Festival Studio</h4>
-        <ul>
-          <li><a href="app.html">App</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="how-it-works.html">How It Works</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="advertise.html">Advertise</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Tools</h4>
-        <ul>
-          <li><a href="post-maker.html">Post Maker</a></li>
-          <li><a href="gif-maker.html">GIF Maker</a></li>
-          <li><a href="status-maker.html">Status Maker</a></li>
-          <li><a href="templates.html">Festival Templates</a></li>
-          <li><a href="wishes.html">Wishes</a></li>
-          <li><a href="calendar.html">Festival Calendar</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms &amp; Conditions</a></li>
-          <li><a href="disclaimer.html">Disclaimer</a></li>
-          <li><a href="dmca.html">Copyright / DMCA</a></li>
-          <li><a href="accessibility.html">Accessibility</a></li>
-          <li><a href="licences.html">Licences &amp; Credits</a></li>
-          <li><a href="sitemap.html">Sitemap</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Festival Studio. All rights reserved.</span>
-      <span>Made in India · Works offline after first load</span>
-    </div>
-  </div>
+<footer class="site-footer" style="display:none !important">
 </footer>
   <script src="js/config.js" defer></script>
   <script src="js/storage.js" defer></script>

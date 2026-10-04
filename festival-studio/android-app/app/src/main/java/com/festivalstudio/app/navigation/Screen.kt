@@ -6,6 +6,7 @@ sealed class Screen(val route: String, val title: String, val icon: String) {
         fun createRoute(templateId: String = "diwali-1") = "post_maker/$templateId"
     }
     object GifMaker : Screen("gif_maker", "GIF Maker", "🎬")
+    object VideoMaker : Screen("video_maker", "Video Maker", "🎥")
     object StatusMaker : Screen("status_maker", "Status Maker", "📱")
     object Settings : Screen("settings", "Settings", "⚙️")
 }

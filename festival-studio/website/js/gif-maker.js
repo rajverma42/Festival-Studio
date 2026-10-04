@@ -223,9 +223,16 @@
     p.appendChild(this.estimate);
     this.updateEstimate();
 
-    var gen = el('button', { class: 'btn btn-primary btn-block btn-lg', id: 'btn-generate', type: 'button' }, FS.t('Generate GIF'));
-    gen.addEventListener('click', function () { self.generate(); });
-    p.appendChild(gen);
+    var genRow = el('div', { class: 'grid2', style: 'margin-top:10px' });
+    var gen = el('button', { class: 'btn btn-primary btn-block btn-lg', id: 'btn-generate', type: 'button' }, FS.t('Generate GIF 🎬'));
+    gen.addEventListener('click', function () { self.generate('gif'); });
+
+    var genVid = el('button', { class: 'btn btn-dark btn-block btn-lg', id: 'btn-generate-video', type: 'button' }, FS.t('Generate Video 🎥'));
+    genVid.addEventListener('click', function () { self.generate('video'); });
+
+    genRow.appendChild(gen);
+    genRow.appendChild(genVid);
+    p.appendChild(genRow);
 
     this.progressWrap = el('div', { style: 'margin-top:12px', hidden: 'hidden' });
     this.progressWrap.appendChild(el('div', { class: 'progress' }, '<i></i>'));
@@ -246,21 +253,77 @@
     this.estimate.textContent = frames + ' frames at ' + this.outWidth + ' px wide. Bigger and longer GIFs take longer and produce larger files.';
   };
 
-  GifMaker.prototype.generate = function () {
+  GifMaker.prototype.generate = function (mode) {
+    mode = mode || 'gif';
     var self = this;
     var frames = Math.min(80, Math.max(4, Math.round(this.fps * this.duration)));
     var delay = Math.round(1000 / this.fps);
     var w = this.outWidth;
     var h = Math.round(w * this.scene.height / this.scene.width);
-    var btn = document.getElementById('btn-generate');
+    var btnGif = document.getElementById('btn-generate');
+    var btnVid = document.getElementById('btn-generate-video');
 
     this.result.innerHTML = '';
     this.progressWrap.hidden = false;
     var bar = this.progressWrap.querySelector('.progress > i');
     bar.style.width = '0%';
-    this.progressLabel.textContent = 'Preparing frames…';
-    btn.disabled = true;
+    this.progressLabel.textContent = mode === 'video' ? 'Preparing video frames…' : 'Preparing frames…';
+    if (btnGif) btnGif.disabled = true;
+    if (btnVid) btnVid.disabled = true;
     this.playing = false;
+
+    if (mode === 'video' && typeof MediaRecorder !== 'undefined') {
+      FS.fontsReady.then(function () {
+        var offCanvas = document.createElement('canvas');
+        offCanvas.width = w; offCanvas.height = h;
+        var offCtx = offCanvas.getContext('2d');
+        var stream = offCanvas.captureStream ? offCanvas.captureStream(self.fps) : null;
+        if (!stream) throw new Error('Canvas capture not supported in this browser');
+
+        var mimeType = MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' :
+                       (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm');
+        var recorder = new MediaRecorder(stream, { mimeType: mimeType });
+        var chunks = [];
+        recorder.ondataavailable = function (e) { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+        var frameIdx = 0;
+        recorder.onstop = function () {
+          var videoBlob = new Blob(chunks, { type: mimeType });
+          self.playing = true;
+          self.t0 = performance.now();
+          if (btnGif) btnGif.disabled = false;
+          if (btnVid) btnVid.disabled = false;
+          self.progressLabel.textContent = 'Video Done — ' + (videoBlob.size / 1024 < 1024
+            ? Math.round(videoBlob.size / 1024) + ' KB'
+            : (videoBlob.size / 1048576).toFixed(1) + ' MB');
+          self.showResult(videoBlob, 'video');
+        };
+
+        recorder.start();
+        function drawNext() {
+          if (frameIdx >= frames) {
+            recorder.stop();
+            return;
+          }
+          offCtx.setTransform(1, 0, 0, 1, 0, 0);
+          offCtx.clearRect(0, 0, w, h);
+          self.drawAt(offCtx, frameIdx / frames, w);
+          bar.style.width = Math.round((frameIdx / frames) * 100) + '%';
+          self.progressLabel.textContent = 'Encoding video frame ' + (frameIdx + 1) + ' of ' + frames + '…';
+          frameIdx++;
+          setTimeout(drawNext, delay);
+        }
+        drawNext();
+      }).catch(function (err) {
+        self.playing = true;
+        if (btnGif) btnGif.disabled = false;
+        if (btnVid) btnVid.disabled = false;
+        self.progressWrap.hidden = true;
+        FS.toast('Video export fallback to GIF: ' + ((err && err.message) || ''), 'info', 4000);
+        self.generate('gif');
+      });
+      return;
+    }
 
     FS.fontsReady.then(function () {
       return FS.encodeGIF({
@@ -275,31 +338,42 @@
       self.blob = blob;
       self.playing = true;
       self.t0 = performance.now();
-      btn.disabled = false;
+      if (btnGif) btnGif.disabled = false;
+      if (btnVid) btnVid.disabled = false;
       self.progressLabel.textContent = 'Done — ' + (blob.size / 1024 < 1024
         ? Math.round(blob.size / 1024) + ' KB'
         : (blob.size / 1048576).toFixed(1) + ' MB');
-      self.showResult(blob);
+      self.showResult(blob, 'gif');
     }).catch(function (err) {
       self.playing = true;
-      btn.disabled = false;
+      if (btnGif) btnGif.disabled = false;
+      if (btnVid) btnVid.disabled = false;
       self.progressWrap.hidden = true;
       FS.toast((err && err.message) || 'GIF generation failed. Try a smaller size or fewer frames.', 'err', 5000);
     });
   };
 
-  GifMaker.prototype.showResult = function (blob) {
+  GifMaker.prototype.showResult = function (blob, type) {
+    type = type || 'gif';
+    var isVideo = type === 'video';
     var self = this;
     var url = URL.createObjectURL(blob);
-    var name = FS.slugify(FS.getFestival(this.festival).name) + '-festival-greeting.gif';
+    var ext = isVideo ? (blob.type.indexOf('mp4') !== -1 ? 'mp4' : 'webm') : 'gif';
+    var name = FS.slugify(FS.getFestival(this.festival).name) + '-festival-' + (isVideo ? 'video.' : 'greeting.') + ext;
     this.result.innerHTML = '';
     var frame = el('div', { class: 'preview-frame' });
-    var img = el('img', { src: url, alt: 'Animated ' + FS.getFestival(this.festival).name + ' greeting preview' });
-    frame.appendChild(img);
+
+    if (isVideo) {
+      var vid = el('video', { src: url, autoplay: 'true', loop: 'true', controls: 'true', playsinline: 'true', style: 'max-width:100%;border-radius:12px' });
+      frame.appendChild(vid);
+    } else {
+      var img = el('img', { src: url, alt: 'Animated ' + FS.getFestival(this.festival).name + ' greeting preview' });
+      frame.appendChild(img);
+    }
     this.result.appendChild(frame);
 
     var row = el('div', { class: 'grid2', style: 'margin-top:10px' });
-    var dl = el('button', { class: 'btn btn-primary btn-sm', type: 'button' }, FS.t('Download GIF'));
+    var dl = el('button', { class: 'btn btn-primary btn-sm', type: 'button' }, FS.t(isVideo ? 'Download Video' : 'Download GIF'));
     dl.addEventListener('click', function () {
       FS.saveBlob(blob, name);
       FS.toast('Saved ' + name, 'ok');
@@ -321,7 +395,7 @@
     var edit = el('a', { class: 'btn btn-soft btn-sm', href: 'post-maker.html?festival=' + self.festival }, FS.t('Edit design'));
     row.appendChild(dl); row.appendChild(sh); row.appendChild(again); row.appendChild(edit);
     this.result.appendChild(row);
-    this.result.appendChild(el('p', { class: 'hint' }, 'On Android, tap Share to send it straight to WhatsApp. On desktop, download and attach it.'));
+    this.result.appendChild(el('p', { class: 'hint' }, isVideo ? 'Video is compatible with WhatsApp Status, Instagram Reels, and YouTube Shorts!' : 'On Android, tap Share to send it straight to WhatsApp. On desktop, download and attach it.'));
   };
 
   FS.GifMaker = GifMaker;

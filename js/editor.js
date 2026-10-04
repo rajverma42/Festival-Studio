@@ -665,6 +665,7 @@
     { id: 'shape', label: 'Shapes', icon: 'shape' },
     { id: 'bg', label: 'Background', icon: 'bg' },
     { id: 'layers', label: 'Layers', icon: 'layers' },
+    { id: 'tips', label: 'Tips 💡', icon: 'tips' },
     { id: 'export', label: 'Export', icon: 'export' }
   ];
 
@@ -702,6 +703,7 @@
     this.renderShapePanel();
     this.renderBgPanel();
     this.renderLayers();
+    this.renderTipsPanel();
     this.renderExportPanel();
   };
 
@@ -1317,13 +1319,22 @@
     p.appendChild(share);
 
     p.appendChild(el('hr', { class: 'divider' }));
-    var gif = el('button', { class: 'btn btn-dark btn-block', type: 'button' }, FS.t('Animate this design as a GIF →'));
+    var animRow = el('div', { class: 'grid2' });
+    var gif = el('button', { class: 'btn btn-dark btn-sm', type: 'button' }, FS.t('Animate GIF 🎬'));
     gif.addEventListener('click', function () {
       var okSaved = Store.set('handoff', FS.serialize(self.scene, { festival: self.festival, mode: self.mode }));
       if (!okSaved) { FS.toast('Storage is blocked, so the design cannot be passed to the GIF maker.', 'err', 4500); return; }
       location.href = 'gif-maker.html?from=handoff';
     });
-    p.appendChild(gif);
+    var vid = el('button', { class: 'btn btn-primary btn-sm', type: 'button' }, FS.t('Video Story 🎥'));
+    vid.addEventListener('click', function () {
+      var okSaved = Store.set('handoff', FS.serialize(self.scene, { festival: self.festival, mode: self.mode }));
+      if (!okSaved) { FS.toast('Storage is blocked, so the design cannot be passed to the Video maker.', 'err', 4500); return; }
+      location.href = 'gif-maker.html?from=handoff&mode=video';
+    });
+    animRow.appendChild(gif);
+    animRow.appendChild(vid);
+    p.appendChild(animRow);
 
     p.appendChild(el('hr', { class: 'divider' }));
     var save = el('button', { class: 'btn btn-soft btn-block', type: 'button' }, FS.t('Save draft on this device'));
@@ -1353,6 +1364,101 @@
 
     p.appendChild(el('div', { class: 'privacy-note' },
       FS.icon('shield') + '<span>Drafts and preferences are stored only in this browser on this device. Clearing browser data removes them.</span>'));
+  };
+
+  /* ---- Tips Panel ---------------------------------------------------- */
+  Editor.prototype.renderTipsPanel = function () {
+    var self = this, p = document.getElementById('panel-tips');
+    if (!p) return;
+    p.innerHTML = '';
+
+    var isHi = FS.LANG === 'hi';
+
+    // Header info
+    var head = el('div', { style: 'margin-bottom:14px;' });
+    head.innerHTML =
+      '<h4 style="margin:0 0 4px;font-size:15px;color:var(--text);">' + (isHi ? '💡 एडिटर टिप्स और गाइड' : '💡 Editor Tips & Visual Guide') + '</h4>' +
+      '<p class="hint" style="margin:0;">' + (isHi ? 'टेम्पलेट्स में अपनी फोटो और लोगो जोड़ने के आसान स्टेप्स:' : 'Step-by-step instructions for adding photos and logos to your festival templates:') + '</p>';
+    p.appendChild(head);
+
+    // Tip 1: Adding or Replacing Photo
+    var card1 = el('div', { class: 'tip-card' });
+    card1.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+        '<strong style="font-size:14px;color:var(--text);">' + (isHi ? '1. फोटो कैसे जोड़ें या बदलें' : '1. How to Add or Replace Photo') + '</strong>' +
+        '<span class="tag" style="background:#fef3c7;color:#92400e;">' + (isHi ? 'एनिमेशन' : 'Animation') + '</span>' +
+      '</div>' +
+      '<div class="tip-anim-wrap">' +
+        '<div class="anim-template-mock">' +
+          '<span style="font-size:9px;color:#fff;font-weight:700;">HAPPY DIWALI</span>' +
+          '<div class="anim-slot-circle">👤</div>' +
+          '<div style="width:70%;height:4px;background:rgba(255,255,255,0.4);border-radius:2px;"></div>' +
+        '</div>' +
+        '<div class="anim-flying-photo">📸</div>' +
+      '</div>' +
+      '<ul class="tip-steps-list">' +
+        '<li><span class="tip-step-num">1</span><span>' + (isHi ? 'नीचे <strong>Photo</strong> टैब पर क्लिक करें या कैनवास पर दिए गए फोटो सर्कल को टैप करें।' : 'Click the <strong>Photo</strong> tab or tap any existing photo slot on the canvas.') + '</span></li>' +
+        '<li><span class="tip-step-num">2</span><span>' + (isHi ? '<strong>Upload Photo</strong> दबाएं और अपनी गैलरी से अपनी मनपसंद फोटो चुनें।' : 'Tap <strong>Upload Photo</strong> and pick any picture from your device gallery.') + '</span></li>' +
+        '<li><span class="tip-step-num">3</span><span>' + (isHi ? 'फोटो को मनचाही जगह खींचें (drag) और कोनों को पकड़कर रीसाइज़ करें।' : 'Drag the photo into the frame and pinch/drag corners to resize.') + '</span></li>' +
+      '</ul>';
+
+    var btnGoPhoto = el('button', { class: 'btn btn-soft btn-block btn-sm', type: 'button', style: 'margin-top:10px;' }, isHi ? 'Photo टैब खोलें →' : 'Open Photo Tab →');
+    btnGoPhoto.addEventListener('click', function () { self.showTab('photo'); });
+    card1.appendChild(btnGoPhoto);
+    p.appendChild(card1);
+
+    // Tip 2: Adding Brand Logo
+    var card2 = el('div', { class: 'tip-card' });
+    card2.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+        '<strong style="font-size:14px;color:var(--text);">' + (isHi ? '2. बिज़नेस लोगो कैसे लगाएं' : '2. How to Add Business Logo') + '</strong>' +
+        '<span class="tag" style="background:#d1fae5;color:#065f46;">' + (isHi ? 'ब्रांडिंग' : 'Branding') + '</span>' +
+      '</div>' +
+      '<div class="tip-anim-wrap">' +
+        '<div class="anim-template-mock">' +
+          '<div style="width:100%;display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-size:8px;color:#fff;">FESTIVAL</span>' +
+            '<div style="width:20px;height:20px;border-radius:4px;border:1px dashed #fff;display:grid;place-items:center;font-size:10px;">🏷️</div>' +
+          '</div>' +
+          '<span style="font-size:12px;">🪔</span>' +
+          '<div style="width:80%;height:4px;background:rgba(255,255,255,0.4);border-radius:2px;"></div>' +
+        '</div>' +
+        '<div class="anim-flying-logo">🏢</div>' +
+      '</div>' +
+      '<ul class="tip-steps-list">' +
+        '<li><span class="tip-step-num">1</span><span>' + (isHi ? '<strong>Photo</strong> टैब में जाकर <strong>Upload Logo</strong> बटन दबाएं।' : 'Go to the <strong>Photo</strong> tab and tap the <strong>Upload Logo</strong> button.') + '</span></li>' +
+        '<li><span class="tip-step-num">2</span><span>' + (isHi ? 'पारदर्शी बैकग्राउंड (PNG) वाला लोगो चुनें ताकि वह हर टेम्पलेट पर सुंदर दिखे।' : 'Select a transparent PNG logo for clean, professional results.') + '</span></li>' +
+        '<li><span class="tip-step-num">3</span><span>' + (isHi ? 'लोगो को ऊपर कोने में या कॉन्टैक्ट बार के पास सेट करें।' : 'Position the logo in the top corner or near your contact information bar.') + '</span></li>' +
+      '</ul>';
+
+    var btnGoLogo = el('button', { class: 'btn btn-soft btn-block btn-sm', type: 'button', style: 'margin-top:10px;' }, isHi ? 'लोगो अपलोड करें →' : 'Upload Logo Now →');
+    btnGoLogo.addEventListener('click', function () {
+      self.showTab('photo');
+      self.pickImage(function (id, img) {
+        var w = self.scene.width * .2;
+        var ar = img.naturalWidth / img.naturalHeight;
+        self.add(FS.defaults.image({
+          asset: id, w: w, h: w / ar, x: self.scene.width * .05, y: self.scene.height * .05,
+          name: 'Logo', role: 'logo', radius: 12
+        }));
+        FS.toast(FS.t('Logo added'));
+      });
+    });
+    card2.appendChild(btnGoLogo);
+    p.appendChild(card2);
+
+    // Tip 3: One-Click Quick Wizard Tip
+    var card3 = el('div', { class: 'tip-card' });
+    card3.innerHTML =
+      '<strong style="font-size:14px;color:var(--text);display:block;margin-bottom:6px;">' + (isHi ? '⚡ वन-क्लिक क्विक विज़ार्ड' : '⚡ 1-Click Quick Wizard') + '</strong>' +
+      '<p class="hint" style="margin:0 0 10px;line-height:1.4;">' +
+        (isHi ? 'अगर आप केवल अपनी फोटो अपलोड करके ऑटोमैटिक सभी टेम्पलेट्स में पोस्ट बनाना चाहते हैं, तो ऊपर टूलबार में <strong>⚡ Quick</strong> बटन दबाएं।' :
+               'Want automatic festival greeting generation? Tap the <strong>⚡ Quick</strong> button in the top toolbar to upload your photo once and apply to any template automatically.') +
+      '</p>';
+    var btnQuick = el('button', { class: 'btn btn-primary btn-block btn-sm', type: 'button' }, isHi ? 'क्विक विज़ार्ड शुरू करें ⚡' : 'Start Quick Wizard ⚡');
+    btnQuick.addEventListener('click', function () { self.quickStart(); });
+    card3.appendChild(btnQuick);
+    p.appendChild(card3);
   };
 
   Editor.prototype.renderDrafts = function () {
@@ -1514,6 +1620,7 @@
     var self = this;
     function on(id, fn) { var b = document.getElementById(id); if (b) b.addEventListener('click', fn); }
     on('btn-quick', function () { self.quickStart(); });
+    on('btn-tips', function () { self.showTab('tips'); });
     on('btn-undo', function () { self.undo(); });
     on('btn-redo', function () { self.redo(); });
     on('btn-save', function () { self.saveDraft(); });

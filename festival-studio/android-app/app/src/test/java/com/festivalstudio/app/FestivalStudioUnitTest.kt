@@ -12,7 +12,15 @@ class FestivalStudioUnitTest {
     fun festivalTemplates_areNotEmpty() {
         val templates = FestivalRepository.templates
         assertTrue("Template list must not be empty", templates.isNotEmpty())
-        assertTrue("Should have at least 5 default festive templates", templates.size >= 5)
+        assertTrue("Should have at least 500 templates (50 per festival)", templates.size >= 500)
+    }
+
+    @Test
+    fun festivalTemplate_has50TemplatesPerFestival() {
+        val diwaliTemplates = FestivalRepository.templates.filter { it.category == "Diwali" }
+        assertEquals("Diwali should have 50 templates", 50, diwaliTemplates.size)
+        val holiTemplates = FestivalRepository.templates.filter { it.category == "Holi" }
+        assertEquals("Holi should have 50 templates", 50, holiTemplates.size)
     }
 
     @Test

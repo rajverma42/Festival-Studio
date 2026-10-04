@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-env="app" class="is-app-mode">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -38,13 +38,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;700&family=Rozha+One&family=Baloo+2:wght@600;700&family=Playfair+Display:wght@600;700&family=Anton&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <script>
-    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+    (function(){try{var p=JSON.parse(localStorage.getItem('fs:prefs')||'{}');var t=p.theme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-env','app');document.documentElement.classList.add('is-app-mode');}catch(e){}})();
   </script>
   
 </head>
 <body>
 
-<a class="skip-link" href="#main">सीधे कंटेंट पर जाएँ</a>
 <header class="site-header">
   <div class="wrap header-inner">
     
@@ -52,20 +51,7 @@
   <img class="logo-mark" src="../assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
   <span>Festival <b>Studio</b><small>मुफ़्त त्योहार पोस्ट मेकर</small></span>
 </a>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html">होम</a>
-      <a href="templates.html">टेम्पलेट</a>
-      <a href="post-maker.html">पोस्ट मेकर</a>
-      <a href="gif-maker.html">GIF मेकर</a>
-      <a href="status-maker.html">स्टेटस मेकर</a>
-      <a href="wishes.html">शुभकामनाएँ</a>
-      <a href="how-it-works.html">कैसे काम करता है</a>
-    </nav>
     <div class="header-actions">
-      <a class="btn-download-app web-only" href="app.html" data-download-app="1" aria-label="ऐप डाउनलोड करें">
-        <svg viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg>
-        <span>ऐप डाउनलोड</span>
-      </a>
       <a class="lang-pill" data-lang-switch href="../contact.html" hreflang="en" lang="en">English</a>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="थीम बदलें">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
@@ -84,11 +70,10 @@
   <a href="status-maker.html">स्टेटस मेकर</a>
   <a href="wishes.html">शुभकामनाएँ</a>
   <a href="how-it-works.html">कैसे काम करता है</a>
+  <a href="video-templates.html">वीडियो टेम्पलेट्स 🎥</a>
   <a href="calendar.html">त्योहार कैलेंडर</a>
-  <a href="app.html">ऐप</a>
   <a href="about.html">हमारे बारे में</a>
   <a href="contact.html">संपर्क</a>
-  
 </nav>
 <main id="main">
 
@@ -109,68 +94,11 @@
     </form>
     <div class="note" style="margin-top:20px">सीधे लिखना चाहते हैं? ईमेल करें <strong>hello@festivalstudio.example</strong>।</div>
     
-<!-- Ad placeholder: your ad network snippet is injected here by js/app.js
-     once the visitor accepts the cookie notice (see js/config.js). -->
-<div class="ad-slot" data-size="leaderboard" data-ad-slot="contact-bottom" aria-label="Advertisement area">
-  विज्ञापन स्थान<small>contact-bottom</small>
-</div>
   </div>
 </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div class="footer-about">
-        
-<a class="logo" href="index.html" aria-label="Festival Studio">
-  <img class="logo-mark" src="../assets/icons/logo-96.png" width="48" height="48" alt="Festival Studio logo" decoding="async">
-  <span>Festival <b>Studio</b><small>मुफ़्त त्योहार पोस्ट मेकर</small></span>
-</a>
-        <p style="margin-top:12px">मुफ़्त भारतीय त्योहार पोस्ट, GIF और स्टेटस मेकर। न साइनअप, न वॉटरमार्क, न AI — सब कुछ आपके ब्राउज़र में ही बनता है।</p>
-        <div class="footer-app-cta" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="app.html" style="gap:7px;display:inline-flex;align-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993 0 .5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.1054-.1824.043-.4154-.1394-.5208-.1827-.1054-.4154-.043-.5208.1394l-2.022 3.5022C15.688 8.4878 13.9048 8.01 12 8.01s-3.688.4878-5.1953 1.4851L4.7827 5.993c-.1054-.1824-.3381-.2448-.5208-.1394-.1824.1054-.2448.3384-.1394.5208l1.996 3.4572C2.6887 11.7588 0 16.0357 0 20.999h24c0-4.9633-2.6887-9.2402-6.1185-11.6776"/></svg><span>ऐप डाउनलोड करें (APK)</span></a></div>
-      </div>
-      <div>
-        <h4>फेस्टिवल स्टूडियो</h4>
-        <ul>
-          <li><a href="app.html">ऐप</a></li>
-          <li><a href="about.html">हमारे बारे में</a></li>
-          <li><a href="contact.html">संपर्क</a></li>
-          <li><a href="how-it-works.html">कैसे काम करता है</a></li>
-          <li><a href="../faq.html">सवाल-जवाब</a></li>
-          <li><a href="../advertise.html">विज्ञापन दें</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>टूल्स</h4>
-        <ul>
-          <li><a href="post-maker.html">पोस्ट मेकर</a></li>
-          <li><a href="gif-maker.html">GIF मेकर</a></li>
-          <li><a href="status-maker.html">स्टेटस मेकर</a></li>
-          <li><a href="templates.html">टेम्पलेट</a></li>
-          <li><a href="wishes.html">शुभकामनाएँ</a></li>
-          <li><a href="calendar.html">त्योहार कैलेंडर</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>कानूनी</h4>
-        <ul>
-          <li><a href="../privacy.html">प्राइवेसी पॉलिसी</a></li>
-          <li><a href="../cookies.html">कुकी पॉलिसी</a></li>
-          <li><a href="../terms.html">नियम व शर्तें</a></li>
-          <li><a href="../disclaimer.html">अस्वीकरण</a></li>
-          <li><a href="../dmca.html">कॉपीराइट / DMCA</a></li>
-          <li><a href="../accessibility.html">सुगम्यता</a></li>
-          <li><a href="../licences.html">लाइसेंस व क्रेडिट</a></li>
-          <li><a href="../sitemap.html">साइटमैप</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Festival Studio. सर्वाधिकार सुरक्षित।</span>
-      <span>भारत में बना · पहली बार खुलने के बाद ऑफ़लाइन भी चलता है</span>
-    </div>
-  </div>
+<footer class="site-footer" style="display:none !important">
 </footer>
   <script src="../js/config.js" defer></script>
   <script src="../js/storage.js" defer></script>
